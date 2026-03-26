@@ -2,7 +2,7 @@ name: RegulAI CI — Test Suite
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main]
   pull_request:
     branches: [main]
 
@@ -39,7 +39,7 @@ jobs:
     env:
       DATABASE_URL: postgresql+asyncpg://regulai_test:testpass123@localhost:5432/regulai_test
       REDIS_URL: redis://localhost:6379/0
-      SECRET_KEY: ci-test-secret-key-not-real-32chars
+      SECRET_KEY: ci-test-secret-key-32-characters-x
       ENVIRONMENT: development
       ANTHROPIC_API_KEY: ""
       OPENAI_API_KEY: ""
@@ -68,16 +68,13 @@ jobs:
         working-directory: backend
         run: alembic upgrade head
 
-      - name: Run test suite
+      - name: Run tests
         working-directory: backend
         run: |
-          pytest tests/test_api.py -v \
-            --tb=short \
-            --timeout=30 \
-            -x
+          pytest tests/test_api.py -v --tb=short -x
 
   test-frontend:
-    name: Frontend Build Check
+    name: Frontend Build
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -100,7 +97,7 @@ jobs:
         working-directory: web
         run: npx tsc --noEmit
 
-      - name: Build for production
+      - name: Build frontend
         working-directory: web
         run: npm run build
         env:
