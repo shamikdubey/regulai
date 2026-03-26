@@ -72,7 +72,7 @@ export function getApiClient(): AxiosInstance {
           // Rate limit exceeded
           const limitDetail = typeof detail === "object" ? detail : null;
           const msg = limitDetail
-            ? `Daily limit reached: ${limitDetail.used}/${limitDetail.limit} queries used. ${limitDetail.reset}`
+            ? `Daily limit reached: ${(limitDetail as any).used}/${(limitDetail as any).limit} queries used.`
             : "Too many requests. Please slow down.";
           toast.error(msg, { duration: 6000 });
           return Promise.reject(error);

@@ -86,11 +86,15 @@ async def get_admin_db() -> AsyncGenerator[AsyncSession, None]:
 
 async def init_db():
     async with engine.begin() as conn:
+        # Core extensions — required
         await conn.execute(text("CREATE EXTENSION IF NOT EXISTS vector"))
         await conn.execute(text("CREATE EXTENSION IF NOT EXISTS pgcrypto"))
-        await conn.execute(text("CREATE EXTENSION IF NOT EXISTS pg_stat_statements"))
-    from app.db import models  # noqa
-    from app.api.v1.endpoints import alerts  # noqa
+        # Optional extension — may not be available in all environments
+        try:
+            await conn.execute(text("CREATE EXTENSION IF NOT EXISTS pg_stat_statements"))
+        except Exception:
+            pass  # Not available in CI/test environments — that is fine
+    from app.db import models  # noqa — ensure all models are registered
     async with engine.begin() as conn:
         await Base.metadata.create_all(conn)  # type: ignore
     logger.info("database_initialized")

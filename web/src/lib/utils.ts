@@ -188,7 +188,7 @@ export const REGIONS = [
 ] as const;
 
 // ── Flat arrays for backward compatibility ────────────────────────────────────
-export const JURISDICTIONS = REGIONS.flatMap(r => r.countries);
+export const JURISDICTIONS = REGIONS.flatMap(r => r.countries as ReadonlyArray<{value: string; label: string; flag: string; tier: number}>);
 
 export const DOMAINS = [
   { value: "food",     label: "Food Safety",      color: "#f5a623", bg: "rgba(245,166,35,0.12)" },

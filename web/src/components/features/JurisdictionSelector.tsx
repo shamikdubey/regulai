@@ -27,12 +27,13 @@ export default function JurisdictionSelector({ compact }: Props) {
     if (open) setTimeout(() => inputRef.current?.focus(), 50);
   }, [open]);
 
+  type JItem = { value: string; label: string; flag: string; tier: number };
   const q = search.toLowerCase().trim();
   const filtered = useMemo(() =>
-    q ? JURISDICTIONS.filter(j =>
+    q ? (JURISDICTIONS as JItem[]).filter((j: JItem) =>
       j.label.toLowerCase().includes(q) ||
       j.value.toLowerCase().includes(q)
-    ) : JURISDICTIONS,
+    ) : (JURISDICTIONS as JItem[]),
     [q]
   );
 
@@ -119,7 +120,7 @@ export default function JurisdictionSelector({ compact }: Props) {
                 No countries match "{search}"
               </div>
             ) : (
-              filtered.map(country => (
+              filtered.map((country: JItem) => (
                 <button
                   key={country.value}
                   onClick={() => {

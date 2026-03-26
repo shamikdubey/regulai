@@ -22,6 +22,7 @@ const ExplorerPage      = lazy(() => import("@/pages/ExplorerPage"));
 const DocumentsPage     = lazy(() => import("@/pages/DocumentsPage"));
 const AuditPage         = lazy(() => import("@/pages/AuditPage"));
 const SettingsPage      = lazy(() => import("@/pages/SettingsPage"));
+const BillingPage       = lazy(() => import("@/pages/BillingPage"));
 
 const queryClient = new QueryClient({
   defaultOptions: {

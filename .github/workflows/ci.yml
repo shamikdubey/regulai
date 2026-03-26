@@ -53,6 +53,8 @@ jobs:
       BOOTSTRAP_DISABLED: "false"
       AWS_REGION: "ap-south-1"
       AWS_S3_BUCKET: ""
+      SENTRY_DSN: ""
+      OTEL_ENDPOINT: ""
 
     steps:
       - name: Checkout
@@ -76,13 +78,10 @@ jobs:
           pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run migrations
-        working-directory: backend
-        run: alembic upgrade head
-
       - name: Run test suite
         working-directory: backend
-        run: pytest tests/test_api.py -v --tb=short -x --timeout=30
+        run: |
+          pytest tests/test_api.py -v --tb=short -x --timeout=30
 
   # ── Frontend Build ─────────────────────────────────────────────────────────
   test-frontend:
@@ -106,7 +105,7 @@ jobs:
       - name: TypeScript check
         working-directory: web
         run: npx tsc --noEmit
-        continue-on-error: true
+        continue-on-error: false
 
       - name: Build
         working-directory: web

@@ -104,7 +104,7 @@ class User(Base):
     created_at:          Mapped[datetime]       = mapped_column(DateTime, server_default=func.now())
     tenant:         Mapped["Tenant"]              = relationship("Tenant", back_populates="users")
     refresh_tokens: Mapped[List["RefreshToken"]]  = relationship("RefreshToken", back_populates="user")
-    api_keys:       Mapped[List["ApiKey"]]        = relationship("ApiKey", back_populates="created_by_user", foreign_keys="ApiKey.created_by")
+    api_keys:       Mapped[List["ApiKey"]]        = relationship("ApiKey", back_populates="created_by_user", primaryjoin="ApiKey.created_by==User.id", foreign_keys="[ApiKey.created_by]")
 
 
 class RefreshToken(Base):

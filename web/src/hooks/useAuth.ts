@@ -19,7 +19,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useAuthStore } from "@/stores/authStore";
-import { api, resetApiClient } from "@/lib/api";
+import { api, getApiClient, resetApiClient } from "@/lib/api";
 import axios from "axios";
 
 const API_BASE = import.meta.env.VITE_API_URL
@@ -178,7 +178,7 @@ export function useAuth() {
   // ── Logout all devices ────────────────────────────────────────────────────
   const logoutAll = useCallback(async () => {
     try {
-      await api.getApiClient().post("/auth/logout-all");
+      await getApiClient().post("/auth/logout-all");
     } catch {
       // Continue anyway
     }

@@ -1,12 +1,11 @@
 """
 Test configuration and shared fixtures.
-All tests use an isolated test database with RLS policies active.
+Compatible with pytest-asyncio 0.24+ (asyncio_mode=auto).
 """
 import asyncio
 import hashlib
 import secrets
 import uuid
-from datetime import datetime, timedelta, timezone
 from typing import AsyncGenerator
 
 import pytest
@@ -15,22 +14,13 @@ from httpx import AsyncClient, ASGITransport
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.db.database import AsyncSessionLocal, engine, Base, init_db
-from app.db.models import Tenant, User, RefreshToken, ApiKey
+from app.db.database import AsyncSessionLocal, init_db
+from app.db.models import Tenant, User, ApiKey
 from app.api.v1.endpoints.auth import pwd_ctx
-from app.services.auth_service import create_access_token, create_refresh_token
+from app.services.auth_service import create_access_token
 
 
-# ── Event loop (session-scoped) ───────────────────────────────────────────────
-
-@pytest.fixture(scope="session")
-def event_loop():
-    loop = asyncio.new_event_loop()
-    yield loop
-    loop.close()
-
-
-# ── Database setup ────────────────────────────────────────────────────────────
+# ── Database setup (runs once per test session) ───────────────────────────────
 
 @pytest_asyncio.fixture(scope="session", autouse=True)
 async def setup_database():
@@ -39,20 +29,18 @@ async def setup_database():
     yield
 
 
+# ── Database session per test ─────────────────────────────────────────────────
+
 @pytest_asyncio.fixture
 async def db() -> AsyncGenerator[AsyncSession, None]:
-    """
-    Test database session with RLS bypass for test fixture setup.
-    Each test gets a clean transaction that is rolled back after.
-    """
+    """Test database session with RLS bypassed for fixture setup."""
     async with AsyncSessionLocal() as session:
-        # Bypass RLS for test fixtures
         await session.execute(text("SELECT set_config('app.bypass_rls', 'on', TRUE)"))
         yield session
         await session.rollback()
 
 
-# ── Shared test factories ─────────────────────────────────────────────────────
+# ── Tenant fixtures ───────────────────────────────────────────────────────────
 
 @pytest_asyncio.fixture
 async def tenant(db: AsyncSession) -> Tenant:
@@ -69,6 +57,23 @@ async def tenant(db: AsyncSession) -> Tenant:
     await db.flush()
     return t
 
+
+@pytest_asyncio.fixture
+async def second_tenant(db: AsyncSession) -> Tenant:
+    """A second tenant for cross-tenant isolation tests."""
+    t = Tenant(
+        name=f"Other Co {uuid.uuid4().hex[:6]}",
+        slug=f"other-{uuid.uuid4().hex[:8]}",
+        license_key=secrets.token_urlsafe(32),
+        allowed_jurisdictions=[],
+        allowed_domains=[],
+    )
+    db.add(t)
+    await db.flush()
+    return t
+
+
+# ── User fixtures ─────────────────────────────────────────────────────────────
 
 @pytest_asyncio.fixture
 async def admin_user(db: AsyncSession, tenant: Tenant) -> User:
@@ -90,7 +95,7 @@ async def admin_user(db: AsyncSession, tenant: Tenant) -> User:
 
 @pytest_asyncio.fixture
 async def regular_user(db: AsyncSession, tenant: Tenant) -> User:
-    """Create a regular user in the test tenant."""
+    """Create a regular (non-admin) user."""
     email = f"user-{uuid.uuid4().hex[:8]}@test.com"
     u = User(
         tenant_id=tenant.id,
@@ -107,23 +112,8 @@ async def regular_user(db: AsyncSession, tenant: Tenant) -> User:
 
 
 @pytest_asyncio.fixture
-async def second_tenant(db: AsyncSession) -> Tenant:
-    """A second tenant — for cross-tenant isolation tests."""
-    t = Tenant(
-        name=f"Other Co {uuid.uuid4().hex[:6]}",
-        slug=f"other-{uuid.uuid4().hex[:8]}",
-        license_key=secrets.token_urlsafe(32),
-        allowed_jurisdictions=[],
-        allowed_domains=[],
-    )
-    db.add(t)
-    await db.flush()
-    return t
-
-
-@pytest_asyncio.fixture
 async def second_tenant_user(db: AsyncSession, second_tenant: Tenant) -> User:
-    """User in the second tenant."""
+    """User in the second tenant for isolation tests."""
     email = f"other-{uuid.uuid4().hex[:8]}@other.com"
     u = User(
         tenant_id=second_tenant.id,
@@ -139,11 +129,10 @@ async def second_tenant_user(db: AsyncSession, second_tenant: Tenant) -> User:
     return u
 
 
-# ── Auth helpers ──────────────────────────────────────────────────────────────
+# ── Token fixtures ────────────────────────────────────────────────────────────
 
 @pytest.fixture
 def admin_token(admin_user: User, tenant: Tenant) -> str:
-    """JWT access token for the admin user."""
     return create_access_token(
         user_id=str(admin_user.id),
         tenant_id=str(tenant.id),
@@ -154,7 +143,6 @@ def admin_token(admin_user: User, tenant: Tenant) -> str:
 
 @pytest.fixture
 def user_token(regular_user: User, tenant: Tenant) -> str:
-    """JWT access token for the regular user."""
     return create_access_token(
         user_id=str(regular_user.id),
         tenant_id=str(tenant.id),
@@ -165,7 +153,6 @@ def user_token(regular_user: User, tenant: Tenant) -> str:
 
 @pytest.fixture
 def second_tenant_token(second_tenant_user: User, second_tenant: Tenant) -> str:
-    """JWT for a user in a different tenant."""
     return create_access_token(
         user_id=str(second_tenant_user.id),
         tenant_id=str(second_tenant.id),
@@ -193,7 +180,7 @@ def other_tenant_headers(second_tenant_token: str) -> dict:
 
 @pytest_asyncio.fixture
 async def client() -> AsyncGenerator[AsyncClient, None]:
-    """Async HTTP client pointed at the ASGI app."""
+    """Async HTTP test client."""
     from app.main import app
     async with AsyncClient(
         transport=ASGITransport(app=app),
@@ -206,7 +193,7 @@ async def client() -> AsyncGenerator[AsyncClient, None]:
 # ── API key fixture ───────────────────────────────────────────────────────────
 
 @pytest_asyncio.fixture
-async def api_key(db: AsyncSession, admin_user: User, tenant: Tenant) -> tuple[str, ApiKey]:
+async def api_key(db: AsyncSession, admin_user: User, tenant: Tenant):
     """Create a test API key. Returns (raw_key, ApiKey model)."""
     raw, prefix, key_hash = ApiKey.generate_key("test")
     ak = ApiKey(
