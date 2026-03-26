@@ -1,0 +1,14 @@
+{
+  "tenant_slug": "acme-pharma",
+  "app_name": "ACME Regulatory Intelligence",
+  "app_id": "com.acmepharma.regulai",
+  "api_url": "https://api.acmepharma-regulai.com",
+  "s3_bucket": "acme-pharma-regulai-updates",
+  "allowed_jurisdictions": ["india", "usa", "eu"],
+  "allowed_domains": ["pharma", "device"],
+  "branding": {
+    "primary_color": "#0055A5",
+    "accent_color": "#00A86B",
+    "logo": "acme-logo.png"
+  }
+}

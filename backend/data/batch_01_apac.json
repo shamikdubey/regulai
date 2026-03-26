@@ -1,0 +1,349 @@
+{
+  "regulatory_bodies": [
+    {"acronym":"TFDA-TW","name":"Taiwan Food and Drug Administration","jurisdiction":"taiwan","domains":["pharma","food","device","nutra"],"established_year":2010,"website":"https://www.fda.gov.tw","description":"Regulates food, drugs, medical devices and cosmetics in Taiwan under the Food Safety and Sanitation Act and Pharmaceutical Affairs Act. Strong alignment with ICH, ISO 13485, and Codex."},
+    {"acronym":"CFS-HK","name":"Centre for Food Safety Hong Kong","jurisdiction":"hong_kong","domains":["food","nutra"],"established_year":2006,"website":"https://www.cfs.gov.hk","description":"HKSAR Department of Health Centre for Food Safety enforces the Public Health and Municipal Services Ordinance (Cap. 132) for food safety."},
+    {"acronym":"PHB-HK","name":"Pharmacy and Poisons Board Hong Kong","jurisdiction":"hong_kong","domains":["pharma","device"],"established_year":1978,"website":"https://www.pphb.org.hk","description":"Regulates pharmaceuticals and medical devices under the Pharmacy and Poisons Ordinance (Cap. 138). Hong Kong largely follows UK/EU pharmaceutical standards."},
+    {"acronym":"MPI-NZ","name":"Ministry for Primary Industries New Zealand","jurisdiction":"new_zealand","domains":["food"],"established_year":2012,"website":"https://www.mpi.govt.nz","description":"Co-regulates food safety with Medsafe. FSANZ standards apply jointly with Australia under the joint food standards system."},
+    {"acronym":"Medsafe-NZ","name":"Medsafe New Zealand","jurisdiction":"new_zealand","domains":["pharma","device","nutra"],"established_year":1994,"website":"https://www.medsafe.govt.nz","description":"New Zealand Medicines and Medical Devices Safety Authority. Regulates under the Medicines Act 1981. Closely aligned with TGA Australia."},
+    {"acronym":"SMFA","name":"State Medicine and Food Authority Myanmar","jurisdiction":"myanmar","domains":["pharma","food","device"],"established_year":2018,"website":"https://www.mohs.gov.mm","description":"Myanmar's food and medicine regulator. Regulations align partially with ASEAN harmonisation framework. The Myanmar Food and Drug Law 1992 governs pharmaceuticals."},
+    {"acronym":"FDA-KH","name":"General Department of Drug and Food Cambodia","jurisdiction":"cambodia","domains":["pharma","food","device"],"established_year":2000,"website":"https://www.maff.gov.kh","description":"Cambodia's pharmaceutical and food regulatory authority under the Ministry of Health. Licensing aligned with ASEAN framework."},
+    {"acronym":"FDDCA-LA","name":"Food and Drug Department Lao PDR","jurisdiction":"laos","domains":["pharma","food","device"],"established_year":2003,"website":"https://www.moh.gov.la","description":"Lao PDR's food and drug department regulates pharmaceuticals, food, and medical devices. ASEAN harmonisation applies."},
+    {"acronym":"AMBD-BN","name":"Autoriti Monetari Brunei Darussalam — Health Sciences Authority","jurisdiction":"brunei","domains":["pharma","food","device"],"established_year":2006,"website":"https://www.moh.gov.bn","description":"Brunei's pharmaceutical and food regulatory authority. Strong Halal compliance framework. ASEAN harmonisation applies."},
+    {"acronym":"DOH-MM","name":"Department of Traditional Medicine Myanmar","jurisdiction":"myanmar","domains":["ayurveda"],"established_year":1989,"website":"https://www.mohs.gov.mm","description":"Regulates traditional and herbal medicines in Myanmar, building on a rich tradition of Burmese traditional medicine (Beikthano system)."}
+  ],
+  "licensing_pathways": [
+    {
+      "jurisdiction": "taiwan",
+      "product_type": "nutraceutical",
+      "product_subtype": "health_food",
+      "license_type": "Health Food Approval (健康食品查驗登記) or Generic Health Food Notification",
+      "competent_authority": "TFDA (Taiwan Food and Drug Administration)",
+      "application_portal": "https://www.fda.gov.tw/tc/siteListContent.aspx?sid=3&mid=8",
+      "complexity": "HIGH",
+      "pathway_steps": [
+        "1. Determine product pathway: Track 1 (scientific evidence — longer, more rigorous) or Track 2 (ingredient from TFDA's approved health claim list — faster)",
+        "2. Track 2 (Generic Health Food): ingredient must be on TFDA's established health claim positive list (e.g. probiotics, plant sterols, DHA, glucosamine)",
+        "3. Prepare specification dossier, safety data, and efficacy evidence",
+        "4. Submit Health Food Application via TFDA online system",
+        "5. TFDA review and expert committee evaluation",
+        "6. Receive Health Food Permit (健康食品許可證)",
+        "7. Chinese-language label showing approved health claim exactly as worded by TFDA",
+        "8. For imports: Taiwanese importer registration mandatory"
+      ],
+      "prerequisites": ["Taiwanese importer or local entity", "GMP-certified manufacturer", "Scientific evidence for health claims", "Chinese-language label"],
+      "documents_required": ["Health Food application form", "Formulation and specifications", "Safety assessment", "Efficacy study data", "Label draft (Chinese)", "GMP certificate", "Free Sale Certificate"],
+      "fees": {"Health Food Application": "TWD 8,000–30,000"},
+      "typical_timeline_months": "Track 1: 12–24 months; Track 2: 6–12 months",
+      "fast_track_available": true,
+      "fast_track_details": "Track 2 (Generic Health Food) for established ingredients with approved claims is significantly faster than Track 1.",
+      "gmp_requirements": {"standard": "Taiwan GMP for Health Foods (健康食品良好製造規範)", "overseas": "Overseas GMP equivalent accepted with TFDA review"},
+      "renewal_period_years": 5,
+      "renewal_requirements": ["Apply before expiry", "Submit updated safety and stability data"],
+      "post_approval_obligations": ["Adverse event reporting to TFDA", "Post-market surveillance", "Annual GMP compliance"],
+      "reference_regulation": "Health Food Control Act (健康食品管理法) 1999 (amended 2021); TFDA Health Food Registration Guidelines",
+      "notes": "Taiwan's Health Food Act is unique — it creates a formal 'Health Food' (健康食品) category distinct from regular food. Only products with TFDA approval can use the 'Health Food' designation. Claims are strictly limited to TFDA-approved language."
+    },
+    {
+      "jurisdiction": "hong_kong",
+      "product_type": "nutraceutical",
+      "product_subtype": "health_supplement",
+      "license_type": "No pre-market approval — Compliance-based (similar to Singapore model)",
+      "competent_authority": "Centre for Food Safety (CFS), Department of Health HKSAR",
+      "application_portal": "https://www.cfs.gov.hk",
+      "complexity": "LOW",
+      "pathway_steps": [
+        "1. Verify product complies with Public Health and Municipal Services Ordinance (Cap. 132)",
+        "2. Ensure all ingredients comply with Hong Kong's food additive and novel food rules",
+        "3. No pre-market notification required for standard food supplements",
+        "4. Label must comply with Food and Drugs (Composition and Labelling) Regulations (Cap. 132W)",
+        "5. For pharmaceuticals: register with Pharmacy and Poisons Board (PPB) — separate process",
+        "6. Import and sell — CFS conducts post-market surveillance",
+        "7. For drug claims on supplements: triggers PPB pharmaceutical registration"
+      ],
+      "prerequisites": ["Compliant formulation under HK food law", "Label in English and/or Chinese", "No disease claims (triggers pharmaceutical regulation)"],
+      "documents_required": ["No pre-market submission required; maintain CoA, formulation records internally"],
+      "fees": {"Pre-market": "None"},
+      "typical_timeline_months": "0 months (immediate market entry for compliant products)",
+      "fast_track_available": true,
+      "fast_track_details": "Hong Kong is one of the most open markets for health supplements in Asia — no pre-market approval needed.",
+      "gmp_requirements": {"standard": "GMP compliance expected but not pre-verified for supplements"},
+      "renewal_period_years": null,
+      "renewal_requirements": ["No fixed renewal"],
+      "post_approval_obligations": ["Respond to CFS market surveillance queries", "Recall non-compliant products on CFS notice"],
+      "reference_regulation": "Public Health and Municipal Services Ordinance (Cap. 132); Food and Drugs (Composition and Labelling) Regulations (Cap. 132W)",
+      "notes": "Hong Kong's open regulatory environment makes it attractive for market entry. However, Chinese traditional medicine (CTM) products are regulated under the Chinese Medicine Ordinance (Cap. 549) by the Chinese Medicine Council — separate and more stringent pathway."
+    },
+    {
+      "jurisdiction": "new_zealand",
+      "product_type": "nutraceutical",
+      "product_subtype": "dietary_supplement",
+      "license_type": "Dietary Supplement — Notification or Therapeutic Products Authorisation (depending on claims)",
+      "competent_authority": "Medsafe (for therapeutic claims); MPI (for food supplements)",
+      "application_portal": "https://www.medsafe.govt.nz",
+      "complexity": "LOW",
+      "pathway_steps": [
+        "1. Classify: Dietary Supplement (Dietary Supplements Regulations 1985) vs Registered Medicine (Medicines Act 1981)",
+        "2. Standard dietary supplements: notify Medsafe via the Dietary Supplement notification system",
+        "3. Ensure ingredients comply with permitted list under Dietary Supplements Regulations",
+        "4. New Zealand and Australia operate joint FSANZ food standards — check FSANZ standards for food-type supplements",
+        "5. Prepare label compliant with Dietary Supplements Regulations 1985",
+        "6. No pre-market approval for standard dietary supplements",
+        "7. For therapeutic product claims: full Medicines Act registration required (align with TGA pathway)"
+      ],
+      "prerequisites": ["Permitted ingredients per Dietary Supplements Regulations 1985", "English-language label", "No therapeutic claims without Medsafe registration"],
+      "documents_required": ["Notification form (if required)", "Label draft", "Formulation (for records)"],
+      "fees": {"Notification": "NZD 300–1,000"},
+      "typical_timeline_months": "0.5–2 months",
+      "fast_track_available": true,
+      "fast_track_details": "Standard dietary supplements with permitted ingredients have near-immediate market entry.",
+      "gmp_requirements": {"standard": "GMP per NZ/AU joint GMP guidelines (aligned with TGA)"},
+      "renewal_period_years": null,
+      "renewal_requirements": ["No fixed renewal for dietary supplements"],
+      "post_approval_obligations": ["Adverse event reporting to Medsafe", "FSANZ joint recall system with Australia"],
+      "reference_regulation": "Dietary Supplements Regulations 1985; Medicines Act 1981; FSANZ Food Standards Code",
+      "notes": "New Zealand is updating its health product regulatory framework — a new Therapeutic Products Act has been in development. The relationship with FSANZ (joint AU/NZ food standards body) means many food-type supplements follow Australia's TGA pathway closely."
+    },
+    {
+      "jurisdiction": "pakistan",
+      "product_type": "pharma",
+      "product_subtype": "generic_drug",
+      "license_type": "Drug Registration Certificate — DRAP",
+      "competent_authority": "Drug Regulatory Authority of Pakistan (DRAP)",
+      "application_portal": "https://eportal.dra.gov.pk",
+      "complexity": "HIGH",
+      "pathway_steps": [
+        "1. Classify drug category: Generic (already registered innovator product in reference country), Innovator (first-in-class), or OTC",
+        "2. For generics: prepare pharmaceutical equivalence and bioequivalence (BE) dossier",
+        "3. Register manufacturing site with DRAP — overseas manufacturers require WHO-PQ or reference country GMP certificate",
+        "4. Appoint Pakistani registered agent/importer",
+        "5. Submit dossier via DRAP e-portal (CTD format)",
+        "6. DRAP Expert Committee review",
+        "7. Laboratory testing by DRAP's National Control Laboratory",
+        "8. Pay registration fee",
+        "9. Receive Drug Registration Certificate (DRC)",
+        "10. Label in Urdu and English (bilingual mandatory)"
+      ],
+      "prerequisites": ["Pakistani registered agent", "WHO-PQ or reference country GMP certificate", "CTD-format dossier", "BE study (for generics)"],
+      "documents_required": ["CTD Modules 1–5", "BE study report", "Manufacturing site GMP certificate", "Free Sale Certificate", "Label (Urdu + English)", "Pakistani agent authorization"],
+      "fees": {"Drug Registration": "PKR 50,000–500,000 depending on category"},
+      "typical_timeline_months": "12–36 months",
+      "fast_track_available": true,
+      "fast_track_details": "Fast-track for WHO-prequalified products and drugs for serious diseases. DRAP also has an expedited track for public health emergency products.",
+      "gmp_requirements": {"standard": "WHO-GMP or GMP equivalent from reference regulatory authority (FDA, EMA, TGA, HC)", "inspection": "DRAP conducts overseas factory inspections for new applicants"},
+      "renewal_period_years": 5,
+      "renewal_requirements": ["Apply before expiry", "Updated safety data", "GMP renewal"],
+      "post_approval_obligations": ["Pharmacovigilance reporting to DRAP", "Annual product quality review", "Comply with post-marketing surveillance"],
+      "reference_regulation": "Drug Regulatory Authority of Pakistan Act 2012; Drugs Act 1976; DRAP Drug Registration Regulations 2017",
+      "notes": "Pakistan is one of the largest pharmaceutical markets in South Asia. DRAP is strengthening its regulatory framework with CTD requirements and WHO-GMP alignment. The Pakistan-India regulatory relationship is complex — Indian products face additional scrutiny."
+    },
+    {
+      "jurisdiction": "bangladesh",
+      "product_type": "pharma",
+      "product_subtype": "generic_drug",
+      "license_type": "Drug Marketing Authorization — DGDA",
+      "competent_authority": "Directorate General of Drug Administration (DGDA)",
+      "application_portal": "https://www.dgda.gov.bd",
+      "complexity": "HIGH",
+      "pathway_steps": [
+        "1. Determine if drug is on Bangladesh National Formulary (BNF) essential medicines list",
+        "2. Appoint Bangladesh registered agent",
+        "3. Prepare CTD-format dossier (Bangladesh adopts CTD structure)",
+        "4. For generics: bioequivalence or pharmaceutical equivalence data required",
+        "5. Submit application to DGDA",
+        "6. DGDA Technical Committee review",
+        "7. Laboratory testing by DGDA's National Control Laboratory",
+        "8. Facility inspection (overseas GMP certificate may substitute)",
+        "9. Receive Marketing Authorization",
+        "10. Bangladeshi label in Bengali and English"
+      ],
+      "prerequisites": ["Bangladeshi agent", "CTD dossier", "GMP certificate (WHO-PQ preferred)", "BE or PE data"],
+      "documents_required": ["DGDA application form", "CTD Modules", "GMP certificate", "Free Sale Certificate", "Label draft (Bengali + English)"],
+      "fees": {"Marketing Authorization": "BDT 10,000–100,000"},
+      "typical_timeline_months": "18–36 months",
+      "fast_track_available": false,
+      "gmp_requirements": {"standard": "WHO-GMP required for imported products"},
+      "renewal_period_years": 5,
+      "renewal_requirements": ["Apply before expiry", "Updated safety data"],
+      "post_approval_obligations": ["ADR reporting to DGDA", "Annual quality report"],
+      "reference_regulation": "Drugs Act 1940 (Bangladesh amendment); DGDA Drug Registration Rules",
+      "notes": "Bangladesh has a substantial domestic pharmaceutical manufacturing sector. Import registration is more difficult than domestic registration. Bangladesh National Medicines Policy prioritises essential medicines and restricts luxury/non-essential drug imports."
+    },
+    {
+      "jurisdiction": "sri_lanka",
+      "product_type": "pharma",
+      "product_subtype": "generic_drug",
+      "license_type": "Product Registration Certificate — NMRA",
+      "competent_authority": "National Medicines Regulatory Authority (NMRA)",
+      "application_portal": "https://www.nmra.gov.lk",
+      "complexity": "HIGH",
+      "pathway_steps": [
+        "1. Classify product category under NMRA Act No. 5 of 2015",
+        "2. Appoint Sri Lankan registered agent",
+        "3. Prepare CTD dossier",
+        "4. Submit registration application to NMRA",
+        "5. NMRA Scientific Review Committee evaluation",
+        "6. GMP assessment (WHO-PQ or equivalent)",
+        "7. Receive Product Registration Certificate",
+        "8. Sinhala/Tamil bilingual labeling required"
+      ],
+      "prerequisites": ["Sri Lankan agent", "CTD dossier", "WHO-GMP or equivalent certificate", "Free Sale Certificate"],
+      "documents_required": ["NMRA application form", "CTD", "GMP certificate", "Free Sale Certificate", "Label (Sinhala/Tamil/English)"],
+      "fees": {"Product Registration": "LKR 10,000–100,000"},
+      "typical_timeline_months": "12–24 months",
+      "fast_track_available": false,
+      "gmp_requirements": {"standard": "WHO-GMP required"},
+      "renewal_period_years": 5,
+      "renewal_requirements": ["Apply 6 months before expiry"],
+      "post_approval_obligations": ["ADR reporting to NMRA", "Annual quality report", "Comply with post-market surveillance"],
+      "reference_regulation": "National Medicines Regulatory Authority Act No. 5 of 2015; Cosmetics Devices and Drugs Act No. 27 of 1980 (superseded)",
+      "notes": "Sri Lanka is strengthening its regulatory framework under the NMRA Act 2015 which consolidated all medicines and device regulation. The NMRA has been implementing CTD requirements progressively."
+    }
+  ],
+  "allowable_limits": [
+    {"substance":"Lead (Pb)","substance_aliases":["Lead"],"cas_number":"7439-92-1","ins_number":null,"limit_type":"contaminant","category":"heavy_metal","food_matrix":"Rice (polished)","jurisdiction":"taiwan","limit_value":"0.2","limit_unit":"mg/kg","adi_tdi":"No safe level","regulatory_basis":"Taiwan Food Safety and Sanitation Act — Contaminants Standards","notes":"Taiwan TFDA sets heavy metal limits largely aligned with Codex but with some stricter values for rice due to local consumption patterns."},
+    {"substance":"Lead (Pb)","substance_aliases":["Lead"],"cas_number":"7439-92-1","ins_number":null,"limit_type":"contaminant","category":"heavy_metal","food_matrix":"Fish and fishery products","jurisdiction":"hong_kong","limit_value":"0.5","limit_unit":"mg/kg","adi_tdi":"No safe level","regulatory_basis":"Hong Kong Public Health and Municipal Services Ordinance Cap. 132 — Food Adulteration Regulations","notes":"Hong Kong enforces Codex-aligned limits. CFS conducts regular surveillance of heavy metals in food, especially seafood."},
+    {"substance":"Aflatoxin B1","substance_aliases":["AFB1"],"cas_number":"1162-65-8","ins_number":null,"limit_type":"contaminant","category":"mycotoxin","food_matrix":"Peanuts and peanut products","jurisdiction":"taiwan","limit_value":"10","limit_unit":"μg/kg","adi_tdi":"No safe threshold","regulatory_basis":"Taiwan TFDA — Mycotoxin Standards in Foods","notes":"Taiwan's mycotoxin limits closely follow Codex. TFDA issues updated mycotoxin limits through public notices."},
+    {"substance":"Aflatoxin B1","substance_aliases":["AFB1"],"cas_number":"1162-65-8","ins_number":null,"limit_type":"contaminant","category":"mycotoxin","food_matrix":"Peanuts and nuts","jurisdiction":"new_zealand","limit_value":"10","limit_unit":"μg/kg","adi_tdi":"No safe threshold","regulatory_basis":"Australia New Zealand Food Standards Code — Standard 1.4.1 Contaminants and Natural Toxicants","notes":"New Zealand applies FSANZ Food Standards Code jointly with Australia. FSANZ Standard 1.4.1 sets maximum levels for contaminants including aflatoxins."},
+    {"substance":"Sodium Benzoate","substance_aliases":["E211","INS 211"],"cas_number":"532-32-1","ins_number":"211","limit_type":"additive","category":"preservative","food_matrix":"Non-alcoholic beverages","jurisdiction":"taiwan","limit_value":"1000","limit_unit":"mg/kg","adi_tdi":"ADI 0–5 mg/kg bw","regulatory_basis":"Taiwan TFDA — Food Additive Use Standards","notes":"Taiwan follows Codex GSFA additive limits. TFDA food additives list is comprehensive and regularly updated."},
+    {"substance":"Sodium Benzoate","substance_aliases":["E211","INS 211"],"cas_number":"532-32-1","ins_number":"211","limit_type":"additive","category":"preservative","food_matrix":"Soft drinks and beverages","jurisdiction":"hong_kong","limit_value":"1000","limit_unit":"mg/kg","adi_tdi":"ADI 0–5 mg/kg bw","regulatory_basis":"Hong Kong Preservatives in Food Regulations (Cap. 132BD)","notes":"Hong Kong preservative regulations permit sodium benzoate at Codex-aligned levels. Expressed as benzoic acid equivalent."},
+    {"substance":"Sodium Benzoate","substance_aliases":["E211","INS 211"],"cas_number":"532-32-1","ins_number":"211","limit_type":"additive","category":"preservative","food_matrix":"Non-alcoholic beverages","jurisdiction":"new_zealand","limit_value":"400","limit_unit":"mg/kg","adi_tdi":"ADI 0–5 mg/kg bw","regulatory_basis":"FSANZ Food Standards Code — Standard 1.3.1 Food Additives","notes":"New Zealand applies FSANZ Code jointly with Australia. Standard 1.3.1 sets additive limits; NZ and Australia share a single food standards code."},
+    {"substance":"Tartrazine","substance_aliases":["E102","INS 102"],"cas_number":"1934-21-0","ins_number":"102","limit_type":"additive","category":"colour","food_matrix":"Confectionery and beverages","jurisdiction":"taiwan","limit_value":"100","limit_unit":"mg/kg","adi_tdi":"ADI 0–7.5 mg/kg bw","regulatory_basis":"Taiwan TFDA — Food Colouring Use Standards","notes":"Taiwan permits tartrazine but mandates declaration by name on label. Consumer awareness of colour additives is high in Taiwan."},
+    {"substance":"Salmonella spp.","substance_aliases":["Salmonella"],"cas_number":null,"ins_number":null,"limit_type":"microbiological","category":"pathogen","food_matrix":"Ready-to-eat foods","jurisdiction":"taiwan","limit_value":"Absent","limit_unit":"per 25g","adi_tdi":null,"regulatory_basis":"Taiwan TFDA — Microbiological Limits for Food","notes":"Taiwan applies zero tolerance for Salmonella in RTE foods. TFDA conducts active port surveillance testing of imported foods."},
+    {"substance":"Salmonella spp.","substance_aliases":["Salmonella"],"cas_number":null,"ins_number":null,"limit_type":"microbiological","category":"pathogen","food_matrix":"All ready-to-eat foods","jurisdiction":"new_zealand","limit_value":"Absent","limit_unit":"per 25g","adi_tdi":null,"regulatory_basis":"FSANZ Food Standards Code — Standard 1.6.1 Microbiological Limits for Foods","notes":"New Zealand applies FSANZ microbiological standards jointly with Australia. Zero tolerance for Salmonella in RTE foods."},
+    {"substance":"Total Aerobic Plate Count","substance_aliases":["TPC","TAMC"],"cas_number":null,"ins_number":null,"limit_type":"microbiological","category":"indicator","food_matrix":"Dietary supplements (oral)","jurisdiction":"new_zealand","limit_value":"10000","limit_unit":"CFU/g","adi_tdi":null,"regulatory_basis":"Medsafe — Dietary Supplements Regulations 1985 microbial limits; TGA GMP guidelines (by alignment)","notes":"New Zealand dietary supplement microbial limits align with TGA Australia GMP guidelines."},
+    {"substance":"Vitamin C","substance_aliases":["Ascorbic acid"],"cas_number":"50-81-7","ins_number":"300","limit_type":"nutrient_rv","category":"vitamin","food_matrix":"Daily intake reference (labelling)","jurisdiction":"taiwan","limit_value":"100","limit_unit":"mg/day","adi_tdi":null,"regulatory_basis":"TFDA — Nutrient Reference Values for Food Labelling","notes":"Taiwan NRV: Vitamin C 100 mg/day. Label format per TFDA food labelling standards."},
+    {"substance":"Sodium","substance_aliases":["Sodium","Na"],"cas_number":"7440-23-5","ins_number":null,"limit_type":"nutrient_rv","category":"mineral","food_matrix":"Daily intake reference (labelling)","jurisdiction":"taiwan","limit_value":"2400","limit_unit":"mg/day","adi_tdi":null,"regulatory_basis":"TFDA Nutrient Reference Values","notes":"Taiwan DRV for sodium: 2400 mg/day. High-sodium labeling threshold under TFDA standards."},
+    {"substance":"Sodium","substance_aliases":["Sodium","Na"],"cas_number":"7440-23-5","ins_number":null,"limit_type":"nutrient_rv","category":"mineral","food_matrix":"Daily intake reference (labelling)","jurisdiction":"new_zealand","limit_value":"2000","limit_unit":"mg/day","adi_tdi":null,"regulatory_basis":"FSANZ Food Standards Code — Standard 1.2.8 Nutrition Information Requirements","notes":"New Zealand NRV: sodium 2000 mg/day per FSANZ Code. Aligns with Australian values."},
+    {"substance":"Mercury (Total Hg)","substance_aliases":["Mercury"],"cas_number":"7439-97-6","ins_number":null,"limit_type":"contaminant","category":"heavy_metal","food_matrix":"Fish (predatory species)","jurisdiction":"new_zealand","limit_value":"1.0","limit_unit":"mg/kg","adi_tdi":"PTWI 4 μg/kg bw methylmercury","regulatory_basis":"FSANZ Food Standards Code — Standard 1.4.1","notes":"New Zealand applies FSANZ mercury limits for fish. NZ is a major fish-consuming country; fishing industry compliance is critical."},
+    {"substance":"Glyphosate","substance_aliases":["Roundup active"],"cas_number":"1071-83-6","ins_number":null,"limit_type":"pesticide","category":"herbicide","food_matrix":"Wheat (grain)","jurisdiction":"new_zealand","limit_value":"10","limit_unit":"mg/kg","adi_tdi":"ADI 1 mg/kg bw/day (EPA NZ 2016)","regulatory_basis":"FSANZ Food Standards Code — Standard 1.4.2 MRLs (by reference to NZ/AU agricultural chemicals MRLs)","notes":"New Zealand MRLs for pesticides are set by FSANZ and cross-referenced with AgriChemical New Zealand (ACNZ). NZ aligns with Codex for most MRLs."}
+  ],
+  "labeling_requirements": [
+    {
+      "jurisdiction": "taiwan",
+      "product_type": "packaged_food",
+      "regulatory_basis": "Food Safety and Sanitation Act (食品安全衛生管理法) 2014 (amended 2022); TFDA Food Labelling Standards",
+      "competent_authority": "TFDA (Taiwan Food and Drug Administration)",
+      "mandatory_fields": [
+        "Product name (品名)",
+        "Ingredients list (原料名稱) — descending order by weight",
+        "Additives by function and name (食品添加物名稱)",
+        "Net weight or volume (淨重/容量)",
+        "Name, telephone and address of manufacturer (製造廠商)",
+        "Name and address of importer for imported products (進口商)",
+        "Country of origin (原產地/製造國)",
+        "Expiry date (有效日期) or best before (保存期限)",
+        "Storage conditions (保存方式)",
+        "Nutrition labelling (營養標示) — mandatory since 2015",
+        "Allergen declaration — 11 mandatory allergens",
+        "Chinese Traditional script mandatory for all required declarations"
+      ],
+      "nutrition_declaration": {
+        "mandatory_nutrients": ["熱量 Energy (kcal)", "蛋白質 Protein (g)", "脂肪 Fat (g)", "飽和脂肪 Saturated fat (g)", "反式脂肪 Trans fat (g)", "碳水化合物 Carbohydrate (g)", "糖 Sugars (g)", "鈉 Sodium (mg)"],
+        "per_100g_required": true,
+        "per_serving_required": true,
+        "format": "Per serving AND per 100g (or 100mL). % Daily Value based on TFDA NRVs. Table format mandatory. Cholesterol listed if cholesterol claim made.",
+        "nrv_reference": "TFDA Nutrient Reference Values (NRVs)",
+        "added_sugar_required": false
+      },
+      "allergen_rules": {
+        "top_allergens": ["Shrimp (蝦)", "Crab (蟹)", "Shellfish (貝類)", "Fish (魚類)", "Eggs (蛋)", "Milk (奶)", "Peanuts (花生)", "Tree nuts (堅果)", "Soybeans (大豆)", "Wheat (小麥)", "Sesame (芝麻)"],
+        "declaration_method": "Must be declared in ingredient list in bold or contrasting colour. '本產品含有...' (This product contains...) statement recommended.",
+        "regulatory_basis": "TFDA Food Labelling Standards — Allergen Declaration Requirements (2020 update)",
+        "note": "Taiwan has 11 mandatory allergens. Sesame added as mandatory in 2020 update."
+      },
+      "weights_measures": {
+        "net_weight_position": "Front or information panel",
+        "weight_units": "SI metric units mandatory",
+        "regulatory_basis": "Weights and Measures Act; TFDA Food Labelling Standards"
+      },
+      "language_requirements": {
+        "mandatory_language": "Traditional Chinese (繁體中文) mandatory",
+        "additional_languages": "Other languages may appear alongside Chinese",
+        "note": "Traditional Chinese characters (not Simplified) are required in Taiwan"
+      },
+      "prohibited_claims": [
+        "Disease treatment or cure claims without TFDA authorisation",
+        "Exaggerated or false health claims",
+        "Misleading country of origin claims"
+      ],
+      "claim_rules": {
+        "low_fat": "≤3g per 100g (solid) or ≤1.5g per 100mL",
+        "sugar_free": "<0.5g per 100g/100mL",
+        "low_sodium": "≤120mg per 100g",
+        "organic": "MOA (Ministry of Agriculture) organic certification; Taiwan Organic label"
+      },
+      "special_requirements": [
+        "GMO labeling mandatory for products containing >3% GM ingredients in top 3 ingredients",
+        "Food irradiation: radura symbol mandatory",
+        "Traditional Chinese characters mandatory — Simplified Chinese insufficient",
+        "Products sold via e-commerce: full labeling information must be displayed on product page",
+        "Allergen cross-contact: '本產品製造工廠亦生產含有...之食品' statement if applicable"
+      ],
+      "enforcement_notes": "TFDA conducts regular market surveillance. Fines under the Food Safety and Sanitation Act can reach NTD 3 million (approx USD 95,000) for serious labelling violations. Import examination at ports screens for label compliance."
+    },
+    {
+      "jurisdiction": "new_zealand",
+      "product_type": "packaged_food",
+      "regulatory_basis": "FSANZ Food Standards Code (jointly with Australia) — Standard 1.2 Labelling and Other Information Requirements",
+      "competent_authority": "Food Standards Australia New Zealand (FSANZ); MPI for enforcement",
+      "mandatory_fields": [
+        "Name or description of the food",
+        "Lot identification",
+        "Name and address of supplier in Australia or New Zealand",
+        "Country of origin (for most foods)",
+        "Ingredient list (descending order by weight ingoing)",
+        "Date marking (use-by or best-before)",
+        "Directions for use and storage (where necessary)",
+        "Nutrition Information Panel (NIP)",
+        "Warning statements (alcohol ≥1.15% ABV; added caffeine; other as required)",
+        "Advisory statements (e.g. phenylalanine for aspartame, bee pollen)",
+        "Percentage labelling (QUID) for characterising ingredients"
+      ],
+      "nutrition_declaration": {
+        "mandatory_nutrients": ["Energy (kJ and kcal)", "Protein (g)", "Fat, total (g)", "Saturated fatty acids (g)", "Carbohydrate (g)", "Sugars (g)", "Sodium (mg)"],
+        "per_100g_required": true,
+        "per_serving_required": true,
+        "format": "Per serving AND per 100g/100mL. Energy in kJ (primary) and kcal. Same format as Australia — FSANZ joint standard. NZ uses same NIP format as Australia.",
+        "nrv_reference": "FSANZ Nutrient Reference Values (aligned with NHMRC/MoH Australia and NZ)",
+        "added_sugar_required": false,
+        "note": "New Zealand shares the FSANZ Food Standards Code with Australia — same NIP format, same requirements."
+      },
+      "allergen_rules": {
+        "top_allergens": ["Cereals containing gluten (wheat, rye, barley, oats)", "Crustacea and products", "Egg and egg products", "Fish and fish products", "Milk and milk products", "Tree nuts and sesame seeds", "Peanuts and soybeans", "Lupin", "Bee products (advisory)"],
+        "declaration_method": "Must appear in ingredient list in bold or capital letters. 'Contains:' statement recommended.",
+        "regulatory_basis": "FSANZ Food Standards Code — Standard 1.2.3 Mandatory Warning and Advisory Statements and Declarations",
+        "note": "FSANZ allergen list aligns closely with Codex guidelines. Royal jelly/bee products require advisory statement."
+      },
+      "weights_measures": {
+        "net_weight_position": "Prominently on label",
+        "weight_units": "SI metric units mandatory",
+        "regulatory_basis": "Weights and Measures Act 1987 (NZ); FSANZ Code"
+      },
+      "language_requirements": {
+        "mandatory_language": "English (Te Reo Māori may be added)",
+        "note": "NZ shares FSANZ labelling requirements with Australia — same English-language requirements apply"
+      },
+      "prohibited_claims": [
+        "Nutrition claims not permitted under FSANZ Standard 1.2.7",
+        "Health claims not on FSANZ approved list",
+        "Disease claims without Medsafe approval (triggers pharmaceutical regulation)"
+      ],
+      "claim_rules": {
+        "low_fat": "≤3g per 100g or ≤1.5g per 100mL",
+        "low_sodium": "≤120mg per 100g",
+        "sugar_free": "<0.5g per 100g/100mL",
+        "high_fibre": "≥4g per serving and ≥2g per 100 kJ",
+        "organic": "AsureQuality or BioGro NZ organic certification"
+      },
+      "special_requirements": [
+        "Country of Origin labeling for fresh food: mandatory under country of origin labelling provisions",
+        "Alcohol warning statement mandatory for beverages >1.15% ABV",
+        "GM food labeling: mandatory if novel DNA or novel protein present in final food (>1% GM threshold)",
+        "Seafood country of origin: country and fishing method (wild-caught or farmed) required",
+        "FSANZ is updating the Food Standards Code — exporters should monitor for changes",
+        "NZ shares mandatory warning statements with Australia (e.g. phenylalanine/aspartame, guarana)"
+      ],
+      "enforcement_notes": "MPI (Ministry for Primary Industries) enforces food safety and labelling in NZ. Trading Standards (Commerce Commission) handles Fair Trading Act commercial claims. The FSANZ joint standard means Australia and NZ border actions can be coordinated."
+    }
+  ]
+}

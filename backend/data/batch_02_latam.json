@@ -1,0 +1,315 @@
+{
+  "regulatory_bodies": [
+    {"acronym":"ISP-CL","name":"Instituto de Salud Pública de Chile","jurisdiction":"chile","domains":["pharma","device","nutra"],"established_year":1981,"website":"https://www.ispch.cl","description":"Chile's public health institute regulates pharmaceuticals, medical devices, and health products. Issues ISP registrations under the Sanitary Code (DFL No. 725/1967). Strong regional leadership."},
+    {"acronym":"ACHIPIA","name":"Agencia Chilena para la Inocuidad y Calidad Alimentaria","jurisdiction":"chile","domains":["food"],"established_year":2014,"website":"https://www.achipia.gob.cl","description":"Chile's food safety and quality agency coordinates food safety policy. SEREMI de Salud and SAG enforce food regulations at local level."},
+    {"acronym":"DIGEMID","name":"Dirección General de Medicamentos, Insumos y Drogas","jurisdiction":"peru","domains":["pharma","device","nutra"],"established_year":1982,"website":"https://www.gob.pe/digemid","description":"Peru's general directorate for medicines, supplies and drugs under the Ministry of Health. Issues Registro Sanitario for pharmaceuticals, medical devices, and health products."},
+    {"acronym":"DIGESA-PE","name":"Dirección General de Salud Ambiental e Inocuidad Alimentaria","jurisdiction":"peru","domains":["food"],"established_year":1994,"website":"https://www.digesa.minsa.gob.pe","description":"Peru's food safety and environmental health directorate. Issues Registro Sanitario for food products including health supplements."},
+    {"acronym":"ARCSA","name":"Agencia Nacional de Regulación, Control y Vigilancia Sanitaria","jurisdiction":"ecuador","domains":["pharma","food","device","nutra"],"established_year":2012,"website":"https://www.controlsanitario.gob.ec","description":"Ecuador's comprehensive national health regulation agency. Regulates food, drugs, cosmetics, and medical devices under LOSSANE."},
+    {"acronym":"AGEMED","name":"Agencia Estatal de Medicamentos y Tecnologías en Salud","jurisdiction":"bolivia","domains":["pharma","device"],"established_year":2009,"website":"https://www.agemed.gob.bo","description":"Bolivia's state agency for medicines and health technologies. Issues pharmaceutical registrations under Ley del Medicamento No. 1737/1996."},
+    {"acronym":"IBNORCA","name":"Instituto Boliviano de Normalización y Calidad","jurisdiction":"bolivia","domains":["food"],"established_year":1993,"website":"https://www.ibnorca.org","description":"Bolivia's national standards and quality institute sets food standards. Food safety enforcement by SENASAG (food/agricultural products)."},
+    {"acronym":"DINAVISA","name":"Dirección Nacional de Vigilancia Sanitaria","jurisdiction":"paraguay","domains":["pharma","food","device","nutra"],"established_year":1999,"website":"https://www.mspbs.gov.py/dinavisa","description":"Paraguay's national health surveillance directorate under MSPBS. Issues Registros Sanitarios for all health products under MERCOSUR harmonised framework."},
+    {"acronym":"MSP-UY","name":"Ministerio de Salud Pública Uruguay — Departamento de Medicamentos","jurisdiction":"uruguay","domains":["pharma","device","nutra"],"established_year":1934,"website":"https://www.gub.uy/ministerio-salud-publica","description":"Uruguay's Ministry of Public Health regulates pharmaceuticals and health products. MERCOSUR harmonisation applies extensively. Strong institutional capacity."},
+    {"acronym":"LATU","name":"Laboratorio Tecnológico del Uruguay","jurisdiction":"uruguay","domains":["food"],"established_year":1965,"website":"https://www.latu.org.uy","description":"Uruguay's state technology laboratory supports food safety standards. MGAP (Ministry of Livestock, Agriculture) and MSP jointly regulate food."},
+    {"acronym":"MPPS-VE","name":"Ministerio del Poder Popular para la Salud Venezuela","jurisdiction":"venezuela","domains":["pharma","food","device"],"established_year":1936,"website":"https://www.mpps.gob.ve","description":"Venezuela's Ministry of Health and Social Protection regulates pharmaceuticals and food. Regulatory capacity significantly impacted by economic conditions since 2015."},
+    {"acronym":"MSPAS-GT","name":"Ministerio de Salud Pública y Asistencia Social Guatemala","jurisdiction":"guatemala","domains":["pharma","food","device"],"established_year":1945,"website":"https://www.mspas.gob.gt","description":"Guatemala's Ministry of Public Health. DQFB (Drug, Food and Beverage Regulation Directorate) issues Registros Sanitarios for health products."},
+    {"acronym":"SESAL-HN","name":"Secretaría de Salud Honduras","jurisdiction":"honduras","domains":["pharma","food","device"],"established_year":1993,"website":"https://www.salud.gob.hn","description":"Honduras Ministry of Health regulates pharmaceuticals and food. ARSA (National Agency for Food and Drug Regulation) was created 2019 to strengthen regulatory capacity."},
+    {"acronym":"MINSA-CR","name":"Ministerio de Salud Costa Rica — DNIV","jurisdiction":"costa_rica","domains":["pharma","food","device","nutra"],"established_year":1949,"website":"https://www.ministeriodesalud.go.cr","description":"Costa Rica's Ministry of Health Directorate of National Health Surveillance (DNIV). Issues health registrations. Costa Rica has one of the strongest regulatory frameworks in Central America."},
+    {"acronym":"MINSA-PA","name":"Ministerio de Salud Panamá — DNFD","jurisdiction":"panama","domains":["pharma","food","device"],"established_year":1949,"website":"https://www.minsa.gob.pa","description":"Panama's Ministry of Health, National Directorate of Pharmacy and Drugs (DNFD). Issues health product registrations. Panama Free Trade Zone (Colón) significant for regional distribution."},
+    {"acronym":"CECMED-CU","name":"Centro para el Control Estatal de Medicamentos Cuba","jurisdiction":"cuba","domains":["pharma","device"],"established_year":1989,"website":"https://www.cecmed.cu","description":"Cuba's state centre for drug control. Cuba has a unique pharmaceutical system with significant domestic biotechnology capacity. Very restrictive import market."},
+    {"acronym":"SESPAS-DO","name":"Ministerio de Salud Pública Dominican Republic","jurisdiction":"dominican_republic","domains":["pharma","food","device"],"established_year":1920,"website":"https://www.msp.gob.do","description":"Dominican Republic's Ministry of Public Health. DIGEMAPS issues drug registrations. SESPAS has been strengthening its regulatory framework with WHO/PAHO support."},
+    {"acronym":"MINSA-NI","name":"Ministerio de Salud Nicaragua — CRNM","jurisdiction":"nicaragua","domains":["pharma","food","device"],"established_year":1979,"website":"https://www.minsa.gob.ni","description":"Nicaragua's Ministry of Health Centre for Regulatory and Normative Resources (CRNM) issues pharmaceutical registrations."}
+  ],
+  "licensing_pathways": [
+    {
+      "jurisdiction": "chile",
+      "product_type": "nutraceutical",
+      "product_subtype": "food_supplement",
+      "license_type": "Registro Sanitario — Suplemento Alimenticio (ISP/Seremi de Salud)",
+      "competent_authority": "ISP (Instituto de Salud Pública de Chile)",
+      "application_portal": "https://www.ispch.cl/registro-sanitario",
+      "complexity": "MEDIUM",
+      "pathway_steps": [
+        "1. Classify as Alimento para Fines Especiales — Suplemento Alimenticio under Reglamento Sanitario de los Alimentos (RSA)",
+        "2. Verify formulation complies with RSA (Decreto 977/1996) Chapter 17 (Special Purpose Foods)",
+        "3. Appoint Chilean importer or local legal representative",
+        "4. Prepare dossier: formulation, label, CoA, safety data",
+        "5. Submit Registro Sanitario application to ISP",
+        "6. ISP technical review: 60–120 working days",
+        "7. Receive RS number",
+        "8. Label in Spanish with RS number and all mandatory declarations"
+      ],
+      "prerequisites": ["Chilean importer/legal representative", "RSA-compliant formulation", "CoA from accredited lab", "Spanish-language label"],
+      "documents_required": ["RS application form", "Formulation", "CoA", "Certificate of Free Sale (legalized + apostille)", "Label draft", "GMP certificate"],
+      "fees": {"Registro Sanitario": "CLP 200,000–500,000 (approx USD 200–550)"},
+      "typical_timeline_months": "4–8 months",
+      "fast_track_available": false,
+      "gmp_requirements": {"standard": "GMP equivalent to Codex Alimentarius General Principles of Food Hygiene"},
+      "renewal_period_years": 5,
+      "renewal_requirements": ["Apply before expiry; fee payment required"],
+      "post_approval_obligations": ["Adverse event reporting to ISP", "Annual quality report", "Comply with market surveillance"],
+      "reference_regulation": "Decreto 977/1996 Reglamento Sanitario de los Alimentos (RSA); Código Sanitario DFL No. 725/1967",
+      "notes": "Chile has a front-of-pack black octagonal warning seal system (HIGH IN: calories, sugars, saturated fat, sodium, trans fat) mandatory since 2016 — the first country to implement such a system, later adopted by Mexico, Colombia, Peru, and others."
+    },
+    {
+      "jurisdiction": "peru",
+      "product_type": "nutraceutical",
+      "product_subtype": "food_supplement",
+      "license_type": "Registro Sanitario — Alimentos de Uso Médico Especial y Suplementos Nutricionales",
+      "competent_authority": "DIGESA (Dirección General de Salud Ambiental) and DIGEMID for health products",
+      "application_portal": "https://www.digesa.minsa.gob.pe",
+      "complexity": "HIGH",
+      "pathway_steps": [
+        "1. Classify: Suplemento Nutricional (nutritional supplement) vs Alimento para Regímenes Especiales",
+        "2. Appoint Peruvian importer and Technical Director (Químico-Farmacéutico required)",
+        "3. All ingredients must comply with DIGESA/DIGEMID permitted list",
+        "4. Prepare dossier per DIGESA requirements: technical file, formulation, safety data",
+        "5. Submit RS application — DIGESA for food supplements; DIGEMID if pharmaceutical claims",
+        "6. Technical review and laboratory testing may be required",
+        "7. Receive Registro Sanitario (RS) number",
+        "8. Spanish-language label with RS number, Peruvian importer, and octagonal warning seals (mandatory since 2021)"
+      ],
+      "prerequisites": ["Peruvian importer with DIGESA registration", "Technical Director on staff", "Permitted ingredients", "RS-compliant label with octagonal seals"],
+      "documents_required": ["RS application", "Technical formulation file", "CoA", "Free Sale Certificate", "Label draft (with octagonal seals if required)", "GMP certificate"],
+      "fees": {"Registro Sanitario": "PEN 800–3,000"},
+      "typical_timeline_months": "6–18 months",
+      "fast_track_available": false,
+      "gmp_requirements": {"standard": "GMP per Codex Alimentarius; DIGESA/DIGEMID may require WHO-GMP for imports"},
+      "renewal_period_years": 5,
+      "renewal_requirements": ["Apply before expiry", "Updated dossier if formulation changed"],
+      "post_approval_obligations": ["ADR reporting", "Annual product quality review", "Comply with DIGESA surveillance"],
+      "reference_regulation": "Ley de Inocuidad de los Alimentos DL 1062; DS 007-98-SA (Reglamento de Vigilancia y Control Sanitario de Alimentos); DS 038-2014-SA (Suplementos Nutricionales); Ley 30021 (Alimentación Saludable — octagonal seals)",
+      "notes": "Peru's Ley 30021 (Healthy Eating Law) mandated front-of-pack octagonal warning labels since June 2021, similar to Chile. Advertising of unhealthy foods to children is heavily restricted. Compliance requires both RS and warning seal implementation."
+    },
+    {
+      "jurisdiction": "ecuador",
+      "product_type": "nutraceutical",
+      "product_subtype": "food_supplement",
+      "license_type": "Notificación Sanitaria Obligatoria (NSO) or Registro Sanitario",
+      "competent_authority": "ARCSA (Agencia Nacional de Regulación, Control y Vigilancia Sanitaria)",
+      "application_portal": "https://www.controlsanitario.gob.ec",
+      "complexity": "HIGH",
+      "pathway_steps": [
+        "1. Classify product under ARCSA categories: Registro Sanitario (RS) or Notificación Sanitaria Obligatoria (NSO) for lower-risk products",
+        "2. NSO: for food products meeting specific criteria — faster 30-day process",
+        "3. RS: for supplements, cosmetics with claims — standard process",
+        "4. Appoint Ecuadorian distributor/importer",
+        "5. Submit via ARCSA online system with required dossier",
+        "6. ARCSA review and approval",
+        "7. Receive RS or NSO number",
+        "8. Spanish-language label with ARCSA authorization number"
+      ],
+      "prerequisites": ["Ecuadorian importer registered with ARCSA", "All ingredients on permitted list", "Spanish label", "CoA from accredited lab"],
+      "documents_required": ["ARCSA application form", "Technical dossier", "CoA", "Free Sale Certificate", "Label draft", "GMP certificate"],
+      "fees": {"NSO": "USD 60–200; Registro Sanitario: USD 500–2,000"},
+      "typical_timeline_months": "NSO: 1–2 months; RS: 6–12 months",
+      "fast_track_available": true,
+      "fast_track_details": "NSO (Notificación Sanitaria Obligatoria) is a faster track for food products meeting standard ingredient criteria.",
+      "gmp_requirements": {"standard": "Buenas Prácticas de Manufactura per ARCSA technical norms"},
+      "renewal_period_years": 5,
+      "renewal_requirements": ["Apply before expiry", "Fee payment"],
+      "post_approval_obligations": ["Adverse event reporting to ARCSA", "Comply with post-market surveillance"],
+      "reference_regulation": "Ley Orgánica de Salud 67/2006; LOSSANE (Ley Orgánica del Régimen de la Soberanía Alimentaria); ARCSA Technical Norms",
+      "notes": "Ecuador adopted octagonal front-of-pack warning labels in 2020 (Reglamento Técnico Ecuatoriano RTE INEN 022). All food products must carry octagonal seals for excess sugar, fat, salt, trans fat, or calories. One of the first countries after Chile to implement this system."
+    },
+    {
+      "jurisdiction": "uruguay",
+      "product_type": "nutraceutical",
+      "product_subtype": "food_supplement",
+      "license_type": "Habilitación Sanitaria — Suplemento Dietario",
+      "competent_authority": "MSP (Ministerio de Salud Pública) — Departamento de Vigilancia Sanitaria",
+      "application_portal": "https://www.gub.uy/ministerio-salud-publica",
+      "complexity": "MEDIUM",
+      "pathway_steps": [
+        "1. Classify as Suplemento Dietario under Decreto 008/2020 (MSP)",
+        "2. Verify MERCOSUR GMC Resolution 58/10 and 82/96 for dietary supplements",
+        "3. Appoint Uruguayan Technical Director (farmacéutico)",
+        "4. Submit habilitación application to MSP",
+        "5. MSP technical review",
+        "6. Receive habilitación number",
+        "7. Spanish-language label with Uruguay habilitación number"
+      ],
+      "prerequisites": ["Technical Director (pharmacist)", "MERCOSUR-compliant formulation", "Spanish label"],
+      "documents_required": ["MSP application", "Formulation", "CoA", "Label draft", "Free Sale Certificate"],
+      "fees": {"Habilitación": "UYU 5,000–20,000"},
+      "typical_timeline_months": "3–9 months",
+      "fast_track_available": false,
+      "gmp_requirements": {"standard": "BPM per Codex and MERCOSUR norms"},
+      "renewal_period_years": 5,
+      "renewal_requirements": ["Apply before expiry"],
+      "post_approval_obligations": ["ADR reporting to MSP", "Annual quality compliance"],
+      "reference_regulation": "Decreto 008/2020 (Suplementos Dietarios); MERCOSUR GMC Resolution 58/10; Código Bromatológico",
+      "notes": "Uruguay has adopted octagonal front-of-pack warning seals (Decreto 117/018) — mandatory for excess sugar, sodium, saturated fat, trans fat, and calories. MERCOSUR harmonisation means Argentina and Brazil alignment is important."
+    },
+    {
+      "jurisdiction": "costa_rica",
+      "product_type": "nutraceutical",
+      "product_subtype": "food_supplement",
+      "license_type": "Registro Sanitario — Suplemento Alimenticio",
+      "competent_authority": "MINSA — Dirección de Servicios de Salud (Costa Rica)",
+      "application_portal": "https://www.ministeriodesalud.go.cr/index.php/servicios/servicios-en-linea/tramites-en-linea",
+      "complexity": "MEDIUM",
+      "pathway_steps": [
+        "1. Classify product under Costa Rica's Ley General de Salud No. 5395",
+        "2. Appoint Costa Rican importer registered with MINSA",
+        "3. Prepare dossier under RTCA (Central American Technical Regulation on food supplements)",
+        "4. Submit Registro Sanitario application to MINSA",
+        "5. MINSA technical review: 30–60 working days (by law)",
+        "6. Receive RS number",
+        "7. Label in Spanish with RS number"
+      ],
+      "prerequisites": ["Costa Rican importer with MINSA registration", "RTCA-compliant formulation", "Technical dossier"],
+      "documents_required": ["RS application", "Technical file", "CoA", "Certificate of Free Sale", "Label draft"],
+      "fees": {"Registro Sanitario": "CRC 30,000–100,000"},
+      "typical_timeline_months": "3–8 months",
+      "fast_track_available": false,
+      "gmp_requirements": {"standard": "GMP per RTCA Central American technical regulations"},
+      "renewal_period_years": 5,
+      "renewal_requirements": ["Apply before expiry"],
+      "post_approval_obligations": ["Adverse event reporting", "Market surveillance compliance"],
+      "reference_regulation": "Ley General de Salud No. 5395; RTCA 67.04.54:10 (Suplementos Alimenticios)",
+      "notes": "Costa Rica uses RTCA (Reglamento Técnico Centroamericano) — a harmonised Central American technical regulation system covering food, drugs, and supplements. RTCA allows some mutual recognition within the CACM (Central American Common Market)."
+    }
+  ],
+  "allowable_limits": [
+    {"substance":"Sodium Benzoate","substance_aliases":["E211","INS 211"],"cas_number":"532-32-1","ins_number":"211","limit_type":"additive","category":"preservative","food_matrix":"Non-alcoholic beverages","jurisdiction":"chile","limit_value":"1000","limit_unit":"mg/kg","adi_tdi":"ADI 0–5 mg/kg bw","regulatory_basis":"RSA Chile Decreto 977/1996 — Aditivos Alimentarios","notes":"Chile follows Codex GSFA for most additive limits. RSA Chapter XII governs preservatives."},
+    {"substance":"Sodium Benzoate","substance_aliases":["E211","INS 211"],"cas_number":"532-32-1","ins_number":"211","limit_type":"additive","category":"preservative","food_matrix":"Non-alcoholic beverages","jurisdiction":"peru","limit_value":"1000","limit_unit":"mg/kg","adi_tdi":"ADI 0–5 mg/kg bw","regulatory_basis":"Codex GSFA (adopted by reference in Peru RS regulations)","notes":"Peru food additive limits generally follow Codex GSFA by regulatory reference. DIGESA publishes specific list of permitted additives."},
+    {"substance":"Lead (Pb)","substance_aliases":["Lead"],"cas_number":"7439-92-1","ins_number":null,"limit_type":"contaminant","category":"heavy_metal","food_matrix":"All foods","jurisdiction":"chile","limit_value":"0.1","limit_unit":"mg/kg","adi_tdi":"No safe level","regulatory_basis":"RSA Chile — Contaminantes en Alimentos; SEREMIA enforcement","notes":"Chile RSA Chapter XIV sets contaminant limits. Front-of-pack labelling system (octagonal seals) focuses on nutrient content rather than contaminants."},
+    {"substance":"Lead (Pb)","substance_aliases":["Lead"],"cas_number":"7439-92-1","ins_number":null,"limit_type":"contaminant","category":"heavy_metal","food_matrix":"Canned vegetables","jurisdiction":"peru","limit_value":"0.5","limit_unit":"mg/kg","adi_tdi":"No safe level","regulatory_basis":"NTS 071-MINSA/DIGESA — Vigilancia y Control de Alimentos","notes":"Peru's food safety surveillance includes heavy metal testing. DIGESA enforces at point of manufacture and import."},
+    {"substance":"Aflatoxin B1","substance_aliases":["AFB1"],"cas_number":"1162-65-8","ins_number":null,"limit_type":"contaminant","category":"mycotoxin","food_matrix":"Groundnuts for direct consumption","jurisdiction":"chile","limit_value":"10","limit_unit":"μg/kg","adi_tdi":"No safe threshold","regulatory_basis":"RSA Chile — Contaminantes: Micotoxinas en Alimentos","notes":"Chile follows Codex mycotoxin limits. Major concern for imported peanuts and corn. SAG enforces at border for agricultural products."},
+    {"substance":"Aflatoxin B1","substance_aliases":["AFB1"],"cas_number":"1162-65-8","ins_number":null,"limit_type":"contaminant","category":"mycotoxin","food_matrix":"Cereals and maize","jurisdiction":"peru","limit_value":"20","limit_unit":"μg/kg","adi_tdi":"No safe threshold","regulatory_basis":"NTS DIGESA — Mycotoxin Limits in Foods","notes":"Peru has significant mycotoxin burden in domestic maize. DIGESA enforces mycotoxin limits at food processing facilities."},
+    {"substance":"Salmonella spp.","substance_aliases":["Salmonella"],"cas_number":null,"ins_number":null,"limit_type":"microbiological","category":"pathogen","food_matrix":"Ready-to-eat foods","jurisdiction":"chile","limit_value":"Absent","limit_unit":"per 25g","adi_tdi":null,"regulatory_basis":"RSA Chile — Normas Microbiológicas para Alimentos (ICMSF criteria)","notes":"Chile applies ICMSF-based microbiological criteria. ISP coordinates national foodborne illness surveillance."},
+    {"substance":"Salmonella spp.","substance_aliases":["Salmonella"],"cas_number":null,"ins_number":null,"limit_type":"microbiological","category":"pathogen","food_matrix":"All RTE foods","jurisdiction":"peru","limit_value":"Absent","limit_unit":"per 25g","adi_tdi":null,"regulatory_basis":"NTS No. 071-MINSA/DIGESA — Microbiological Criteria for Foods","notes":"Peru's DIGESA sets microbiological criteria per NTS 071 based on ICMSF. Zero tolerance for Salmonella in RTE foods."},
+    {"substance":"Vitamin C","substance_aliases":["Ascorbic acid"],"cas_number":"50-81-7","ins_number":"300","limit_type":"nutrient_rv","category":"vitamin","food_matrix":"Daily intake reference (labelling)","jurisdiction":"chile","limit_value":"60","limit_unit":"mg/day","adi_tdi":null,"regulatory_basis":"RSA Chile — Valores de Referencia de Nutrientes (VRN)","notes":"Chile VRN: Vitamin C 60 mg/day. Used for % VRN calculation on octagonal-seal compliant nutrition labels."},
+    {"substance":"Sodium","substance_aliases":["Sodium","Na"],"cas_number":"7440-23-5","ins_number":null,"limit_type":"nutrient_rv","category":"mineral","food_matrix":"Daily intake reference (labelling)","jurisdiction":"chile","limit_value":"2000","limit_unit":"mg/day","adi_tdi":null,"regulatory_basis":"RSA Chile — Tabla de Valores de Referencia de Nutrientes","notes":"Chile: sodium DRV 2000 mg/day. Front-of-pack seal threshold: >800 mg per 100g ALTO EN SODIO. Chile octagonal seal is now mandatory on many products."},
+    {"substance":"Sodium","substance_aliases":["Sodium","Na"],"cas_number":"7440-23-5","ins_number":null,"limit_type":"nutrient_rv","category":"mineral","food_matrix":"Daily intake reference (labelling)","jurisdiction":"peru","limit_value":"2000","limit_unit":"mg/day","adi_tdi":null,"regulatory_basis":"Peru DS 038-2014-SA; Ley 30021 Octagonal Seal Thresholds","notes":"Peru: sodium DRV 2000 mg/day. Octagonal warning seal HIGH IN SODIUM triggered at >400 mg/100g (solid) or >100 mg/100mL (liquid) — stricter threshold than Chile."},
+    {"substance":"Tartrazine","substance_aliases":["E102","INS 102"],"cas_number":"1934-21-0","ins_number":"102","limit_type":"additive","category":"colour","food_matrix":"Confectionery","jurisdiction":"chile","limit_value":"100","limit_unit":"mg/kg","adi_tdi":"ADI 0–7.5 mg/kg bw","regulatory_basis":"RSA Chile Decreto 977/1996 — Colorantes Alimentarios","notes":"Chile permits tartrazine at Codex-aligned levels. Chilean RSA specifies colour limits by food category."},
+    {"substance":"Glyphosate","substance_aliases":["Roundup active"],"cas_number":"1071-83-6","ins_number":null,"limit_type":"pesticide","category":"herbicide","food_matrix":"Soybeans and oilseeds","jurisdiction":"chile","limit_value":"20","limit_unit":"mg/kg","adi_tdi":"ADI 0–0.3 mg/kg bw/day (MINSAL Chile)","regulatory_basis":"Chile SAG — MRLs for Pesticides in Foods (Resolución Exenta)","notes":"Chile sets MRLs via SAG (Servicio Agrícola y Ganadero). Chile re-evaluated glyphosate ADI at 0.3 mg/kg bw/day (lower than EU). Monitoring programme for soybean imports."},
+    {"substance":"Mercury (Total Hg)","substance_aliases":["Mercury"],"cas_number":"7439-97-6","ins_number":null,"limit_type":"contaminant","category":"heavy_metal","food_matrix":"Fish (predatory species)","jurisdiction":"chile","limit_value":"1.0","limit_unit":"mg/kg","adi_tdi":"PTWI 4 μg/kg bw","regulatory_basis":"RSA Chile — Metales Pesados en Productos Pesqueros; SERNAPESCA","notes":"Chile is a major fishing nation. SERNAPESCA (fisheries authority) and RSA jointly regulate mercury in fish. Strict monitoring of corvina, atún, and pez espada (swordfish)."}
+  ],
+  "labeling_requirements": [
+    {
+      "jurisdiction": "chile",
+      "product_type": "packaged_food",
+      "regulatory_basis": "Ley 20.606 (Alimentación Saludable 2012); DS No. 13/2015 (Reglamento Ley 20.606); RSA Decreto 977/1996",
+      "competent_authority": "MINSAL (Ministerio de Salud); SEREMI de Salud for enforcement; ISP for RS",
+      "mandatory_fields": [
+        "Nombre del alimento (product name)",
+        "Lista de ingredientes (ingredients descending by weight)",
+        "Cantidad neta (net content — weight/volume)",
+        "Nombre y dirección del fabricante/importador",
+        "País de origen (country of origin for imports)",
+        "Fecha de elaboración y vencimiento (production and expiry date)",
+        "Condiciones de conservación (storage conditions)",
+        "Instrucciones de uso (if applicable)",
+        "Información nutricional (nutritional declaration — mandatory)",
+        "Sellos de advertencia (ALTO EN: octagonal black warning seals — MANDATORY if thresholds exceeded)",
+        "Declaración de alérgenos (allergen declaration)",
+        "Número de Registro Sanitario (RS number from ISP)"
+      ],
+      "nutrition_declaration": {
+        "mandatory_nutrients": ["Energía (kcal)", "Proteínas (g)", "Grasas totales (g)", "Grasas saturadas (g)", "Grasas trans (g)", "Azúcares totales (g)", "Sodio (mg)", "Fibra dietética (g)"],
+        "per_100g_required": true,
+        "per_serving_required": false,
+        "format": "Per 100g/100mL. % VRN (Valor de Referencia de Nutrientes). Standard table format. Black octagonal ALTO EN seals mandatory on front of pack if energy >350 kcal/100g, sugars >22.5g/100g, saturated fat >6g/100g, sodium >800mg/100g, trans fat present.",
+        "nrv_reference": "Chile RSA — Tabla de Valores de Referencia de Nutrientes (VRN)",
+        "added_sugar_required": false,
+        "warning_seals": "ALTO EN: CALORÍAS (>350 kcal/100g), AZÚCARES (>22.5g/100g), GRASAS SATURADAS (>6g/100g), SODIO (>800mg/100g), GRASAS TRANS (any). Black octagonal seals with white text on FRONT of package."
+      },
+      "allergen_rules": {
+        "top_allergens": ["Cereales que contienen gluten (trigo, centeno, cebada, avena)", "Crustáceos", "Huevos", "Pescado", "Maní", "Soya", "Leche", "Nueces y almendras", "Mariscos (moluscos)", "Dióxido de azufre y sulfitos", "Mostaza", "Semillas de sésamo", "Altramuces"],
+        "declaration_method": "Bold in ingredient list AND 'Contiene:' statement after ingredient list.",
+        "regulatory_basis": "RSA Chile — Declaración de Alérgenos"
+      },
+      "weights_measures": {
+        "net_weight_position": "Principal display panel or information panel",
+        "weight_units": "Metric SI units",
+        "regulatory_basis": "Ley de Metrología; RSA Chile"
+      },
+      "language_requirements": {
+        "mandatory_language": "Spanish (Castellano)",
+        "minimum_font": "Minimum 2mm character height for mandatory declarations"
+      },
+      "prohibited_claims": [
+        "Advertising of products with ALTO EN seals to children under 14 via TV, internet, or public spaces",
+        "Sale or distribution of products with ALTO EN seals in schools",
+        "Free toys, prizes, or gifts with products carrying ALTO EN seals (directed at children)"
+      ],
+      "claim_rules": {
+        "bajo_en_grasa": "≤3g fat per 100g (solid) or ≤1.5g per 100mL",
+        "libre_de_azucar": "<0.5g per 100g/mL",
+        "bajo_en_sodio": "≤120mg per 100g",
+        "organico": "SAG-certified organic; Sello Chile Orgánico"
+      },
+      "special_requirements": [
+        "Chile's ALTO EN octagonal seal system is legally mandatory since 2016 — the FIRST country globally to mandate this",
+        "Advertising restrictions for products with ALTO EN seals are strictly enforced by MINSAL and CNTV",
+        "School kiosks may not sell products with any ALTO EN seal",
+        "Marketing using cartoon characters or child-directed advertising restricted for products with seals",
+        "RS number from ISP mandatory on all packaged food labels",
+        "June 2019: Phase 3 of law implemented stricter threshold levels and expanded advertising restrictions"
+      ],
+      "enforcement_notes": "SEREMIS de Salud conduct regular market surveillance. Products with ALTO EN seals found in schools trigger significant fines. ISP can cancel RS for persistent non-compliance. Chile's Law 20.606 has been extensively studied globally as a model for public health food labeling."
+    },
+    {
+      "jurisdiction": "peru",
+      "product_type": "packaged_food",
+      "regulatory_basis": "Ley 30021 (Alimentación Saludable 2013); DS 017-2017-SA (Reglamento); DS 038-2014-SA (Suplementos)",
+      "competent_authority": "MINSA; DIGESA; DIGEMID",
+      "mandatory_fields": [
+        "Nombre del producto",
+        "Lista de ingredientes (orden descendente)",
+        "Información nutricional (mandatory)",
+        "Octágonos de advertencia (ALTO EN: mandatory since 2019/2021)",
+        "Cantidad neta",
+        "Nombre y domicilio del fabricante/importador peruano",
+        "Número de Registro Sanitario",
+        "País de origen (para importados)",
+        "Fecha de vencimiento",
+        "Condiciones de conservación",
+        "Declaración de alérgenos",
+        "Lote de producción"
+      ],
+      "nutrition_declaration": {
+        "mandatory_nutrients": ["Energía (kcal)", "Grasas totales (g)", "Grasas saturadas (g)", "Grasas trans (g)", "Azúcares totales (g)", "Proteínas (g)", "Sodio (mg)", "Fibra (g)"],
+        "per_100g_required": true,
+        "per_serving_required": false,
+        "format": "Per 100g/100mL. % VRN. Octagonal warning seals mandatory on FRONT of pack if: energy >300 kcal/100g (solid), sugars >10g/100g, saturated fat >4g/100g, sodium >400mg/100g. Peru thresholds are STRICTER than Chile.",
+        "nrv_reference": "Peru Valores de Referencia de Nutrientes per DS 038-2014-SA",
+        "added_sugar_required": false,
+        "warning_seals": "ALTO EN: AZÚCARES, SODIO, GRASAS SATURADAS, GRASAS TRANS — black octagonal seals mandatory with lower thresholds than Chile"
+      },
+      "allergen_rules": {
+        "top_allergens": ["Gluten (trigo, centeno, cebada, avena)", "Crustáceos", "Huevos", "Pescado", "Maní", "Soya", "Leche", "Nueces (incluyendo almendras)", "Sulfitos >10 mg/kg"],
+        "declaration_method": "In ingredient list (bold) AND 'CONTIENE:' statement.",
+        "regulatory_basis": "DS 007-98-SA — Reglamento de Vigilancia y Control Sanitario (Alérgenos)"
+      },
+      "weights_measures": {
+        "net_weight_position": "Front or information panel",
+        "weight_units": "SI metric units",
+        "regulatory_basis": "DS 007-98-SA; INACAL (Instituto Nacional de Calidad)"
+      },
+      "language_requirements": {
+        "mandatory_language": "Spanish (Castellano)",
+        "note": "Quechua and other indigenous language translations encouraged but not mandatory"
+      },
+      "prohibited_claims": [
+        "Advertising products with ALTO EN seals to minors in media, schools, or public spaces",
+        "Disease cure/treatment claims without DIGEMID authorisation",
+        "Claims that minimize health impact of warning seals"
+      ],
+      "claim_rules": {
+        "bajo_en_grasa": "≤3g per 100g",
+        "sin_azucar": "<0.5g per 100g/mL",
+        "organico": "SENASA (Servicio Nacional de Sanidad Agraria) organic certification"
+      },
+      "special_requirements": [
+        "Peru's Ley 30021 warning seals have STRICTER thresholds than Chile — more products will bear seals",
+        "Full enforcement including advertising restrictions since June 2021",
+        "RS number from DIGESA mandatory on all food product labels",
+        "Schools must not sell or promote products with ALTO EN seals",
+        "Restaurants with >10 locations must post caloric content on menus"
+      ],
+      "enforcement_notes": "DIGESA and DIGEMID conduct surveillance. Peru's octagonal seal enforcement has been stronger than many expected. INDECOPI enforces fair competition aspects. Significant fines for non-compliance."
+    }
+  ]
+}

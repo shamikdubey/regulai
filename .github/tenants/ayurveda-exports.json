@@ -1,0 +1,14 @@
+{
+  "tenant_slug": "ayurveda-exports",
+  "app_name": "AyurReg Compliance Suite",
+  "app_id": "com.ayurvedaexports.regulai",
+  "api_url": "https://api.ayurreg.com",
+  "s3_bucket": "ayurreg-updates",
+  "allowed_jurisdictions": ["india", "australia", "canada", "uk", "eu"],
+  "allowed_domains": ["ayurveda", "nutra", "food"],
+  "branding": {
+    "primary_color": "#8B4513",
+    "accent_color": "#228B22",
+    "logo": "ayurreg-logo.png"
+  }
+}

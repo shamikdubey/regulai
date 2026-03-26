@@ -1,0 +1,183 @@
+{
+  "_comment": "RegulAI Production Monitoring Dashboard — import into Datadog or Grafana",
+  "_usage": "Datadog: curl -X POST 'https://api.datadoghq.com/api/v1/dashboard' -H 'DD-API-KEY: ...' -d @monitoring/dashboard.json",
+
+  "title": "RegulAI Production Dashboard",
+  "description": "Real-time monitoring for RegulAI API, workers, and AI pipeline",
+  "layout_type": "ordered",
+
+  "panels": [
+    {
+      "id": "api_health",
+      "title": "API Health",
+      "type": "stat",
+      "targets": [
+        {
+          "metric": "api.health",
+          "aggregation": "last",
+          "display": "API Status"
+        }
+      ],
+      "thresholds": {
+        "1": { "color": "green",  "label": "Healthy" },
+        "0": { "color": "red",    "label": "Unhealthy" }
+      }
+    },
+    {
+      "id": "request_rate",
+      "title": "Request Rate (req/min)",
+      "type": "timeseries",
+      "targets": [
+        { "metric": "nginx.requests.count", "aggregation": "rate(1m)", "label": "Total" },
+        { "metric": "nginx.5xx.count",      "aggregation": "rate(1m)", "label": "5xx errors" }
+      ]
+    },
+    {
+      "id": "latency_p95",
+      "title": "API Latency p95 (ms)",
+      "type": "timeseries",
+      "targets": [
+        { "metric": "http.request.duration.p95", "filter": "endpoint:/api/v1/query/stream", "label": "AI Query stream" },
+        { "metric": "http.request.duration.p95", "filter": "endpoint:/api/v1/gap-assessment", "label": "Gap Assessment" },
+        { "metric": "http.request.duration.p95", "filter": "endpoint:/api/v1/allowable-limits", "label": "Reference data" }
+      ]
+    },
+    {
+      "id": "llm_circuit_breakers",
+      "title": "LLM Circuit Breakers",
+      "type": "stat",
+      "targets": [
+        { "metric": "llm.circuit_breaker.anthropic.state" },
+        { "metric": "llm.circuit_breaker.openai.state" }
+      ]
+    },
+    {
+      "id": "celery_queue_depth",
+      "title": "Celery Queue Depth",
+      "type": "timeseries",
+      "targets": [
+        { "metric": "celery.queue.length", "filter": "queue:celery", "label": "Pending jobs" },
+        { "metric": "celery.tasks.active",  "label": "Active jobs" }
+      ],
+      "alert": {
+        "condition": "queue.length > 50",
+        "message": "Celery backlog growing — consider scaling workers"
+      }
+    },
+    {
+      "id": "ai_query_volume",
+      "title": "AI Query Volume (queries/hour)",
+      "type": "timeseries",
+      "targets": [
+        { "metric": "query.count", "aggregation": "sum(1h)", "label": "Total queries" },
+        { "metric": "query.count", "filter": "jurisdiction:india", "label": "India" },
+        { "metric": "query.count", "filter": "jurisdiction:usa",   "label": "USA" },
+        { "metric": "query.count", "filter": "jurisdiction:eu",    "label": "EU" }
+      ]
+    },
+    {
+      "id": "llm_cost_tracker",
+      "title": "LLM API Spend (USD/hour)",
+      "type": "timeseries",
+      "targets": [
+        { "metric": "llm.cost.anthropic.usd", "aggregation": "sum(1h)", "label": "Anthropic" },
+        { "metric": "llm.cost.openai.usd",    "aggregation": "sum(1h)", "label": "OpenAI" }
+      ],
+      "alert": {
+        "condition": "sum(1h) > 50",
+        "message": "⚠ LLM spend >$50/hour — check for runaway queries"
+      }
+    },
+    {
+      "id": "db_pool",
+      "title": "PgBouncer Connection Pool",
+      "type": "timeseries",
+      "targets": [
+        { "metric": "pgbouncer.clients.active",  "label": "Active clients" },
+        { "metric": "pgbouncer.clients.waiting", "label": "Waiting clients" },
+        { "metric": "pgbouncer.servers.active",  "label": "Postgres connections" }
+      ],
+      "alert": {
+        "condition": "clients.waiting > 20",
+        "message": "PgBouncer queue building — scale pool or add replicas"
+      }
+    },
+    {
+      "id": "redis_memory",
+      "title": "Redis Memory Usage",
+      "type": "timeseries",
+      "targets": [
+        { "metric": "redis.memory.used_bytes", "label": "Used (bytes)" },
+        { "metric": "redis.memory.max_bytes",  "label": "Max (bytes)" }
+      ]
+    },
+    {
+      "id": "tenant_query_limits",
+      "title": "Tenant Query Limit Usage (top 10)",
+      "type": "table",
+      "targets": [
+        {
+          "query": "SELECT tenant_id, COUNT(*) as today, query_limit_per_day as limit FROM query_logs q JOIN tenants t ON q.tenant_id = t.id WHERE created_at::date = CURRENT_DATE GROUP BY tenant_id, query_limit_per_day ORDER BY today DESC LIMIT 10",
+          "datasource": "postgres"
+        }
+      ]
+    },
+    {
+      "id": "active_users",
+      "title": "Active Users (last 1h)",
+      "type": "stat",
+      "targets": [
+        { "metric": "users.active_1h", "aggregation": "last" }
+      ]
+    },
+    {
+      "id": "document_processing",
+      "title": "Document Processing Queue",
+      "type": "stat",
+      "targets": [
+        { "metric": "documents.status.pending",    "label": "Pending" },
+        { "metric": "documents.status.processing", "label": "Processing" },
+        { "metric": "documents.status.failed",     "label": "Failed" }
+      ]
+    }
+  ],
+
+  "alerts": [
+    {
+      "name": "API 5xx spike",
+      "condition": "nginx.5xx.rate(5m) > 0.01",
+      "channels": ["pagerduty", "slack-alerts"],
+      "message": "❌ RegulAI API 5xx rate > 1% in last 5 minutes"
+    },
+    {
+      "name": "AI query latency degradation",
+      "condition": "http.request.duration.p99{endpoint:/api/v1/query} > 60000",
+      "channels": ["slack-alerts"],
+      "message": "⚠ AI query p99 > 60 seconds"
+    },
+    {
+      "name": "Anthropic circuit breaker open",
+      "condition": "llm.circuit_breaker.anthropic.state == 'open'",
+      "channels": ["pagerduty"],
+      "message": "🔴 Anthropic circuit breaker is OPEN — falling back to OpenAI"
+    },
+    {
+      "name": "LLM spend alarm",
+      "condition": "sum(llm.cost.total.usd, 1h) > 100",
+      "channels": ["slack-alerts"],
+      "message": "💰 LLM spend >$100/hour — investigate"
+    },
+    {
+      "name": "PgBouncer pool exhausted",
+      "condition": "pgbouncer.clients.waiting > 50",
+      "channels": ["pagerduty"],
+      "message": "🔴 PgBouncer client queue > 50 — DB connection pool exhausted"
+    },
+    {
+      "name": "Celery worker down",
+      "condition": "celery.workers.active < 1",
+      "channels": ["pagerduty"],
+      "message": "🔴 No Celery workers responding — background jobs stalled"
+    }
+  ]
+}

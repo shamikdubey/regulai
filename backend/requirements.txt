@@ -1,0 +1,73 @@
+# ── Web framework
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+gunicorn==22.0.0
+python-multipart==0.0.9
+httpx==0.27.0
+
+# ── Database
+sqlalchemy==2.0.36
+asyncpg==0.29.0
+alembic==1.13.3
+pgvector==0.3.2
+
+# ── Redis / caching
+redis[hiredis]==5.0.8
+hiredis==3.0.0
+
+# ── Rate limiting
+slowapi==0.1.9
+
+# ── Auth & security
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+bcrypt==4.2.0
+
+# ── Config & secrets
+pydantic==2.8.2
+pydantic-settings==2.4.0
+python-dotenv==1.0.1
+boto3==1.35.0          # AWS SDK (Secrets Manager, S3)
+
+# ── AI / LLM
+anthropic==0.40.0
+openai==1.50.0
+langchain==0.3.0
+langchain-community==0.3.0
+langchain-openai==0.2.0
+
+# ── Document processing
+pypdf==4.3.1
+python-docx==1.1.2
+tiktoken==0.7.0
+
+# ── Logging & observability
+structlog==24.4.0
+sentry-sdk[fastapi]==2.14.0   # Error tracking
+
+# ── Background tasks (Phase 2 — Celery)
+celery==5.4.0
+flower==2.0.1               # Celery monitoring UI
+
+# ── Data validation & serialisation
+email-validator==2.2.0
+
+# ── Testing
+pytest==8.3.3
+pytest-asyncio==0.24.0
+factory-boy==3.3.1
+
+# ── Dev utilities
+tenacity==9.0.0             # Retry logic for LLM calls
+
+# ── Phase 3
+presidio-analyzer==2.2.354      # PII detection (optional, falls back to regex)
+
+# ── Phase 4
+opentelemetry-sdk==1.27.0
+opentelemetry-exporter-otlp-proto-http==1.27.0
+opentelemetry-instrumentation-fastapi==0.48b0
+
+# ── Phase 5
+stripe==11.1.0                  # Billing
+psycopg2-binary==2.9.9

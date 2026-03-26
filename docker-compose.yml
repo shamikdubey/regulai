@@ -1,0 +1,231 @@
+version: "3.9"
+
+x-env: &env
+  ENVIRONMENT: ${ENVIRONMENT:-production}
+  DATABASE_URL: postgresql+asyncpg://regulai_app:${POSTGRES_APP_PASSWORD}@pgbouncer:6432/regulai
+  REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379/0
+  ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+  OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+  SECRET_KEY: ${SECRET_KEY}
+  AUTH0_DOMAIN: ${AUTH0_DOMAIN:-}
+  AUTH0_API_AUDIENCE: ${AUTH0_API_AUDIENCE:-}
+  CORS_ORIGINS: '["https://${DOMAIN:-localhost}"]'
+  AWS_REGION: ${AWS_REGION:-ap-south-1}
+  AWS_S3_BUCKET: ${AWS_S3_BUCKET:-}
+  SENTRY_DSN: ${SENTRY_DSN:-}
+  ENABLE_CELERY: ${ENABLE_CELERY:-true}
+  ENABLE_BILLING: ${ENABLE_BILLING:-false}
+  BOOTSTRAP_DISABLED: ${BOOTSTRAP_DISABLED:-false}
+  LOG_LEVEL: ${LOG_LEVEL:-info}
+  VERSION: ${APP_VERSION:-5.0.0}
+
+services:
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: regulai_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: regulai
+      POSTGRES_USER: regulai_owner
+      POSTGRES_PASSWORD: ${POSTGRES_OWNER_PASSWORD}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/scripts/init_db.sql:/docker-entrypoint-initdb.d/01_init.sql:ro
+    command: >
+      postgres
+        -c max_connections=200
+        -c shared_buffers=256MB
+        -c effective_cache_size=1GB
+        -c work_mem=16MB
+        -c maintenance_work_mem=128MB
+        -c log_min_duration_statement=2000
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U regulai_owner -d regulai"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks: [internal]
+
+  pgbouncer:
+    image: bitnami/pgbouncer:1.23.1
+    container_name: regulai_pgbouncer
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PGBOUNCER_DATABASE: regulai
+      PGBOUNCER_HOST: postgres
+      PGBOUNCER_PORT: "5432"
+      PGBOUNCER_POOL_MODE: transaction
+      PGBOUNCER_MAX_CLIENT_CONN: "1000"
+      PGBOUNCER_DEFAULT_POOL_SIZE: "25"
+      PGBOUNCER_MIN_POOL_SIZE: "5"
+      PGBOUNCER_SERVER_IDLE_TIMEOUT: "600"
+      PGBOUNCER_QUERY_TIMEOUT: "30"
+      POSTGRESQL_USERNAME: regulai_app
+      POSTGRESQL_PASSWORD: ${POSTGRES_APP_PASSWORD}
+      POSTGRESQL_DATABASE: regulai
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -p 6432 -U regulai_app"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks: [internal]
+
+  redis:
+    image: redis:7.4-alpine
+    container_name: regulai_redis
+    restart: unless-stopped
+    command: >
+      redis-server
+        --requirepass ${REDIS_PASSWORD}
+        --maxmemory 512mb
+        --maxmemory-policy allkeys-lru
+        --save 900 1
+        --save 300 10
+        --loglevel warning
+    volumes: [redis_data:/data]
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks: [internal]
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: regulai_backend
+    restart: unless-stopped
+    depends_on:
+      pgbouncer:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment: *env
+    command: >
+      gunicorn app.main:app
+        --worker-class uvicorn.workers.UvicornWorker
+        --workers 4
+        --bind 0.0.0.0:8000
+        --timeout 120
+        --keep-alive 5
+        --graceful-timeout 30
+        --access-logfile -
+        --error-logfile -
+        --log-level info
+    volumes: [uploads_data:/app/uploads]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks: [internal, external]
+
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile.web
+      args:
+        - VITE_APP_VERSION=${APP_VERSION:-5.0.0}
+    container_name: regulai_web
+    restart: unless-stopped
+    depends_on: [backend]
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    networks: [external]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  celery_worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: regulai_celery_worker
+    restart: unless-stopped
+    depends_on:
+      pgbouncer:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment: *env
+    command: >
+      celery -A app.celery_app worker
+        --loglevel=info
+        --concurrency=2
+        --queues=celery
+        --hostname=worker@%h
+        --max-tasks-per-child=50
+    volumes: [uploads_data:/app/uploads]
+    networks: [internal]
+
+  celery_beat:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: regulai_celery_beat
+    restart: unless-stopped
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment: *env
+    command: >
+      celery -A app.celery_app beat
+        --loglevel=info
+        --scheduler=celery.beat:PersistentScheduler
+    networks: [internal]
+
+  flower:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: regulai_flower
+    restart: unless-stopped
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      <<: *env
+      FLOWER_PORT: "5555"
+      FLOWER_BASIC_AUTH: ${FLOWER_USER:-admin}:${FLOWER_PASSWORD:-changeme}
+    command: >
+      celery -A app.celery_app flower
+        --port=5555
+        --url-prefix=/flower
+    ports: ["5555:5555"]
+    networks: [internal, external]
+
+  migrate:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: regulai_migrate
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+asyncpg://regulai_owner:${POSTGRES_OWNER_PASSWORD}@postgres:5432/regulai
+    command: alembic upgrade head
+    networks: [internal]
+    restart: "no"
+
+volumes:
+  postgres_data: { driver: local }
+  redis_data: { driver: local }
+  uploads_data: { driver: local }
+
+networks:
+  internal: { driver: bridge, internal: true }
+  external: { driver: bridge }

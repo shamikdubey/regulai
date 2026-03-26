@@ -1,0 +1,36 @@
+# Secrets — NEVER commit these
+.env
+*.env
+ssl/
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# Node
+node_modules/
+web/dist/
+web/dist-electron/
+electron-app/
+
+# IDE
+.vscode/
+.idea/
+*.DS_Store
+*.swp
+
+# Docker volumes and local data
+uploads/
+*.sqlite
+
+# Old folders from zip
+{backend,electron-app,shared}/
+{components/
+{app/

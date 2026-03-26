@@ -1,0 +1,22 @@
+{
+  "tenantId": "indiaregtech",
+  "appName": "IndiaRegTech Compliance",
+  "appId": "com.indiaregtech.compliance",
+  "apiUrl": "https://api.indiaregtech.com",
+  "auth0Domain": "indiaregtech.auth0.com",
+  "auth0ClientId": "indiaregtech-client-id",
+  "auth0Audience": "https://api.indiaregtech.com",
+  "allowedJurisdictions": ["india"],
+  "allowedDomains": ["food", "pharma", "device", "nutra", "ayurveda"],
+  "branding": {
+    "primaryColor": "#FF6B00",
+    "logoText": "IR",
+    "companyName": "IndiaRegTech"
+  },
+  "features": {
+    "documentUpload": true,
+    "auditLog": true,
+    "exportReports": true,
+    "ayurveda": true
+  }
+}

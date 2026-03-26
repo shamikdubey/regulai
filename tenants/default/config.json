@@ -1,0 +1,22 @@
+{
+  "tenantId": "default",
+  "appName": "RegulAI",
+  "appId": "com.regulai.app",
+  "apiUrl": "https://api.regulai.com",
+  "auth0Domain": "regulai.auth0.com",
+  "auth0ClientId": "your-auth0-client-id",
+  "auth0Audience": "https://api.regulai.com",
+  "allowedJurisdictions": [],
+  "allowedDomains": [],
+  "branding": {
+    "primaryColor": "#00d4aa",
+    "logoText": "R∧",
+    "companyName": "RegulAI"
+  },
+  "features": {
+    "documentUpload": true,
+    "auditLog": true,
+    "exportReports": true,
+    "ayurveda": true
+  }
+}

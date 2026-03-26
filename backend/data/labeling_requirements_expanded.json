@@ -1,0 +1,463 @@
+[
+  {
+    "jurisdiction": "south_korea",
+    "product_type": "packaged_food",
+    "regulatory_basis": "Food Labeling Standards (식품 등의 표시기준) — MFDS Notice; Food Labeling Act 2018",
+    "competent_authority": "MFDS (Ministry of Food and Drug Safety)",
+    "mandatory_fields": [
+      "Product name (품목명)",
+      "Type of food (식품의 유형) — category classification",
+      "Manufacturer/importer name and address",
+      "Net weight or volume (내용량)",
+      "Ingredients list (원재료명) — descending order with quantities for compound ingredients",
+      "Nutritional information (영양성분표) — per 1 serving AND per 100g/100mL",
+      "Date of manufacture (제조연월일)",
+      "Best before / expiry date (소비기한 — consumption by date, replaced 'best before' in 2023)",
+      "Storage method (보관방법)",
+      "Country of origin (원산지) — for all imported foods",
+      "Allergen declaration — 22 mandatory allergens (see allergen section)",
+      "GMO labeling if applicable (유전자변형식품 표시)",
+      "MFDS-required quality mark (if product category requires certification)",
+      "Korean-language label mandatory (한국어 표시 의무)"
+    ],
+    "nutrition_declaration": {
+      "mandatory_nutrients": ["Calories (kcal)", "Sodium (mg)", "Carbohydrate (g)", "Sugars (g)", "Fat (g)", "Saturated fat (g)", "Trans fat (g)", "Cholesterol (mg)", "Protein (g)"],
+      "per_100g_required": true,
+      "per_serving_required": true,
+      "format": "Per serving AND per 100g/mL. % Daily Value based on Korean NRV. Standard table format per MFDS notice. Since 2023: 'Consumption expiry date' (소비기한) replaces 'best before date' — important change.",
+      "nrv_reference": "Korean Daily Reference Values (한국인 영양섭취기준) — MFDS Notice",
+      "added_sugar_required": false,
+      "note": "Korea requires % DV for each nutrient listed. Some nutrients may vary from US/EU percentages."
+    },
+    "allergen_rules": {
+      "top_allergens": ["Eggs", "Milk", "Buckwheat", "Peanuts", "Soybeans", "Wheat", "Mackerel", "Crab", "Shrimp", "Pork", "Peaches", "Tomatoes", "Walnuts", "Chicken", "Beef", "Squid", "Shellfish (oysters, mussels, scallops)", "Pine nuts", "Abalone", "Sesame seeds", "Almonds", "Cashews"],
+      "declaration_method": "Bold in ingredient list AND separate 'Contains' statement (함유). Korean language.",
+      "regulatory_basis": "MFDS Food Labeling Standards — Appendix (22 major allergens as of 2023)",
+      "note": "Korea has 22 mandatory allergens — significantly more than EU (14) or USA (9). Includes items like pine nuts, squid, and multiple shellfish species."
+    },
+    "weights_measures": {
+      "net_weight_position": "Principal display panel or information panel",
+      "weight_units": "Metric (g, mL, kg, L) mandatory. No dual labeling required.",
+      "minimum_font_size": "8pt minimum for mandatory information",
+      "regulatory_basis": "Framework Act on Consumers; MFDS Food Labeling Standards"
+    },
+    "language_requirements": {
+      "mandatory_language": "Korean (한국어) mandatory for all required label information",
+      "additional_languages": "Additional languages may appear alongside Korean",
+      "note": "Products with only foreign-language labels are not permitted for sale in Korea"
+    },
+    "prohibited_claims": [
+      "Disease treatment or prevention claims without MFDS health claim authorisation",
+      "Misleading comparisons implying superiority without substantiation",
+      "Claims exploiting consumers' psychological fears or anxieties",
+      "False country of origin claims"
+    ],
+    "claim_rules": {
+      "low_calorie": "≤40 kcal per 100g (solid) or ≤20 kcal per 100mL (liquid)",
+      "low_fat": "≤3g per 100g (solid) or ≤1.5g per 100mL (liquid)",
+      "low_sodium": "≤120mg per 100g",
+      "sugar_free": "<0.5g per 100g/100mL",
+      "health_claims": "Only MFDS-authorised health functional food claims permitted on HFF products",
+      "organic": "NIAS (National Institute of Agricultural Sciences) organic certification required"
+    },
+    "special_requirements": [
+      "GMO labeling mandatory since 2001 — if GM ingredient >3% of total ingredient weight",
+      "'Consumption expiry date' (소비기한) system replaced 'best before' from 2023 — significant regulatory change",
+      "Irradiated foods must be labelled 'irradiated' (방사선조사식품)",
+      "High-fructose corn syrup: must be specifically declared by name (not just 'sugar syrup')",
+      "Nutrition labeling exemptions for products <30g, certain agricultural products, and small businesses",
+      "Colour additives must be declared by specific name (not just 'colour')"
+    ],
+    "enforcement_notes": "MFDS enforces via product sampling and label audits. Non-compliant imports are rejected at customs. 2023 switch to 소비기한 (consumption expiry date) system is a major change — all labels must be updated."
+  },
+  {
+    "jurisdiction": "indonesia",
+    "product_type": "packaged_food",
+    "regulatory_basis": "BPOM Regulation No. 27 of 2022 — Labeling of Processed Foods; Government Regulation No. 69 of 1999",
+    "competent_authority": "BPOM (Badan Pengawas Obat dan Makanan)",
+    "mandatory_fields": [
+      "Product name",
+      "List of ingredients (daftar bahan) — in descending order",
+      "Net weight/volume (berat bersih/isi bersih)",
+      "Name and address of manufacturer/importer (dalam/luar negeri)",
+      "Country of origin (negara asal) for imported products",
+      "Expiry date (tanggal kedaluwarsa — best before or use by)",
+      "BPOM Registration Number (Nomor Izin Edar — MD for domestic, ML for imported)",
+      "Halal label from BPJPH (mandatory for foods required to be halal — effective October 2024)",
+      "Nutritional information (informasi nilai gizi)",
+      "Storage conditions (cara penyimpanan)",
+      "Instructions for use (if applicable)",
+      "Bahasa Indonesia language mandatory for all required information"
+    ],
+    "nutrition_declaration": {
+      "mandatory_nutrients": ["Energy (kkal)", "Total Fat (g)", "Saturated Fat (g)", "Total Carbohydrate (g)", "Total Sugar (g)", "Protein (g)", "Sodium (mg)"],
+      "per_100g_required": true,
+      "per_serving_required": true,
+      "format": "Per serving AND per 100g/100mL. % AKG (Angka Kecukupan Gizi — Indonesian DRV). Standard table format per BPOM Reg 27/2022. Note: cholesterol not yet mandatory in Indonesia's NIP.",
+      "nrv_reference": "Indonesian Dietary Reference Values (AKG) — Ministry of Health Regulation No. 28 of 2019",
+      "added_sugar_required": false
+    },
+    "allergen_rules": {
+      "top_allergens": ["Milk and dairy products", "Eggs", "Fish", "Shellfish", "Tree nuts", "Peanuts", "Wheat (gluten)", "Soybeans", "Sesame"],
+      "declaration_method": "Declare in ingredient list AND in separate 'Contains' statement (Mengandung: ...)",
+      "regulatory_basis": "BPOM Regulation No. 27 of 2022 — Article on Allergen Labeling",
+      "halal_note": "Halal certification (BPJPH) becomes mandatory for processed foods phased from October 2024. Non-Halal products must be clearly marked as 'Non-Halal' (Tidak Halal)."
+    },
+    "weights_measures": {
+      "net_weight_position": "Principal display panel",
+      "weight_units": "SI units (gram, mL, kg, L) mandatory",
+      "regulatory_basis": "Law No. 2 of 1981 on Metrology; BPOM Regulation No. 27 of 2022"
+    },
+    "language_requirements": {
+      "mandatory_language": "Bahasa Indonesia mandatory for all required label declarations",
+      "additional_languages": "Additional languages permitted alongside Bahasa Indonesia",
+      "halal_arabic": "Arabic 'Halal' text on Halal label (BPJPH certification mark)"
+    },
+    "prohibited_claims": [
+      "Disease cure or prevention claims",
+      "Misleading claims about nutritional value",
+      "Claims implying product can substitute a balanced diet",
+      "False Halal claims"
+    ],
+    "claim_rules": {
+      "low_fat": "≤3g per 100g (solid) or ≤1.5g per 100mL (liquid)",
+      "sugar_free": "<0.5g sugars per 100g/100mL",
+      "low_sodium": "≤120mg per 100g",
+      "high_fibre": "≥6g per 100g",
+      "organic": "National organic certification required (LSO accredited by KAN)"
+    },
+    "special_requirements": [
+      "BPOM Izin Edar (MD/ML) number MANDATORY — must appear on label before any product can be sold",
+      "Halal label from BPJPH mandatory for all halal-certified products (phased from October 2024)",
+      "Non-Halal foods must be clearly labelled as such and sold only in designated non-Halal sections",
+      "Front-of-pack warning for HIGH SUGAR / HIGH FAT / HIGH SODIUM under discussion (not yet mandatory)",
+      "QR code for supply chain traceability being piloted by BPOM",
+      "Expiry date format: DD/MM/YYYY or MM/YYYY"
+    ],
+    "enforcement_notes": "BPOM has mandatory product registration (Izin Edar) — no product can legally be sold without an MD (domestic) or ML (import) number. BPOM conducts market surveillance and can seize non-compliant products. Halal regulation (BPJPH) is a major compliance change effective October 2024."
+  },
+  {
+    "jurisdiction": "uae",
+    "product_type": "packaged_food",
+    "regulatory_basis": "UAE Food Safety Law No. 10 of 2015; UAE.S 9:2019 (General Requirements for Food Labeling); Emirates Authority for Standardization and Metrology (ESMA)",
+    "competent_authority": "ESMA + Emirate-level authorities (Dubai Municipality, ADAFSA Abu Dhabi, Sharjah Municipality)",
+    "mandatory_fields": [
+      "Product name (Arabic + English mandatory)",
+      "Ingredient list (Arabic mandatory; English recommended)",
+      "Net weight/volume (Arabic and English)",
+      "Name and address of manufacturer",
+      "Name and address of UAE importer/distributor",
+      "Country of origin (بلد المنشأ)",
+      "Date of production and expiry date (Arabic and English)",
+      "Storage conditions",
+      "Instructions for use (if applicable)",
+      "Halal mark from UAE-recognized certification body (mandatory for meat/poultry; strongly recommended for all food)",
+      "Nutrition information (بيانات التغذية) — mandatory per UAE.S 9:2019",
+      "Allergen declaration"
+    ],
+    "nutrition_declaration": {
+      "mandatory_nutrients": ["Energy (kcal)", "Total Fat (g)", "Saturated Fat (g)", "Trans Fat (g)", "Cholesterol (mg)", "Total Carbohydrate (g)", "Dietary Fibre (g)", "Total Sugars (g)", "Protein (g)", "Sodium (mg)"],
+      "per_100g_required": true,
+      "per_serving_required": false,
+      "format": "Per 100g or 100mL. % Daily Value based on UAE NRV (similar to Codex/WHO). Arabic text alongside English.",
+      "nrv_reference": "UAE/Gulf DRVs aligned with WHO/FAO reference values",
+      "bilingual_required": true
+    },
+    "allergen_rules": {
+      "top_allergens": ["Milk", "Eggs", "Fish", "Shellfish", "Tree nuts", "Peanuts", "Wheat/Gluten", "Soybeans", "Sesame", "Sulphites >10 mg/kg"],
+      "declaration_method": "Arabic AND English declaration in ingredient list (bold/contrasting) AND 'Contains' statement",
+      "halal_note": "All meat, poultry, and gelatin products must have UAE-recognized Halal certification. Non-Halal products may only be sold in licensed non-Muslim sections of outlets.",
+      "regulatory_basis": "UAE.S 9:2019 — General Requirements for Food Labeling"
+    },
+    "weights_measures": {
+      "net_weight_position": "Principal display panel",
+      "weight_units": "SI units (metric) mandatory. Arabic numerals required alongside western numerals.",
+      "e_mark": "No UAE equivalent to EU e-mark — follow UAE.S metrology requirements",
+      "regulatory_basis": "UAE Federal Law No. 6 of 2008 on Consumer Protection; UAE.S 9:2019"
+    },
+    "language_requirements": {
+      "mandatory_language": "Arabic is mandatory for all required label declarations (constitutionally required)",
+      "english_required": "English highly recommended and practically required for most imported products",
+      "minimum_font_size": "Minimum 1.5mm for mandatory text; Arabic text must be equal size or larger than other languages"
+    },
+    "prohibited_claims": [
+      "Disease claims without MOH approval",
+      "False Halal claims — serious criminal offence in UAE",
+      "Misleading country of origin claims",
+      "Health claims not substantiated by scientific evidence"
+    ],
+    "claim_rules": {
+      "low_fat": "≤3g per 100g (solid) or ≤1.5g per 100mL",
+      "sugar_free": "<0.5g per 100g/100mL",
+      "organic": "Emirates organic certification or recognition of equivalent foreign certification",
+      "health_claims": "Require MOH UAE pre-approval for therapeutic/health benefit claims"
+    },
+    "special_requirements": [
+      "Arabic language label is LEGALLY MANDATORY — products without Arabic labeling are refused entry at UAE customs",
+      "Halal certification from UAE-accredited body mandatory for meat, poultry, gelatin, and any products claiming to be Halal",
+      "Pork and pork-derived ingredients must be clearly labelled (sold only in licensed outlets)",
+      "Alcohol-containing products regulated separately — not permitted for general sale",
+      "Best before / expiry date: must be at least 30% of shelf life remaining on import",
+      "Products from Israel: historically restricted — UAE-Israel normalization (2020 Abraham Accords) has changed this but verify current import status",
+      "Each emirate (Dubai, Abu Dhabi, Sharjah) may have additional requirements — check local municipality"
+    ],
+    "enforcement_notes": "UAE customs and municipality authorities actively enforce Arabic label requirements. Products without Arabic labels are 100% refused at port of entry. Dubai Municipality operates one of the region's most sophisticated food safety surveillance systems."
+  },
+  {
+    "jurisdiction": "saudi_arabia",
+    "product_type": "packaged_food",
+    "regulatory_basis": "SFDA Food Labeling Regulation; GSO 9:2013 (Gulf Technical Regulation for Food Labeling)",
+    "competent_authority": "SFDA (Saudi Food and Drug Authority)",
+    "mandatory_fields": [
+      "Product name (Arabic mandatory)",
+      "Ingredient list (Arabic mandatory, descending order)",
+      "Net weight/volume (Arabic and English)",
+      "Manufacturer name and address",
+      "Importer/local agent name and address in Saudi Arabia",
+      "Country of origin (Arabic)",
+      "Production and expiry date (Arabic and English)",
+      "Storage conditions (Arabic)",
+      "Halal certificate/mark from recognized body (mandatory for meat/poultry; required for SFDA registration)",
+      "SFDA registration/notification number",
+      "Nutrition declaration (Arabic mandatory)",
+      "Nutritional claims (if any) — Arabic"
+    ],
+    "nutrition_declaration": {
+      "mandatory_nutrients": ["Energy (kcal)", "Total Fat (g)", "Saturated Fat (g)", "Trans Fat (g)", "Cholesterol (mg)", "Total Carbohydrate (g)", "Dietary Fibre (g)", "Sugars (g)", "Protein (g)", "Sodium (mg)", "Key vitamins and minerals if claimed"],
+      "per_100g_required": true,
+      "per_serving_required": false,
+      "format": "Per 100g/100mL mandatory. % DV based on Saudi/Gulf reference values. Arabic language. SFDA Front-of-Pack scheme under development.",
+      "nrv_reference": "Gulf/Saudi DRVs (Dietary Reference Values) aligned with WHO/FAO"
+    },
+    "allergen_rules": {
+      "top_allergens": ["Milk", "Eggs", "Fish", "Shellfish", "Tree nuts", "Peanuts", "Wheat/Gluten", "Soybeans", "Sesame"],
+      "declaration_method": "Arabic AND English in ingredient list (bold) AND separate 'Contains' statement",
+      "halal_note": "Non-Halal ingredients (pork, alcohol, non-Halal meat) must be clearly declared. Saudi Arabia: pork and alcohol prohibited — products containing them cannot be imported."
+    },
+    "weights_measures": {
+      "net_weight_position": "Principal display panel",
+      "weight_units": "SI metric units mandatory",
+      "regulatory_basis": "SASO Technical Regulations; GSO 9:2013"
+    },
+    "language_requirements": {
+      "mandatory_language": "Arabic mandatory for all required declarations",
+      "english_supplement": "English may supplement Arabic but Arabic takes precedence"
+    },
+    "prohibited_claims": [
+      "Disease claims without SFDA authorisation",
+      "False Halal claims — criminal offence in KSA",
+      "Misleading nutritional claims",
+      "Alcohol content claims"
+    ],
+    "claim_rules": {
+      "low_fat": "≤3g per 100g (solid)",
+      "sugar_free": "<0.5g per 100g",
+      "health_claims": "Require SFDA pre-approval"
+    },
+    "special_requirements": [
+      "Arabic label MANDATORY — products refused at Saudi customs without Arabic label",
+      "Halal certification from SFDA-recognized body mandatory for food products",
+      "Pork and all pork derivatives prohibited — cannot be imported into Saudi Arabia",
+      "Alcohol — completely prohibited",
+      "Minimum remaining shelf life of 50% required at import",
+      "Israeli-origin products historically prohibited — verify current status",
+      "SFDA notification number required on label for registered products",
+      "E-commerce food sales require same labeling compliance"
+    ],
+    "enforcement_notes": "SFDA has one of the most active import surveillance programmes in the Middle East. Non-compliant products face destruction. Saudi Arabia enforces halal integrity aggressively — false Halal claims result in criminal prosecution. The SFDA Inspection and Monitoring Authority conducts regular market sweeps."
+  },
+  {
+    "jurisdiction": "brazil",
+    "product_type": "packaged_food",
+    "regulatory_basis": "ANVISA RDC 429/2020 (Nutritional Labeling); ANVISA RDC 727/2022 (General Food Labeling); INMETRO regulations",
+    "competent_authority": "ANVISA (Agência Nacional de Vigilância Sanitária); MAPA for agricultural products",
+    "mandatory_fields": [
+      "Denominação de venda (product name/description)",
+      "Lista de ingredientes (ingredient list — descending order)",
+      "Quantidades de nutrientes (nutritional declaration)",
+      "Informações de alérgenos (allergen information)",
+      "Data de fabricação e validade (manufacture and expiry date)",
+      "Quantidade líquida (net quantity)",
+      "Identificação da origem (manufacturer/importer name and CNPJ)",
+      "País de origem (country of origin for imported)",
+      "Número do lote (batch number)",
+      "Condições de conservação (storage conditions)",
+      "Informações de preparo (preparation instructions if applicable)",
+      "Front-of-pack warning labels (selos de advertência) if thresholds exceeded (MANDATORY since October 2022)"
+    ],
+    "nutrition_declaration": {
+      "mandatory_nutrients": ["Valor energético (kJ and kcal)", "Carboidratos totais (g)", "Açúcares adicionados (g)", "Gorduras totais (g)", "Gorduras saturadas (g)", "Gorduras trans (g)", "Fibra alimentar (g)", "Proteínas (g)", "Sódio (mg)"],
+      "per_100g_required": true,
+      "per_serving_required": true,
+      "format": "Per 100g/mL AND per serving. % Daily Value (%VD). Added sugars mandatory (UNIQUE in South America). Energy in both kJ and kcal. Black octagonal front-of-pack warning seals mandatory if nutrients exceed thresholds.",
+      "nrv_reference": "Brazilian Dietary Reference Values per ANVISA RDC 429/2020 Annex",
+      "added_sugar_required": true,
+      "warning_seals": "ALTO EM: AÇÚCARES ADICIONADOS (>15g/100g solid or >7.5g/100mL liquid), GORDURAS SATURADAS (>6g/100g or >3g/100mL), SÓDIO (>600mg/100g or >300mg/100mL)"
+    },
+    "allergen_rules": {
+      "top_allergens": ["Wheat and gluten sources", "Crustaceans", "Eggs", "Fish", "Peanuts", "Soybeans", "Milk", "Tree nuts", "Sesame", "Sulphites >10mg/kg", "Lupin", "Molluscs"],
+      "declaration_method": "Bold in ingredient list AND mandatory statement: 'Alérgenos: CONTÉM [allergen]' after ingredient list",
+      "regulatory_basis": "ANVISA RDC 26/2015 — Allergen Information in Packaged Foods",
+      "cross_contact": "'Pode conter' (may contain) statement if cross-contact risk exists"
+    },
+    "weights_measures": {
+      "net_weight_position": "Principal display panel",
+      "weight_units": "Metric SI units mandatory. INMETRO enforces measurement accuracy.",
+      "regulatory_basis": "INMETRO — Portaria INMETRO No. 157/2002; Consumer Protection Code (CDC)"
+    },
+    "language_requirements": {
+      "mandatory_language": "Portuguese mandatory for all required declarations",
+      "font_minimum": "Minimum 1mm font height for mandatory information"
+    },
+    "prohibited_claims": [
+      "Disease cure or treatment claims",
+      "Misleading comparative claims",
+      "Claims that suggest product is beneficial for weight management without substantiation",
+      "Claims that minimize health risks of excessive consumption"
+    ],
+    "claim_rules": {
+      "low_fat": "≤3g per 100g (solid) or ≤1.5g per 100mL",
+      "low_sodium": "≤120mg per 100g",
+      "sugar_free": "<0.5g per 100g/100mL",
+      "high_fibre": "≥6g per 100g",
+      "organic": "IBD, Ecocert or other MAPA-accredited organic certification; Selo Brasil Orgânico"
+    },
+    "special_requirements": [
+      "Black octagonal warning seals mandatory since October 2022 for excess added sugars, saturated fat, and sodium — highly visible, on front of pack",
+      "'NÃO CONTÉM GLÚTEN' or 'CONTÉM GLÚTEN' declaration mandatory for all products",
+      "Organic products must display 'ORGÂNICO' and official Brazil organic seal",
+      "Transgenic (GMO) products: mandatory triangle symbol with T and 'TRANSGÊNICO'",
+      "CNPJ (company tax registration number) of manufacturer/importer mandatory on label",
+      "Irradiated foods must be labelled (circular symbol with stylized rays)",
+      "ANVISA registration number (if product category requires registration)"
+    ],
+    "enforcement_notes": "ANVISA's front-of-pack warning label system (Resolução RDC 429/2020) is now fully in force — this is one of the strictest FOP labeling requirements globally. MAPA enforces labeling for organic, wine, and agricultural products separately. State and municipal health authorities conduct market surveillance."
+  },
+  {
+    "jurisdiction": "mexico",
+    "product_type": "packaged_food",
+    "regulatory_basis": "NOM-051-SCFI/SSA1-2010 as amended in 2020 — General Specifications for Labeling of Pre-Packaged Foods",
+    "competent_authority": "COFEPRIS (Health) + SE (Economy/SCFI) for commercial aspects",
+    "mandatory_fields": [
+      "Denominación del producto (product name)",
+      "Lista de ingredientes (ingredient list)",
+      "Declaración de ingredientes alergénicos (allergen declaration)",
+      "Información nutrimental (nutritional information — GDA table)",
+      "Fecha de caducidad o de consumo preferente (expiry or best before date)",
+      "Contenido neto (net content)",
+      "Nombre y domicilio del fabricante, importador o distribuidor",
+      "País de origen (country of origin)",
+      "Leyendas o sellos de advertencia (warning legends/seals if applicable)",
+      "Instrucciones de uso o preparación (if applicable)",
+      "Código de barras (barcode — industry standard but practically mandatory for retail)"
+    ],
+    "nutrition_declaration": {
+      "mandatory_nutrients": ["Energía (kcal)", "Grasas totales (g)", "Grasas saturadas (g)", "Grasas trans (g)", "Azúcares totales (g)", "Proteínas (g)", "Sodio (mg)"],
+      "per_100g_required": true,
+      "per_serving_required": true,
+      "format": "GDA (Guideline Daily Amount) table format per NOM-051. Per serving AND per 100g. Front-of-pack black octagonal warning seals mandatory since October 2020.",
+      "nrv_reference": "Mexican Dietary Reference Values (Valores de Referencia de Nutrientes — VRN) per NOM-051",
+      "added_sugar_required": false,
+      "warning_seals": "EXCESO CALORÍAS: >274 kcal/100g solid / >70 kcal/100mL liquid; EXCESO AZÚCARES: >10g/100g solid / >5g/100mL; EXCESO GRASAS SATURADAS: >4g/100g solid; EXCESO SODIO: >300mg/100g solid / >150mg/100mL; EXCESO GRASAS TRANS: if trans fat present"
+    },
+    "allergen_rules": {
+      "top_allergens": ["Cacahuate (peanuts)", "Nueces (tree nuts)", "Leche (milk)", "Huevo (eggs)", "Trigo (wheat/gluten)", "Soya (soybeans)", "Pescado (fish)", "Mariscos (shellfish)", "Ajonjolí (sesame)"],
+      "declaration_method": "Bold in ingredient list AND separate 'Contiene:' statement",
+      "regulatory_basis": "NOM-051-SCFI/SSA1-2010 Amendment 2020"
+    },
+    "weights_measures": {
+      "net_weight_position": "Principal display panel (30% or more of label area)",
+      "weight_units": "SI metric units mandatory. Consumer Protection Law enforces accuracy.",
+      "regulatory_basis": "NOM-051; NMX-F standards; Ley Federal sobre Metrología y Normalización"
+    },
+    "language_requirements": {
+      "mandatory_language": "Spanish mandatory for all required declarations",
+      "font_minimum": "Minimum 1mm character height for mandatory text"
+    },
+    "prohibited_claims": [
+      "Disease treatment or cure claims",
+      "Claims that minimize effects of warning seals",
+      "Cartoon characters or celebrities targeting children on products with warning seals (effective 2023)",
+      "Claims such as 'natural', 'light' without meeting criteria per NOM-051"
+    ],
+    "claim_rules": {
+      "low_fat": "≤3g per 100g solid; ≤1.5g per 100mL liquid",
+      "low_sodium": "≤120mg per 100g",
+      "sugar_free": "<0.5g per 100g/mL",
+      "organic": "SAGARPA organic certification; Sello México Orgánico"
+    },
+    "special_requirements": [
+      "Black octagonal warning seals MANDATORY since October 2020 — one of the strictest FOP labeling systems globally",
+      "Cartoon characters and celebrity endorsements PROHIBITED on products bearing warning seals (targeting children restriction)",
+      "Products with warning seals cannot be sold in schools or advertised to children under 14",
+      "No free toys/gifts with products bearing warning seals",
+      "NOM-051 amendment 2020 is comprehensive — exporters must update all Mexico-market labels",
+      "Codex ADI limits referenced but national limits apply via NOM standards"
+    ],
+    "enforcement_notes": "COFEPRIS enforces food labeling. The 2020 NOM-051 amendment created one of the world's most aggressive front-of-pack warning label systems. Non-compliant products are not cleared by customs. Advertising restrictions for products with warning seals are heavily enforced by COFEPRIS and the Federal Consumer Attorney (PROFECO)."
+  },
+  {
+    "jurisdiction": "south_africa",
+    "product_type": "packaged_food",
+    "regulatory_basis": "Foodstuffs, Cosmetics and Disinfectants Act (FCD Act) 1972; R. 146 of 2010 (Labeling and Advertising of Foodstuffs); R. 127 of 2014 (Fortification)",
+    "competent_authority": "Department of Health; DAFF for agricultural products; NRCS for metrology",
+    "mandatory_fields": [
+      "Name or description of foodstuff",
+      "List of ingredients (descending order by mass)",
+      "Net content (mass or volume)",
+      "Name and address of manufacturer, packer, or importer",
+      "Country of origin",
+      "Date marking (best before or use by)",
+      "Lot identification (batch code)",
+      "Storage instructions",
+      "Directions for use (if not obvious)",
+      "Nutritional information (mandatory per R.146/2010)",
+      "Allergen declaration"
+    ],
+    "nutrition_declaration": {
+      "mandatory_nutrients": ["Energy (kJ)", "Protein (g)", "Glycaemic carbohydrate (g) — SA uses 'glycaemic' not 'total'", "of which total sugars (g)", "Total fat (g)", "of which saturated fat (g)", "Total dietary fibre (g)", "Total sodium (mg)"],
+      "per_100g_required": true,
+      "per_serving_required": false,
+      "format": "Per 100g mandatory. Energy in kJ (kilojoules) not kcal — South Africa uses kJ predominantly. 'Glycaemic carbohydrate' is South Africa-specific terminology. % NRV based on South African Reference Values.",
+      "nrv_reference": "South African Nutrient Reference Values (NRVs) per Department of Health",
+      "note": "South Africa uses kJ as primary energy unit and 'glycaemic carbohydrate' — terminology unique to RSA food labeling regulations"
+    },
+    "allergen_rules": {
+      "top_allergens": ["Milk", "Eggs", "Fish", "Shellfish/Crustaceans", "Tree nuts", "Peanuts", "Wheat/Gluten", "Soybeans", "Lupin", "Sesame", "Sulphites >10mg/kg", "Molluscs"],
+      "declaration_method": "Bold in ingredient list AND 'Contains:' statement. 'May contain:' for cross-contact.",
+      "regulatory_basis": "R. 146 of 2010 Regulation 5 — Allergen Labeling"
+    },
+    "weights_measures": {
+      "net_weight_position": "Principal display panel",
+      "weight_units": "Metric SI mandatory. NRCS (National Regulator for Compulsory Specifications) enforces.",
+      "regulatory_basis": "Trade Metrology Act 77 of 1973; R. 146 of 2010"
+    },
+    "language_requirements": {
+      "mandatory_language": "English mandatory. Any of South Africa's 11 official languages may be added.",
+      "note": "South Africa has 11 official languages — English is the default language of commerce and regulation. Afrikaans commonly appears alongside English on major retailer products."
+    },
+    "prohibited_claims": [
+      "Disease cure or treatment claims on food",
+      "Misleading nutrient content claims",
+      "Claims that vitamins/minerals 'prevent diseases' without substantiation",
+      "'No cholesterol' claims on plant foods (misleading as plants inherently have no cholesterol)"
+    ],
+    "claim_rules": {
+      "low_fat": "≤3g per 100g (solid)",
+      "low_sodium": "≤120mg per 100g",
+      "sugar_free": "<0.5g per 100g",
+      "high_fibre": "≥6g per 100g",
+      "organic": "SANAS-accredited organic certification"
+    },
+    "special_requirements": [
+      "Energy declaration in kJ is primary in South Africa — differs from most global markets",
+      "'Glycaemic carbohydrate' terminology is uniquely South African",
+      "Irradiated foods must display the internationally recognized radura symbol",
+      "Kosher and Halal certification commercially important for export and specific market segments",
+      "SADC (Southern African Development Community) harmonisation in progress — may affect requirements",
+      "Products containing GM ingredients must disclose this on label",
+      "Proposed Front-of-Pack Nutritional Labeling (FOP-NL) scheme under development — watch for updates"
+    ],
+    "enforcement_notes": "South Africa is modernising its food labeling regulations — R. 146 of 2010 is being replaced by new regulations. The Regulations Relating to the Labeling and Advertising of Foods (R.429 of 2019) are finalised but implementation is ongoing. Exporters should monitor DAFF and DoH for updates."
+  }
+]
