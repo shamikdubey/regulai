@@ -54,8 +54,8 @@ export default function DashboardPage() {
           {greeting}, {user?.name?.split(" ")[0] || "there"}
         </h1>
         <p className="text-sm text-[#4a5568]">
-          {tenant?.name} · {tenant?.allowed_jurisdictions?.length || 10} jurisdictions ·{" "}
-          {tenant?.allowed_domains?.length || 5} domains licensed
+          {tenant?.name} · {tenant?.allowedJurisdictions?.length || 10} jurisdictions ·{" "}
+          {tenant?.allowedDomains?.length || 5} domains licensed
         </p>
       </motion.div>
 
