@@ -91,7 +91,7 @@ async def init_db():
         await conn.execute(text("CREATE EXTENSION IF NOT EXISTS pgcrypto"))
         # Optional extension — may not be available in all environments
         try:
-            await conn.execute(text("CREATE EXTENSION IF NOT EXISTS pg_stat_statements"))
+            await conn.run_sync(Base.metadata.create_all)
         except Exception:
             pass  # Not available in CI/test environments — that is fine
     from app.db import models  # noqa — ensure all models are registered
