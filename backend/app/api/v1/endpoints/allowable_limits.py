@@ -12,6 +12,7 @@ from sqlalchemy import select, or_, String, func, Text, JSON, Boolean
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.dialects.postgresql import UUID as PGUUID
 import uuid
+from datetime import datetime
 
 from app.db.database import get_db, Base
 from app.db.models import User
@@ -41,7 +42,7 @@ class AllowableLimit(Base):
     notes: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     status: Mapped[str] = mapped_column(String(50), default="active")  # active / withdrawn / under_review
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
-    created_at = mapped_column(nullable=True)
+    created_at: Mapped[Optional[datetime]] = mapped_column(nullable=True, server_default=func.now())
 
 
 class AllowableLimitOut(BaseModel):

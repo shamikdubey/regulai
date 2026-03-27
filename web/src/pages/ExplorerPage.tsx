@@ -115,7 +115,7 @@ function BodyCard({ body }: { body: RegulatoryBody }) {
         {body.established_year && <span>Est. {body.established_year}</span>}
         {body.website && (
           <a
-            onClick={() => windows.open(`https://${body.website}`, "_blank")}
+            onClick={() => window.open(`https://${body.website}`, "_blank", "noopener,noreferrer")}
             className="ml-auto flex items-center gap-1 text-[#4a5568] hover:text-[#00d4aa] cursor-pointer transition-colors"
           >
             <ExternalLink size={10} /> {body.website}
