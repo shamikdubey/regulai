@@ -24,7 +24,7 @@ from typing import Optional, List
 from pydantic import BaseModel, EmailStr, field_validator
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.security import OAuth2PasswordRequestForm
-from passlib.context import CryptContext
+import bcrypt as _bcrypt
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 import uuid
@@ -43,8 +43,31 @@ from app.services.auth_service import (
 
 router = APIRouter()
 settings = get_settings()
-pwd_ctx = CryptContext(schemes=["bcrypt"], deprecated="auto",
-                       bcrypt__rounds=settings.BCRYPT_ROUNDS)
+class _PwdCtx:
+    """Thin bcrypt wrapper matching passlib interface used in this file."""
+    @staticmethod
+    def hash(secret: str) -> str:
+        return _bcrypt.hashpw(
+            secret.encode("utf-8"),
+            _bcrypt.gensalt(rounds=settings.BCRYPT_ROUNDS)
+        ).decode("utf-8")
+
+    @staticmethod
+    def verify(secret: str, hashed: str) -> bool:
+        try:
+            return _bcrypt.checkpw(secret.encode("utf-8"), hashed.encode("utf-8"))
+        except Exception:
+            return False
+
+    @staticmethod
+    def dummy_verify() -> None:
+        """Constant-time dummy to prevent user enumeration timing attacks."""
+        try:
+            _bcrypt.checkpw(b"dummy", _bcrypt.hashpw(b"dummy", _bcrypt.gensalt(4)))
+        except Exception:
+            pass
+
+pwd_ctx = _PwdCtx()
 
 
 # ── Schemas ──────────────────────────────────────────────────────────────────

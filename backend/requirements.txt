@@ -21,8 +21,6 @@ slowapi==0.1.9
 
 # ── Auth & security
 python-jose[cryptography]==3.3.0
-passlib[bcrypt]==1.7.4
-# NOTE: passlib 1.7.4 requires bcrypt<4.0 — do NOT add a separate bcrypt pin
 
 # ── Config & secrets
 pydantic==2.8.2
@@ -58,3 +56,4 @@ pytest-timeout==2.3.1
 # ── Utilities
 tenacity==9.0.0
 stripe==11.1.0
+bcrypt==4.2.0
