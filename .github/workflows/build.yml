@@ -1,0 +1,256 @@
+name: Build & Release
+
+on:
+  push:
+    tags: ["v*.*.*"]
+  workflow_dispatch:
+    inputs:
+      tenant_id:
+        description: "Specific tenant slug (empty = all)"
+        required: false
+        default: ""
+      environment:
+        description: "Target environment"
+        required: true
+        default: "production"
+        type: choice
+        options: [production, staging]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ── 1. Discover tenants from .github/tenants/ ─────────────────────────────
+  discover-tenants:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: set
+        run: |
+          if [ -n "${{ github.event.inputs.tenant_id }}" ]; then
+            echo 'matrix={"tenant":["${{ github.event.inputs.tenant_id }}"]}' >> $GITHUB_OUTPUT
+          else
+            TENANTS=$(ls .github/tenants/*.json 2>/dev/null | xargs -I{} basename {} .json | jq -R . | jq -sc .)
+            echo "matrix={\"tenant\":$TENANTS}" >> $GITHUB_OUTPUT
+          fi
+
+  # ── 2. Backend unit tests ─────────────────────────────────────────────────
+  test-backend:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_DB: regulai_test
+          POSTGRES_USER: regulai
+          POSTGRES_PASSWORD: test_secret
+        options: >-
+          --health-cmd pg_isready --health-interval 10s
+          --health-timeout 5s --health-retries 5
+        ports: ["5432:5432"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r backend/requirements.txt
+      - run: |
+          cd backend
+          alembic upgrade head
+          pytest tests/ -v --tb=short
+        env:
+          DATABASE_URL: postgresql+asyncpg://regulai:test_secret@localhost:5432/regulai_test
+          SECRET_KEY: ci-test-secret-key-32-chars-minimum
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ENVIRONMENT: test
+
+  # ── 3. Build & push backend Docker image ─────────────────────────────────
+  build-backend:
+    needs: test-backend
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}/backend
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha,prefix=sha-
+      - uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # ── 4. Build Electron per tenant × per OS ────────────────────────────────
+  build-electron:
+    needs: [discover-tenants, test-backend]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        tenant: ${{ fromJson(needs.discover-tenants.outputs.matrix).tenant }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: electron-app/package-lock.json
+
+      - name: Load tenant config
+        id: cfg
+        shell: bash
+        run: |
+          F=".github/tenants/${{ matrix.tenant }}.json"
+          echo "app_name=$(jq -r .app_name $F)"     >> $GITHUB_OUTPUT
+          echo "app_id=$(jq -r .app_id $F)"         >> $GITHUB_OUTPUT
+          echo "api_url=$(jq -r .api_url $F)"       >> $GITHUB_OUTPUT
+          echo "s3_bucket=$(jq -r .s3_bucket $F)"   >> $GITHUB_OUTPUT
+
+      - name: npm ci
+        working-directory: electron-app
+        run: npm ci
+
+      - name: Write tenant .env
+        working-directory: electron-app
+        shell: bash
+        run: |
+          cat > .env << EOF
+          VITE_API_URL=${{ steps.cfg.outputs.api_url }}
+          VITE_APP_VERSION=${{ github.ref_name }}
+          VITE_APP_NAME=${{ steps.cfg.outputs.app_name }}
+          UPDATE_S3_BUCKET=${{ steps.cfg.outputs.s3_bucket }}
+          UPDATE_S3_REGION=${{ secrets.AWS_REGION }}
+          EOF
+
+      - name: Patch package.json for tenant
+        working-directory: electron-app
+        shell: bash
+        run: |
+          node -e "
+            const fs = require('fs');
+            const pkg = JSON.parse(fs.readFileSync('package.json','utf8'));
+            pkg.name = '${{ matrix.tenant }}';
+            pkg.build.appId = '${{ steps.cfg.outputs.app_id }}';
+            pkg.build.productName = '${{ steps.cfg.outputs.app_name }}';
+            fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2));
+          "
+
+      - name: Build — Linux
+        if: matrix.os == 'ubuntu-latest'
+        working-directory: electron-app
+        run: npm run dist:linux
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Import Windows cert
+        if: matrix.os == 'windows-latest'
+        shell: powershell
+        run: |
+          $b = [Convert]::FromBase64String("${{ secrets.WIN_CERT_BASE64 }}")
+          [IO.File]::WriteAllBytes("$env:RUNNER_TEMP\cert.p12", $b)
+
+      - name: Build — Windows
+        if: matrix.os == 'windows-latest'
+        working-directory: electron-app
+        run: npm run dist:win
+        env:
+          WIN_CERT_FILE: ${{ runner.temp }}\cert.p12
+          WIN_CERT_PASSWORD: ${{ secrets.WIN_CERT_PASSWORD }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build — macOS
+        if: matrix.os == 'macos-latest'
+        working-directory: electron-app
+        run: npm run dist:mac
+        env:
+          CSC_LINK: ${{ secrets.MAC_CERT_BASE64 }}
+          CSC_KEY_PASSWORD: ${{ secrets.MAC_CERT_PASSWORD }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_PASSWORD }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.tenant }}-${{ matrix.os }}-${{ github.ref_name }}
+          path: |
+            electron-app/release/*.exe
+            electron-app/release/*.dmg
+            electron-app/release/*.AppImage
+            electron-app/release/latest*.yml
+          retention-days: 30
+
+      - name: Configure AWS
+        if: github.event_name == 'push'
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Push to S3 update channel
+        if: github.event_name == 'push'
+        shell: bash
+        run: |
+          aws s3 sync electron-app/release/ \
+            s3://${{ steps.cfg.outputs.s3_bucket }}/${{ github.ref_name }}/ \
+            --exclude "*" \
+            --include "*.exe" --include "*.dmg" \
+            --include "*.AppImage" --include "*.yml" \
+            --acl private
+
+  # ── 5. Deploy backend to ECS ──────────────────────────────────────────────
+  deploy-backend:
+    needs: [build-backend, build-electron]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    environment:
+      name: ${{ github.event.inputs.environment || 'production' }}
+      url: https://api.regulai.com
+    steps:
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Force ECS redeploy
+        run: |
+          aws ecs update-service \
+            --cluster regulai-production \
+            --service regulai-backend \
+            --force-new-deployment
+
+      - name: Wait for stability
+        run: |
+          aws ecs wait services-stable \
+            --cluster regulai-production \
+            --services regulai-backend
+
+      - name: Health check
+        run: |
+          sleep 15
+          curl -sf https://api.regulai.com/health | jq .
