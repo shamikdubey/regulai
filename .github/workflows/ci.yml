@@ -55,6 +55,7 @@ jobs:
       AWS_S3_BUCKET: ""
       SENTRY_DSN: ""
       OTEL_ENDPOINT: ""
+      TESTING: "true"
 
     steps:
       - name: Checkout
