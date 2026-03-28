@@ -1,9 +1,12 @@
 """
 Test configuration and shared fixtures.
 Compatible with pytest-asyncio 0.24+ (asyncio_mode=auto).
+
+Key design: fixtures COMMIT data to the database so the ASGI test client
+(which uses the app's own connection pool) can see the test data.
+Cleanup happens via delete in teardown.
 """
 import asyncio
-import hashlib
 import secrets
 import uuid
 from typing import AsyncGenerator
@@ -11,13 +14,20 @@ from typing import AsyncGenerator
 import pytest
 import pytest_asyncio
 from httpx import AsyncClient, ASGITransport
-from sqlalchemy import text
+from sqlalchemy import text, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.database import AsyncSessionLocal, init_db
-from app.db.models import Tenant, User, ApiKey
-from app.api.v1.endpoints.auth import pwd_ctx
+from app.db.models import Tenant, User, ApiKey, RefreshToken
 from app.services.auth_service import create_access_token
+
+
+# ── Password hashing (using bcrypt directly, same as auth.py) ────────────────
+
+import bcrypt as _bcrypt
+
+def hash_password(password: str) -> str:
+    return _bcrypt.hashpw(password.encode("utf-8"), _bcrypt.gensalt(rounds=4)).decode("utf-8")
 
 
 # ── Database setup (runs once per test session) ───────────────────────────────
@@ -29,22 +39,55 @@ async def setup_database():
     yield
 
 
-# ── Database session per test ─────────────────────────────────────────────────
+# ── Admin DB session (bypasses RLS, commits data) ────────────────────────────
 
 @pytest_asyncio.fixture
 async def db() -> AsyncGenerator[AsyncSession, None]:
-    """Test database session with RLS bypassed for fixture setup."""
+    """
+    Database session that COMMITS data so the ASGI test client can see it.
+    Cleans up after the test by tracking created IDs.
+    """
     async with AsyncSessionLocal() as session:
         await session.execute(text("SELECT set_config('app.bypass_rls', 'on', TRUE)"))
         yield session
-        await session.rollback()
+        # Commit so the app's connection pool can see the data
+        await session.commit()
+
+
+# ── Cleanup helper ────────────────────────────────────────────────────────────
+
+@pytest_asyncio.fixture(autouse=True)
+async def cleanup_after_test():
+    """Delete all test data after each test to keep DB clean."""
+    yield
+    # Clean up after test
+    async with AsyncSessionLocal() as session:
+        await session.execute(text("SELECT set_config('app.bypass_rls', 'on', TRUE)"))
+        # Delete in correct order (FK constraints)
+        await session.execute(delete(RefreshToken))
+        await session.execute(delete(ApiKey))
+        await session.execute(
+            text("DELETE FROM password_reset_tokens")
+        )
+        await session.execute(
+            text("DELETE FROM email_verification_tokens")
+        )
+        await session.execute(
+            text("DELETE FROM query_logs")
+        )
+        await session.execute(
+            text("DELETE FROM documents")
+        )
+        await session.execute(delete(User))
+        await session.execute(delete(Tenant))
+        await session.commit()
 
 
 # ── Tenant fixtures ───────────────────────────────────────────────────────────
 
 @pytest_asyncio.fixture
 async def tenant(db: AsyncSession) -> Tenant:
-    """Create an isolated test tenant."""
+    """Create and commit a test tenant."""
     t = Tenant(
         name=f"Test Co {uuid.uuid4().hex[:6]}",
         slug=f"test-{uuid.uuid4().hex[:8]}",
@@ -55,6 +98,7 @@ async def tenant(db: AsyncSession) -> Tenant:
     )
     db.add(t)
     await db.flush()
+    await db.commit()
     return t
 
 
@@ -70,6 +114,7 @@ async def second_tenant(db: AsyncSession) -> Tenant:
     )
     db.add(t)
     await db.flush()
+    await db.commit()
     return t
 
 
@@ -77,7 +122,7 @@ async def second_tenant(db: AsyncSession) -> Tenant:
 
 @pytest_asyncio.fixture
 async def admin_user(db: AsyncSession, tenant: Tenant) -> User:
-    """Create an admin user in the test tenant."""
+    """Create and commit an admin user."""
     email = f"admin-{uuid.uuid4().hex[:8]}@test.com"
     u = User(
         tenant_id=tenant.id,
@@ -85,17 +130,18 @@ async def admin_user(db: AsyncSession, tenant: Tenant) -> User:
         email=email,
         full_name="Test Admin",
         role="admin",
-        password_hash=pwd_ctx.hash("Test1234!"),
+        password_hash=hash_password("Test1234!"),
         email_verified=True,
     )
     db.add(u)
     await db.flush()
+    await db.commit()
     return u
 
 
 @pytest_asyncio.fixture
 async def regular_user(db: AsyncSession, tenant: Tenant) -> User:
-    """Create a regular (non-admin) user."""
+    """Create and commit a regular user."""
     email = f"user-{uuid.uuid4().hex[:8]}@test.com"
     u = User(
         tenant_id=tenant.id,
@@ -103,11 +149,12 @@ async def regular_user(db: AsyncSession, tenant: Tenant) -> User:
         email=email,
         full_name="Test User",
         role="user",
-        password_hash=pwd_ctx.hash("Test1234!"),
+        password_hash=hash_password("Test1234!"),
         email_verified=True,
     )
     db.add(u)
     await db.flush()
+    await db.commit()
     return u
 
 
@@ -121,11 +168,12 @@ async def second_tenant_user(db: AsyncSession, second_tenant: Tenant) -> User:
         email=email,
         full_name="Other User",
         role="admin",
-        password_hash=pwd_ctx.hash("Test1234!"),
+        password_hash=hash_password("Test1234!"),
         email_verified=True,
     )
     db.add(u)
     await db.flush()
+    await db.commit()
     return u
 
 
@@ -180,7 +228,7 @@ def other_tenant_headers(second_tenant_token: str) -> dict:
 
 @pytest_asyncio.fixture
 async def client() -> AsyncGenerator[AsyncClient, None]:
-    """Async HTTP test client."""
+    """Async HTTP test client using the real ASGI app."""
     from app.main import app
     async with AsyncClient(
         transport=ASGITransport(app=app),
@@ -194,7 +242,7 @@ async def client() -> AsyncGenerator[AsyncClient, None]:
 
 @pytest_asyncio.fixture
 async def api_key(db: AsyncSession, admin_user: User, tenant: Tenant):
-    """Create a test API key. Returns (raw_key, ApiKey model)."""
+    """Create and commit a test API key. Returns (raw_key, ApiKey model)."""
     raw, prefix, key_hash = ApiKey.generate_key("test")
     ak = ApiKey(
         tenant_id=tenant.id,
@@ -206,4 +254,5 @@ async def api_key(db: AsyncSession, admin_user: User, tenant: Tenant):
     )
     db.add(ak)
     await db.flush()
+    await db.commit()
     return raw, ak
