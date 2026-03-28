@@ -155,15 +155,17 @@ class TestRefreshTokens:
 
 class TestRegistration:
     @pytest.mark.asyncio
-    async def test_register_blocked_when_users_exist(self, client: AsyncClient):
-        """Registration endpoint returns 400 when users already exist."""
+    async def test_register_blocked_when_users_exist(
+        self, client: AsyncClient, admin_user
+    ):
+        """Registration endpoint returns 400 when a user already exists."""
+        # admin_user fixture creates a user first, so register should be blocked
         r = await client.post("/api/v1/auth/register", json={
             "email": "newadmin@test.com",
             "password": "Test1234!",
             "full_name": "New Admin",
             "tenant_name": "New Co",
         })
-        # Users already exist from fixtures — should block
         assert r.status_code in (400, 403)
 
     @pytest.mark.asyncio
