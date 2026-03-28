@@ -137,8 +137,20 @@ async def get_current_user(credentials: Optional[HTTPAuthorizationCredentials] =
     try:
         payload = decode_auth0_token(token) if settings.AUTH0_DOMAIN else decode_internal_token(token)
     except HTTPException: raise
-    r = await db.execute(select(User).where(User.auth0_user_id == payload.get("sub",""), User.is_active == True))
-    user = r.scalar_one_or_none()
+    sub = payload.get("sub", "")
+    import uuid as _uuid
+    user = None
+    # Try UUID lookup first (our internal tokens use user.id as sub)
+    try:
+        uid = _uuid.UUID(sub)
+        r = await db.execute(select(User).where(User.id == uid, User.is_active == True))
+        user = r.scalar_one_or_none()
+    except (ValueError, AttributeError):
+        pass
+    # Fall back to auth0_user_id lookup (email-based, for Auth0 tokens)
+    if not user:
+        r = await db.execute(select(User).where(User.auth0_user_id == sub, User.is_active == True))
+        user = r.scalar_one_or_none()
     if not user: raise HTTPException(401, "User not found or inactive")
     return user
 
