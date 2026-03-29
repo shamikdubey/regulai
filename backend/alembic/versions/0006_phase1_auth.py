@@ -66,7 +66,7 @@ def upgrade() -> None:
         sa.Column("created_by",  postgresql.UUID(as_uuid=True),
                   sa.ForeignKey("users.id", ondelete="SET NULL"), nullable=True),
         sa.Column("name",        sa.String(255), nullable=False),     # human label
-        sa.Column("prefix",      sa.String(12),  nullable=False),     # "rkai_live_xxxx"
+        sa.Column("prefix",      sa.String(20),  nullable=False),     # "rkai_live_xxxxxxxx"
         sa.Column("key_hash",    sa.String(128), nullable=False, unique=True),
         sa.Column("scopes",      postgresql.ARRAY(sa.String), nullable=False,
                   server_default="{}"),     # ["query:read","docs:write",...]

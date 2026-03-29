@@ -134,7 +134,7 @@ class ApiKey(Base):
     tenant_id:    Mapped[uuid.UUID]      = mapped_column(UUID(as_uuid=True), ForeignKey("tenants.id", ondelete="CASCADE"))
     created_by:   Mapped[Optional[uuid.UUID]] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
     name:         Mapped[str]            = mapped_column(String(255), nullable=False)
-    prefix:       Mapped[str]            = mapped_column(String(12), nullable=False)
+    prefix:       Mapped[str]            = mapped_column(String(20), nullable=False)
     key_hash:     Mapped[str]            = mapped_column(String(128), nullable=False, unique=True)
     scopes:       Mapped[List[str]]      = mapped_column(ARRAY(String), nullable=False, server_default="{}")
     is_active:    Mapped[bool]           = mapped_column(Boolean, default=True)
