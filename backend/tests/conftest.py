@@ -93,13 +93,20 @@ async def cleanup_after_test():
         # Delete in FK-safe order (children before parents)
         await session.execute(delete(RefreshToken))
         await session.execute(delete(ApiKey))
-        await session.execute(text("DELETE FROM password_reset_tokens"))
-        await session.execute(text("DELETE FROM email_verification_tokens"))
-        await session.execute(text("DELETE FROM query_logs"))
-        await session.execute(text("DELETE FROM regulation_chunks"))
-        await session.execute(text("DELETE FROM regulations"))
-        await session.execute(text("DELETE FROM documents"))
-        await session.execute(text("DELETE FROM alert_subscriptions"))
+        # Delete optional tables that may not exist if init_db hasn't run yet
+        optional_tables = [
+            "alert_subscriptions", "regulation_chunks", "regulations",
+            "documents", "password_reset_tokens",
+            "email_verification_tokens", "query_logs",
+        ]
+        for tbl in optional_tables:
+            # Use DO block to silently skip missing tables
+            await session.execute(text(f"""
+                DO $$ BEGIN
+                    DELETE FROM {tbl};
+                EXCEPTION WHEN undefined_table THEN NULL;
+                END $$;
+            """))
         await session.execute(delete(User))
         await session.execute(delete(Tenant))
         await session.commit()
