@@ -111,13 +111,16 @@ async def ingest_document(
     db.add(regulation)
     await db.flush()  # get regulation.id
 
-    # Embed + store chunks
+    # Embed + store chunks (skip if no API key configured — e.g. in CI/test)
+    _can_embed = bool(settings.OPENAI_API_KEY)
     for chunk_data in chunks:
-        try:
-            embedding = await get_embedding(chunk_data["content"])
-        except Exception as e:
-            log.warning("embedding_failed", chunk_index=chunk_data["chunk_index"], error=str(e))
-            embedding = None
+        embedding = None
+        if _can_embed:
+            try:
+                embedding = await get_embedding(chunk_data["content"])
+            except Exception as e:
+                log.warning("embedding_failed", chunk_index=chunk_data["chunk_index"], error=str(e))
+                embedding = None
 
         chunk = RegulationChunk(
             regulation_id=regulation.id,
