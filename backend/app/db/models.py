@@ -148,8 +148,9 @@ class ApiKey(Base):
     def generate_key(env: str = "live") -> tuple[str, str, str]:
         raw = secrets.token_urlsafe(48)
         prefix = f"rkai_{env}_{raw[:8]}"
-        key_hash = hashlib.sha256(raw.encode()).hexdigest()
-        return f"rkai_{env}_{raw}", prefix, key_hash
+        full_key = f"rkai_{env}_{raw}"
+        key_hash = hashlib.sha256(full_key.encode()).hexdigest()  # hash the FULL key
+        return full_key, prefix, key_hash
 
 
 class PasswordResetToken(Base):
