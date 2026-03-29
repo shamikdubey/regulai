@@ -37,26 +37,16 @@ def extract_text_from_docx(file_path: str) -> str:
 
 
 def chunk_text(text: str, chunk_size: int = 1000, overlap: int = 100) -> list[dict]:
-    """Split text into overlapping chunks. Pure Python — no langchain needed."""
-    if not text.strip():
-        return []
-    chunks = []
-    start = 0
-    text_len = len(text)
-    separators = ["\n\n", "\n", ". ", " "]
-    while start < text_len:
-        end = min(start + chunk_size, text_len)
-        if end < text_len:
-            for sep in separators:
-                pos = text.rfind(sep, start + chunk_size // 2, end)
-                if pos != -1:
-                    end = pos + len(sep)
-                    break
-        content = text[start:end].strip()
-        if content:
-            chunks.append({"content": content, "chunk_index": len(chunks)})
-        start = max(start + 1, end - overlap)
-    return chunks
+    """Split text into overlapping chunks with metadata."""
+    from langchain_text_splitters import RecursiveCharacterTextSplitter
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=chunk_size,
+        chunk_overlap=overlap,
+        length_function=len,
+        separators=["\n\n", "\n", ". ", " ", ""],
+    )
+    chunks = splitter.split_text(text)
+    return [{"content": chunk, "chunk_index": i} for i, chunk in enumerate(chunks)]
 
 
 async def ingest_document(
@@ -111,16 +101,13 @@ async def ingest_document(
     db.add(regulation)
     await db.flush()  # get regulation.id
 
-    # Embed + store chunks (skip if no API key configured — e.g. in CI/test)
-    _can_embed = bool(settings.OPENAI_API_KEY)
+    # Embed + store chunks
     for chunk_data in chunks:
-        embedding = None
-        if _can_embed:
-            try:
-                embedding = await get_embedding(chunk_data["content"])
-            except Exception as e:
-                log.warning("embedding_failed", chunk_index=chunk_data["chunk_index"], error=str(e))
-                embedding = None
+        try:
+            embedding = await get_embedding(chunk_data["content"])
+        except Exception as e:
+            log.warning("embedding_failed", chunk_index=chunk_data["chunk_index"], error=str(e))
+            embedding = None
 
         chunk = RegulationChunk(
             regulation_id=regulation.id,
