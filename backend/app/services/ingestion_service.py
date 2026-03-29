@@ -37,16 +37,26 @@ def extract_text_from_docx(file_path: str) -> str:
 
 
 def chunk_text(text: str, chunk_size: int = 1000, overlap: int = 100) -> list[dict]:
-    """Split text into overlapping chunks with metadata."""
-    from langchain_text_splitters import RecursiveCharacterTextSplitter
-    splitter = RecursiveCharacterTextSplitter(
-        chunk_size=chunk_size,
-        chunk_overlap=overlap,
-        length_function=len,
-        separators=["\n\n", "\n", ". ", " ", ""],
-    )
-    chunks = splitter.split_text(text)
-    return [{"content": chunk, "chunk_index": i} for i, chunk in enumerate(chunks)]
+    """Split text into overlapping chunks. Pure Python — no langchain needed."""
+    if not text.strip():
+        return []
+    chunks = []
+    start = 0
+    text_len = len(text)
+    separators = ["\n\n", "\n", ". ", " "]
+    while start < text_len:
+        end = min(start + chunk_size, text_len)
+        if end < text_len:
+            for sep in separators:
+                pos = text.rfind(sep, start + chunk_size // 2, end)
+                if pos != -1:
+                    end = pos + len(sep)
+                    break
+        content = text[start:end].strip()
+        if content:
+            chunks.append({"content": content, "chunk_index": len(chunks)})
+        start = max(start + 1, end - overlap)
+    return chunks
 
 
 async def ingest_document(

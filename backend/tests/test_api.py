@@ -367,6 +367,7 @@ class TestPasswordReset:
         )
         db.add(prt)
         await db.flush()
+        await db.commit()  # must commit so app connection can see the token
 
         # Use the token
         r = await client.post("/api/v1/auth/reset-password", json={
