@@ -17,6 +17,33 @@ from httpx import AsyncClient, ASGITransport
 from sqlalchemy import text, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
+import os
+os.environ["TESTING"] = "true"  # Must be set before database.py engine is used
+
+from sqlalchemy.pool import NullPool
+from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
+from app.core.config import get_settings as _get_settings
+
+# Force NullPool engine for tests — prevents "Future attached to different loop" error
+# This patches the module-level engine AFTER import, guaranteeing NullPool is used
+import app.db.database as _db_module
+_settings = _get_settings()
+_test_engine = create_async_engine(
+    _settings.DATABASE_URL,
+    echo=False,
+    poolclass=NullPool,
+    connect_args={
+        "server_settings": {
+            "statement_timeout": "30000",
+            "application_name": "regulai_test",
+        }
+    } if "asyncpg" in _settings.DATABASE_URL else {},
+)
+_db_module.engine = _test_engine
+_db_module.AsyncSessionLocal = async_sessionmaker(
+    _test_engine, class_=_db_module.AsyncSessionLocal.class_, expire_on_commit=False
+)
+
 from app.db.database import AsyncSessionLocal, init_db
 from app.db.models import Tenant, User, ApiKey, RefreshToken
 from app.services.auth_service import create_access_token
@@ -63,21 +90,16 @@ async def cleanup_after_test():
     # Clean up after test
     async with AsyncSessionLocal() as session:
         await session.execute(text("SELECT set_config('app.bypass_rls', 'on', TRUE)"))
-        # Delete in correct order (FK constraints)
+        # Delete in FK-safe order (children before parents)
         await session.execute(delete(RefreshToken))
         await session.execute(delete(ApiKey))
-        await session.execute(
-            text("DELETE FROM password_reset_tokens")
-        )
-        await session.execute(
-            text("DELETE FROM email_verification_tokens")
-        )
-        await session.execute(
-            text("DELETE FROM query_logs")
-        )
-        await session.execute(
-            text("DELETE FROM documents")
-        )
+        await session.execute(text("DELETE FROM password_reset_tokens"))
+        await session.execute(text("DELETE FROM email_verification_tokens"))
+        await session.execute(text("DELETE FROM query_logs"))
+        await session.execute(text("DELETE FROM regulation_chunks"))
+        await session.execute(text("DELETE FROM regulations"))
+        await session.execute(text("DELETE FROM documents"))
+        await session.execute(text("DELETE FROM alert_subscriptions"))
         await session.execute(delete(User))
         await session.execute(delete(Tenant))
         await session.commit()
