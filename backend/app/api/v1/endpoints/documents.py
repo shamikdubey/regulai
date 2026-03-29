@@ -63,12 +63,20 @@ async def upload_document(
     await db.commit()
     await db.refresh(doc)
 
-    # Kick off ingestion in background
-    background_tasks.add_task(
-        ingest_document,
-        db, str(doc.id), str(file_path), file.content_type,
-        jurisdiction, domain, str(user.tenant_id),
-    )
+    # Kick off ingestion in background with a FRESH session (request session may be closed)
+    from app.db.database import AsyncSessionLocal
+    async def _run_ingestion():
+        async with AsyncSessionLocal() as bg_db:
+            try:
+                await ingest_document(
+                    bg_db, str(doc.id), str(file_path), file.content_type,
+                    jurisdiction, domain, str(user.tenant_id),
+                )
+            except Exception as e:
+                import structlog as _sl
+                _sl.get_logger().error("ingestion_task_failed", error=str(e))
+
+    background_tasks.add_task(_run_ingestion)
 
     return doc
 

@@ -13,20 +13,40 @@ import structlog
 settings = get_settings()
 logger = structlog.get_logger()
 
-engine = create_async_engine(
-    settings.DATABASE_URL,
-    echo=settings.DEBUG,
-    pool_size=settings.DATABASE_POOL_SIZE,
-    max_overflow=settings.DATABASE_MAX_OVERFLOW,
-    pool_pre_ping=True,
-    pool_recycle=settings.DATABASE_POOL_RECYCLE,
-    connect_args={
-        "server_settings": {
-            "statement_timeout": str(settings.DATABASE_STATEMENT_TIMEOUT_MS),
-            "application_name": "regulai_api",
-        }
-    } if "asyncpg" in settings.DATABASE_URL else {},
-)
+import os
+_is_testing = os.environ.get("TESTING", "").lower() in ("true", "1", "yes")
+
+if _is_testing:
+    # Use NullPool in tests to avoid event loop conflicts.
+    # NullPool creates a fresh connection per query — no persistent pool
+    # so there is no loop-binding issue between test setup and test execution.
+    from sqlalchemy.pool import NullPool
+    engine = create_async_engine(
+        settings.DATABASE_URL,
+        echo=False,
+        poolclass=NullPool,
+        connect_args={
+            "server_settings": {
+                "statement_timeout": "30000",
+                "application_name": "regulai_test",
+            }
+        } if "asyncpg" in settings.DATABASE_URL else {},
+    )
+else:
+    engine = create_async_engine(
+        settings.DATABASE_URL,
+        echo=settings.DEBUG,
+        pool_size=settings.DATABASE_POOL_SIZE,
+        max_overflow=settings.DATABASE_MAX_OVERFLOW,
+        pool_pre_ping=True,
+        pool_recycle=settings.DATABASE_POOL_RECYCLE,
+        connect_args={
+            "server_settings": {
+                "statement_timeout": str(settings.DATABASE_STATEMENT_TIMEOUT_MS),
+                "application_name": "regulai_api",
+            }
+        } if "asyncpg" in settings.DATABASE_URL else {},
+    )
 
 AsyncSessionLocal = async_sessionmaker(
     engine, class_=AsyncSession, expire_on_commit=False
@@ -97,8 +117,13 @@ async def init_db():
         except Exception:
             pass
 
-    # Import all models so SQLAlchemy knows about every table
+    # Import ALL models — core + all endpoint-file models — so every table is created
     from app.db import models  # noqa
+    from app.api.v1.endpoints import allowable_limits  # noqa: AllowableLimit
+    from app.api.v1.endpoints import ingredient_specs   # noqa: IngredientSpec
+    from app.api.v1.endpoints import labeling           # noqa: LabelingRequirement
+    from app.api.v1.endpoints import licensing          # noqa: LicensingPathway
+    from app.api.v1.endpoints import alerts             # noqa: RegulatoryAlert, AlertSubscription
 
     # Create all tables from the ORM metadata
     async with engine.begin() as conn:
