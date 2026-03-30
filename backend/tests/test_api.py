@@ -616,16 +616,13 @@ class TestPrivacy:
     @pytest.mark.asyncio
     async def test_erasure_requires_confirmation(self, client: AsyncClient, auth_headers):
         """Wrong confirmation string must be rejected."""
-        r = await client.delete("/api/v1/privacy/me", content=json.dumps({"confirmation": "yes delete me"}),
-            headers={**auth_headers, "content-type": "application/json"})
+        r = await client.request("DELETE", "/api/v1/privacy/me", json={"confirmation": "yes delete me"}, headers=auth_headers)
         assert r.status_code == 400
         assert "DELETE MY ACCOUNT" in r.json()["detail"]
 
     @pytest.mark.asyncio
     async def test_erasure_requires_auth(self, client: AsyncClient):
-        r = await client.delete("/api/v1/privacy/me",
-            content=json.dumps({"confirmation": "DELETE MY ACCOUNT"}),
-            headers={"content-type": "application/json"})
+        r = await client.request("DELETE", "/api/v1/privacy/me", json={"confirmation": "DELETE MY ACCOUNT"})
         assert r.status_code == 401
 
 
