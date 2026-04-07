@@ -1,8 +1,3 @@
-# Download the fixed file directly from Claude's output into your project
-curl -L "https://claude.ai" 2>/dev/null || true
-
-# Actually the easiest way - just overwrite it with cat
-cat > backend/app/db/database.py << 'ENDOFFILE'
 """
 Database — async SQLAlchemy with RLS context injection.
 Every get_db() session automatically sets the Postgres tenant context
@@ -15,16 +10,27 @@ from typing import Optional, AsyncGenerator
 from app.core.config import get_settings
 import structlog
 import os
+import re
 
 settings = get_settings()
 logger = structlog.get_logger()
 
 _is_testing = os.environ.get("TESTING", "").lower() in ("true", "1", "yes")
 
+
+def _clean_url(url: str) -> str:
+    """Remove sslmode/ssl query params — asyncpg handles SSL via connect_args."""
+    url = re.sub(r'[?&]sslmode=[^&]*', '', url)
+    url = re.sub(r'[?&]ssl=[^&]*', '', url)
+    url = re.sub(r'[?&]$', '', url)
+    return url
+
+
 def _build_connect_args(url: str) -> dict:
     """
     Build asyncpg connect_args.
     asyncpg does NOT accept sslmode — SSL must be passed as ssl.SSLContext object.
+    Automatically adds SSL for hosted providers like Neon, Supabase, RDS.
     """
     if "asyncpg" not in url:
         return {}
@@ -37,9 +43,7 @@ def _build_connect_args(url: str) -> dict:
         args["server_settings"]["statement_timeout"] = str(
             settings.DATABASE_STATEMENT_TIMEOUT_MS
         )
-    # Add SSL for hosted providers (Neon, Supabase, RDS, etc.)
-    hosted_keywords = ["neon.tech", "supabase.co", "amazonaws.com",
-                       "render.com", "railway.app"]
+    hosted_keywords = ["neon.tech", "supabase.co", "amazonaws.com", "render.com"]
     if any(kw in url for kw in hosted_keywords):
         import ssl as _ssl
         ctx = _ssl.create_default_context()
@@ -47,15 +51,6 @@ def _build_connect_args(url: str) -> dict:
         ctx.verify_mode = _ssl.CERT_NONE
         args["ssl"] = ctx
     return args
-
-
-def _clean_url(url: str) -> str:
-    """Remove ?sslmode=... or ?ssl=... — asyncpg handles SSL via connect_args."""
-    import re
-    url = re.sub(r'[?&]sslmode=[^&]*', '', url)
-    url = re.sub(r'[?&]ssl=[^&]*', '', url)
-    url = re.sub(r'[?&]$', '', url)
-    return url
 
 
 _clean_db_url = _clean_url(settings.DATABASE_URL)
@@ -156,6 +151,3 @@ async def init_db():
         await conn.run_sync(Base.metadata.create_all)
 
     logger.info("database_initialized")
-ENDOFFILE
-
-echo "File written successfully"
