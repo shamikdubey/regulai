@@ -1,3 +1,8 @@
+# Download the fixed file directly from Claude's output into your project
+curl -L "https://claude.ai" 2>/dev/null || true
+
+# Actually the easiest way - just overwrite it with cat
+cat > backend/app/db/database.py << 'ENDOFFILE'
 """
 Database — async SQLAlchemy with RLS context injection.
 Every get_db() session automatically sets the Postgres tenant context
@@ -9,43 +14,69 @@ from sqlalchemy import text
 from typing import Optional, AsyncGenerator
 from app.core.config import get_settings
 import structlog
+import os
 
 settings = get_settings()
 logger = structlog.get_logger()
 
-import os
 _is_testing = os.environ.get("TESTING", "").lower() in ("true", "1", "yes")
 
+def _build_connect_args(url: str) -> dict:
+    """
+    Build asyncpg connect_args.
+    asyncpg does NOT accept sslmode — SSL must be passed as ssl.SSLContext object.
+    """
+    if "asyncpg" not in url:
+        return {}
+    args = {
+        "server_settings": {
+            "application_name": "regulai_test" if _is_testing else "regulai_api",
+        }
+    }
+    if not _is_testing:
+        args["server_settings"]["statement_timeout"] = str(
+            settings.DATABASE_STATEMENT_TIMEOUT_MS
+        )
+    # Add SSL for hosted providers (Neon, Supabase, RDS, etc.)
+    hosted_keywords = ["neon.tech", "supabase.co", "amazonaws.com",
+                       "render.com", "railway.app"]
+    if any(kw in url for kw in hosted_keywords):
+        import ssl as _ssl
+        ctx = _ssl.create_default_context()
+        ctx.check_hostname = False
+        ctx.verify_mode = _ssl.CERT_NONE
+        args["ssl"] = ctx
+    return args
+
+
+def _clean_url(url: str) -> str:
+    """Remove ?sslmode=... or ?ssl=... — asyncpg handles SSL via connect_args."""
+    import re
+    url = re.sub(r'[?&]sslmode=[^&]*', '', url)
+    url = re.sub(r'[?&]ssl=[^&]*', '', url)
+    url = re.sub(r'[?&]$', '', url)
+    return url
+
+
+_clean_db_url = _clean_url(settings.DATABASE_URL)
+
 if _is_testing:
-    # Use NullPool in tests to avoid event loop conflicts.
-    # NullPool creates a fresh connection per query — no persistent pool
-    # so there is no loop-binding issue between test setup and test execution.
     from sqlalchemy.pool import NullPool
     engine = create_async_engine(
-        settings.DATABASE_URL,
+        _clean_db_url,
         echo=False,
         poolclass=NullPool,
-        connect_args={
-            "server_settings": {
-                "statement_timeout": "30000",
-                "application_name": "regulai_test",
-            }
-        } if "asyncpg" in settings.DATABASE_URL else {},
+        connect_args=_build_connect_args(_clean_db_url),
     )
 else:
     engine = create_async_engine(
-        settings.DATABASE_URL,
+        _clean_db_url,
         echo=settings.DEBUG,
         pool_size=settings.DATABASE_POOL_SIZE,
         max_overflow=settings.DATABASE_MAX_OVERFLOW,
         pool_pre_ping=True,
         pool_recycle=settings.DATABASE_POOL_RECYCLE,
-        connect_args={
-            "server_settings": {
-                "statement_timeout": str(settings.DATABASE_STATEMENT_TIMEOUT_MS),
-                "application_name": "regulai_api",
-            }
-        } if "asyncpg" in settings.DATABASE_URL else {},
+        connect_args=_build_connect_args(_clean_db_url),
     )
 
 AsyncSessionLocal = async_sessionmaker(
@@ -106,27 +137,25 @@ async def init_db():
     Called once on application startup and in tests.
     """
     async with engine.begin() as conn:
-        # Required extensions
         await conn.execute(text("CREATE EXTENSION IF NOT EXISTS vector"))
         await conn.execute(text("CREATE EXTENSION IF NOT EXISTS pgcrypto"))
-
-        # Optional — pg_stat_statements requires shared_preload_libraries
-        # Not available in CI/test Postgres containers — safe to skip
         try:
             await conn.execute(text("CREATE EXTENSION IF NOT EXISTS pg_stat_statements"))
         except Exception:
             pass
 
-    # Import ALL models — core + all endpoint-file models — so every table is created
+    # Import ALL models so every table is registered with Base.metadata
     from app.db import models  # noqa
-    from app.api.v1.endpoints import allowable_limits  # noqa: AllowableLimit
-    from app.api.v1.endpoints import ingredient_specs   # noqa: IngredientSpec
-    from app.api.v1.endpoints import labeling           # noqa: LabelingRequirement
-    from app.api.v1.endpoints import licensing          # noqa: LicensingPathway
-    from app.api.v1.endpoints import alerts             # noqa: RegulatoryAlert, AlertSubscription
+    from app.api.v1.endpoints import allowable_limits  # noqa
+    from app.api.v1.endpoints import ingredient_specs   # noqa
+    from app.api.v1.endpoints import labeling           # noqa
+    from app.api.v1.endpoints import licensing          # noqa
+    from app.api.v1.endpoints import alerts             # noqa
 
-    # Create all tables from the ORM metadata
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
     logger.info("database_initialized")
+ENDOFFILE
+
+echo "File written successfully"
