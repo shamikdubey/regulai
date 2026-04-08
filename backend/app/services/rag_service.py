@@ -112,7 +112,7 @@ async def hybrid_search(
 
     # Build filters
     filters = []
-    params: dict = {"embedding": str(embedding), "top_k": top_k, "query": query}
+    params: dict = {"embedding": str(embedding), "limit": top_k, "query": query}
 
     if jurisdiction:
         filters.append("r.jurisdiction = :jurisdiction")
