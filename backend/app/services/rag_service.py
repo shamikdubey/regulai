@@ -142,7 +142,7 @@ async def hybrid_search(
         LEFT JOIN regulatory_bodies rb ON r.regulatory_body_id = rb.id
         {where_clause}
         ORDER BY (0.7 * (1 - (rc.embedding <=> :embedding::vector)) + 0.3 * ts_rank(to_tsvector('english', rc.content), plainto_tsquery('english', :query))) DESC
-        LIMIT :top_k
+        LIMIT :limit
     """)
 
     result = await db.execute(sql, params)
