@@ -1,3 +1,4 @@
+
 """
 RegulAI FastAPI Application — Phase 0 Production Hardened
 """
@@ -73,7 +74,7 @@ def create_app() -> FastAPI:
         for origin in settings.CORS_ORIGINS:
             h = origin.replace("https://","").replace("http://","").split(":")[0]
             trusted.append(h)
-        app.add_middleware(TrustedHostMiddleware, allowed_hosts=trusted + ["localhost","127.0.0.1"])
+        app.add_middleware(TrustedHostMiddleware, allowed_hosts=trusted + ["localhost","127.0.0.1","regulai.onrender.com"])
 
     app.add_middleware(
         CORSMiddleware,
