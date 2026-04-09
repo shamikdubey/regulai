@@ -49,7 +49,8 @@ class Settings(BaseSettings):
     # ── AI / LLM
     ANTHROPIC_API_KEY: str = ""
     OPENAI_API_KEY: str = ""
-    DEFAULT_LLM: str = "claude"
+    GROQ_API_KEY: str = ""
+    DEFAULT_LLM: str = "groq"
     EMBEDDING_MODEL: str = "text-embedding-3-large"
     CLAUDE_MODEL: str = "claude-sonnet-4-6"
     OPENAI_MODEL: str = "gpt-4o"

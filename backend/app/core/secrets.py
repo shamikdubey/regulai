@@ -27,8 +27,6 @@ logger = structlog.get_logger()
 
 # Secrets that should NEVER be in .env files in production
 REQUIRED_PRODUCTION_SECRETS = [
-    "ANTHROPIC_API_KEY",
-    "OPENAI_API_KEY",
     "SECRET_KEY",
     "DATABASE_URL",
     "REDIS_URL",
