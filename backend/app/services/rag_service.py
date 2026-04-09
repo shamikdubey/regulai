@@ -135,13 +135,13 @@ async def hybrid_search(
             r.year,
             r.source_url,
             rb.acronym AS body_acronym,
-            1 - (rc.embedding <=> :embedding::vector) AS semantic_score,
+            1 - (rc.embedding <=> CAST(:embedding AS vector)) AS semantic_score,
             ts_rank(to_tsvector('english', rc.content), plainto_tsquery('english', :query)) AS bm25_score
         FROM regulation_chunks rc
         JOIN regulations r ON rc.regulation_id = r.id
         LEFT JOIN regulatory_bodies rb ON r.regulatory_body_id = rb.id
         {where_clause}
-        ORDER BY (0.7 * (1 - (rc.embedding <=> :embedding::vector)) + 0.3 * ts_rank(to_tsvector('english', rc.content), plainto_tsquery('english', :query))) DESC
+        ORDER BY (0.7 * (1 - (rc.embedding <=> CAST(:embedding AS vector))) + 0.3 * ts_rank(to_tsvector('english', rc.content), plainto_tsquery('english', :query))) DESC
         LIMIT :limit
     """)
 
