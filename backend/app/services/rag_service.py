@@ -233,7 +233,20 @@ USER QUESTION:
     # 3. LLM call
     raw_response = ""
     try:
-        if settings.DEFAULT_LLM == "claude" and settings.ANTHROPIC_API_KEY:
+        groq_key = getattr(settings, "GROQ_API_KEY", None) or __import__("os").environ.get("GROQ_API_KEY", "")
+        if groq_key:
+            from groq import Groq
+            groq_client = Groq(api_key=groq_key)
+            resp = groq_client.chat.completions.create(
+                model="llama-3.3-70b-versatile",
+                max_tokens=settings.MAX_TOKENS,
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_message},
+                ],
+            )
+            raw_response = resp.choices[0].message.content or ""
+        elif settings.DEFAULT_LLM == "claude" and settings.ANTHROPIC_API_KEY:
             client = get_anthropic()
             msg = client.messages.create(
                 model=settings.CLAUDE_MODEL,
