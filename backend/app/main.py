@@ -23,6 +23,7 @@ from app.middleware.security_headers import SecurityHeadersMiddleware
 from app.middleware.rate_limit import limiter
 
 from app.api.v1.endpoints import (
+    compliance_review,
     document_editor,
     filing_wizard,
     query, regulations, documents, audit, tenants, health, auth,
@@ -136,6 +137,7 @@ def create_app() -> FastAPI:
     app.include_router(billing.router,          prefix="/api/v1",               tags=["Billing"])
     app.include_router(filing_wizard.router,    prefix="/api/v1",               tags=["Filing Wizard"])
     app.include_router(document_editor.router,  prefix="/api/v1",               tags=["Document Editor"])
+    app.include_router(compliance_review.router, prefix="/api/v1",              tags=["Compliance Review"])
 
     return app
 
