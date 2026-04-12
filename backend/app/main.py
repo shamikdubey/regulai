@@ -23,6 +23,7 @@ from app.middleware.security_headers import SecurityHeadersMiddleware
 from app.middleware.rate_limit import limiter
 
 from app.api.v1.endpoints import (
+    filing_wizard,
     query, regulations, documents, audit, tenants, health, auth,
     gap_assessment, dossier, alerts,
     ingredient_specs, allowable_limits, labeling, licensing,
@@ -132,6 +133,7 @@ def create_app() -> FastAPI:
     app.include_router(licensing.router,        prefix="/api/v1",               tags=["Licensing"])
     app.include_router(privacy.router,          prefix="/api/v1",               tags=["Privacy"])
     app.include_router(billing.router,          prefix="/api/v1",               tags=["Billing"])
+    app.include_router(filing_wizard.router,    prefix="/api/v1",               tags=["Filing Wizard"])
 
     return app
 

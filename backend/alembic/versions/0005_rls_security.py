@@ -44,12 +44,10 @@ def upgrade() -> None:
         $$;
     """))
 
-    conn.execute(sa.text("""
-        GRANT CONNECT ON DATABASE regulai TO regulai_app;
-        GRANT USAGE ON SCHEMA public TO regulai_app;
-        GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO regulai_app;
-        GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO regulai_app;
-    """))
+    conn.execute(sa.text("GRANT CONNECT ON DATABASE regulai TO regulai_app"))
+    conn.execute(sa.text("GRANT USAGE ON SCHEMA public TO regulai_app"))
+    conn.execute(sa.text("GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO regulai_app"))
+    conn.execute(sa.text("GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO regulai_app"))
 
     # ── Enable RLS on each tenant-scoped table ────────────────────────────────
     for table in TENANT_SCOPED_TABLES:
@@ -60,10 +58,8 @@ def upgrade() -> None:
         conn.execute(sa.text(f"ALTER TABLE {table} FORCE ROW LEVEL SECURITY;"))
 
         # DROP existing policies if re-running
-        conn.execute(sa.text(f"""
-            DROP POLICY IF EXISTS tenant_isolation ON {table};
-            DROP POLICY IF EXISTS tenant_isolation_insert ON {table};
-        """))
+        conn.execute(sa.text(f"DROP POLICY IF EXISTS tenant_isolation ON {table}"))
+        conn.execute(sa.text(f"DROP POLICY IF EXISTS tenant_isolation_insert ON {table}"))
 
         # SELECT / UPDATE / DELETE policy: row must match current_setting tenant
         conn.execute(sa.text(f"""
@@ -98,9 +94,7 @@ def upgrade() -> None:
         $$ LANGUAGE plpgsql SECURITY DEFINER;
     """))
 
-    conn.execute(sa.text("""
-        GRANT EXECUTE ON FUNCTION set_tenant_context(uuid) TO regulai_app;
-    """))
+    conn.execute(sa.text("GRANT EXECUTE ON FUNCTION set_tenant_context(uuid) TO regulai_app"))
 
     # ── Create function to bypass RLS for admin operations ────────────────────
     conn.execute(sa.text("""
@@ -132,12 +126,10 @@ def upgrade() -> None:
         """))
         # NULL tenant_id = public corpus (shared, readable by all)
         # Non-null tenant_id = private corpus (RLS enforced)
+        conn.execute(sa.text("ALTER TABLE regulation_chunks ENABLE ROW LEVEL SECURITY"))
+        conn.execute(sa.text("ALTER TABLE regulation_chunks FORCE ROW LEVEL SECURITY"))
+        conn.execute(sa.text("DROP POLICY IF EXISTS corpus_isolation ON regulation_chunks"))
         conn.execute(sa.text("""
-            ALTER TABLE regulation_chunks ENABLE ROW LEVEL SECURITY;
-            ALTER TABLE regulation_chunks FORCE ROW LEVEL SECURITY;
-
-            DROP POLICY IF EXISTS corpus_isolation ON regulation_chunks;
-
             CREATE POLICY corpus_isolation ON regulation_chunks
             AS PERMISSIVE
             FOR ALL
@@ -150,7 +142,7 @@ def upgrade() -> None:
             WITH CHECK (
                 tenant_id IS NULL
                 OR tenant_id = current_setting('app.current_tenant_id', TRUE)::uuid
-            );
+            )
         """))
     except Exception as e:
         print(f"Note: {e}")

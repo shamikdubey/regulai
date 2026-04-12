@@ -42,8 +42,12 @@ def upgrade() -> None:
 
     # RLS on refresh tokens
     op.execute("""
-        ALTER TABLE refresh_tokens ENABLE ROW LEVEL SECURITY;
-        ALTER TABLE refresh_tokens FORCE ROW LEVEL SECURITY;
+        ALTER TABLE refresh_tokens ENABLE ROW LEVEL SECURITY
+    """)
+    op.execute("""
+        ALTER TABLE refresh_tokens FORCE ROW LEVEL SECURITY
+    """)
+    op.execute("""
         CREATE POLICY tenant_isolation ON refresh_tokens
         AS PERMISSIVE FOR ALL TO regulai_app
         USING (
@@ -52,7 +56,7 @@ def upgrade() -> None:
         )
         WITH CHECK (
             tenant_id = current_setting('app.current_tenant_id', TRUE)::uuid
-        );
+        )
     """)
 
     # ── API keys ──────────────────────────────────────────────────────────────
@@ -82,8 +86,12 @@ def upgrade() -> None:
     op.create_index("ix_api_keys_hash",    "api_keys", ["key_hash"])
 
     op.execute("""
-        ALTER TABLE api_keys ENABLE ROW LEVEL SECURITY;
-        ALTER TABLE api_keys FORCE ROW LEVEL SECURITY;
+        ALTER TABLE api_keys ENABLE ROW LEVEL SECURITY
+    """)
+    op.execute("""
+        ALTER TABLE api_keys FORCE ROW LEVEL SECURITY
+    """)
+    op.execute("""
         CREATE POLICY tenant_isolation ON api_keys
         AS PERMISSIVE FOR ALL TO regulai_app
         USING (
@@ -92,7 +100,7 @@ def upgrade() -> None:
         )
         WITH CHECK (
             tenant_id = current_setting('app.current_tenant_id', TRUE)::uuid
-        );
+        )
     """)
 
     # ── Password reset tokens ─────────────────────────────────────────────────
@@ -146,11 +154,12 @@ def upgrade() -> None:
     op.execute("""
         CREATE INDEX ix_refresh_tokens_expires
         ON refresh_tokens(expires_at)
-        WHERE is_revoked = false;
-
+        WHERE is_revoked = false
+    """)
+    op.execute("""
         CREATE INDEX ix_prt_expires
         ON password_reset_tokens(expires_at)
-        WHERE is_used = false;
+        WHERE is_used = false
     """)
 
 
