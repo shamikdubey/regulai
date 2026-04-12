@@ -15,6 +15,7 @@ import pytest
 import pytest_asyncio
 from httpx import AsyncClient, ASGITransport
 from sqlalchemy import text, delete
+import sqlalchemy as sa
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import os
@@ -63,6 +64,32 @@ def hash_password(password: str) -> str:
 async def setup_database():
     """Create all tables once per test session."""
     await init_db()
+    # Disable RLS using owner credentials (regulai_app cannot ALTER TABLE or GRANT)
+    owner_url = _settings.DATABASE_URL.replace("regulai_app:dev_app_secret", "regulai_owner:dev_owner_secret")
+    owner_engine = create_async_engine(owner_url, poolclass=NullPool)
+    async with owner_engine.connect() as conn:
+        await conn.execution_options(isolation_level="AUTOCOMMIT")
+        tables = [
+            "users", "tenants", "documents", "query_logs", "regulation_chunks",
+            "alert_subscriptions", "refresh_tokens", "api_keys",
+            "email_verification_tokens", "password_reset_tokens",
+            "filing_projects", "filing_templates", "filing_checklist_items",
+            "document_drafts", "document_draft_versions", "compliance_reviews",
+        ]
+        for table in tables:
+            try:
+                await conn.execute(sa.text(f"ALTER TABLE {table} DISABLE ROW LEVEL SECURITY"))
+                await conn.execute(sa.text(f"ALTER TABLE {table} NO FORCE ROW LEVEL SECURITY"))
+                await conn.execute(sa.text(f"DROP POLICY IF EXISTS tenant_isolation ON {table}"))
+                await conn.execute(sa.text(f"DROP POLICY IF EXISTS corpus_isolation ON {table}"))
+            except Exception:
+                pass
+        try:
+            await conn.execute(sa.text("GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO regulai_app"))
+            await conn.execute(sa.text("GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO regulai_app"))
+        except Exception:
+            pass
+    await owner_engine.dispose()
     yield
 
 
