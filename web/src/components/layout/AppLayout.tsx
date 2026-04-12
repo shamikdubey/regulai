@@ -5,6 +5,7 @@ import {
   Bell, Compass, FileText, ClipboardList, Settings,
   LogOut, ChevronLeft, ChevronRight, FlaskConical,
   BarChart2, Tag, FileCheck, Menu, X,
+  Wand2, PenLine, ShieldCheck, Shield,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
@@ -15,20 +16,24 @@ import { cn } from "@/lib/utils";
 import JurisdictionSelector from "@/components/features/JurisdictionSelector";
 import DomainSelector from "@/components/features/DomainSelector";
 
-const NAV: Array<{ to: string; icon: any; label: string; group: string; badge?: boolean }> = [
-  { to: "/dashboard",        icon: LayoutDashboard, label: "Dashboard",           group: "Intelligence" },
-  { to: "/query",            icon: MessageSquare,   label: "AI Query",            group: "Intelligence" },
-  { to: "/gap-assessment",   icon: TrendingUp,      label: "Gap Assessment",      group: "Intelligence" },
-  { to: "/dossier",          icon: FileEdit,        label: "Dossier Drafting",    group: "Intelligence" },
-  { to: "/alerts",           icon: Bell,            label: "Alerts",              group: "Intelligence", badge: true },
-  { to: "/ingredient-specs", icon: FlaskConical,    label: "Ingredient Specs",    group: "Standards" },
-  { to: "/allowable-limits", icon: BarChart2,       label: "Allowable Limits",    group: "Standards" },
-  { to: "/labeling",         icon: Tag,             label: "Labeling Rules",      group: "Standards" },
-  { to: "/licensing",        icon: FileCheck,       label: "Licensing Navigator", group: "Standards" },
-  { to: "/explorer",         icon: Compass,         label: "Reg Explorer",        group: "Reference" },
-  { to: "/documents",        icon: FileText,        label: "Documents",           group: "Reference" },
-  { to: "/audit",            icon: ClipboardList,   label: "Audit Log",           group: "Reference" },
-  { to: "/settings",         icon: Settings,        label: "Settings",            group: "System" },
+const NAV: Array<{ to: string; icon: any; label: string; group: string; badge?: boolean; adminOnly?: boolean }> = [
+  { to: "/dashboard",         icon: LayoutDashboard, label: "Dashboard",           group: "Intelligence" },
+  { to: "/query",             icon: MessageSquare,   label: "AI Query",            group: "Intelligence" },
+  { to: "/gap-assessment",    icon: TrendingUp,      label: "Gap Assessment",      group: "Intelligence" },
+  { to: "/dossier",           icon: FileEdit,        label: "Dossier Drafting",    group: "Intelligence" },
+  { to: "/alerts",            icon: Bell,            label: "Alerts",              group: "Intelligence", badge: true },
+  { to: "/ingredient-specs",  icon: FlaskConical,    label: "Ingredient Specs",    group: "Standards" },
+  { to: "/allowable-limits",  icon: BarChart2,       label: "Allowable Limits",    group: "Standards" },
+  { to: "/labeling",          icon: Tag,             label: "Labeling Rules",      group: "Standards" },
+  { to: "/licensing",         icon: FileCheck,       label: "Licensing Navigator", group: "Standards" },
+  { to: "/filing-wizard",     icon: Wand2,           label: "Filing Wizard",       group: "Workflows" },
+  { to: "/document-editor",   icon: PenLine,         label: "Document Editor",     group: "Workflows" },
+  { to: "/compliance-review", icon: ShieldCheck,     label: "Compliance Review",   group: "Workflows" },
+  { to: "/explorer",          icon: Compass,         label: "Reg Explorer",        group: "Reference" },
+  { to: "/documents",         icon: FileText,        label: "Documents",           group: "Reference" },
+  { to: "/audit",             icon: ClipboardList,   label: "Audit Log",           group: "Reference" },
+  { to: "/settings",          icon: Settings,        label: "Settings",            group: "System" },
+  { to: "/admin",             icon: Shield,          label: "Admin Panel",         group: "System", adminOnly: true },
 ];
 
 export default function AppLayout() {
@@ -102,7 +107,7 @@ export default function AppLayout() {
 
       {/* Nav */}
       <nav className="flex-1 overflow-y-auto py-2">
-        {NAV.map(({ to, icon: Icon, label, group, badge }) => {
+        {NAV.filter(({ adminOnly }) => !adminOnly || user?.role === "admin").map(({ to, icon: Icon, label, group, badge }) => {
           const showGroup = !collapsed && group !== lastGroup;
           lastGroup = group;
           const badgeCount = badge ? highAlertCount : 0;

@@ -23,6 +23,10 @@ const DocumentsPage     = lazy(() => import("@/pages/DocumentsPage"));
 const AuditPage         = lazy(() => import("@/pages/AuditPage"));
 const SettingsPage      = lazy(() => import("@/pages/SettingsPage"));
 const BillingPage       = lazy(() => import("@/pages/BillingPage"));
+const FilingWizardPage      = lazy(() => import("@/pages/FilingWizardPage"));
+const DocumentEditorPage    = lazy(() => import("@/pages/DocumentEditorPage"));
+const ComplianceReviewPage  = lazy(() => import("@/pages/ComplianceReviewPage"));
+const AdminPanelPage        = lazy(() => import("@/pages/AdminPanelPage"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -119,8 +123,12 @@ export default function App() {
               <Route path="explorer"         element={<ExplorerPage />} />
               <Route path="documents"        element={<DocumentsPage />} />
               <Route path="audit"            element={<AuditPage />} />
-              <Route path="settings"         element={<SettingsPage />} />
-              <Route path="billing"          element={<BillingPage />} />
+              <Route path="settings"           element={<SettingsPage />} />
+              <Route path="billing"            element={<BillingPage />} />
+              <Route path="filing-wizard"      element={<FilingWizardPage />} />
+              <Route path="document-editor"    element={<DocumentEditorPage />} />
+              <Route path="compliance-review"  element={<ComplianceReviewPage />} />
+              <Route path="admin"              element={<AdminPanelPage />} />
             </Route>
 
             {/* 404 → home */}
