@@ -36,7 +36,7 @@ class Settings(BaseSettings):
     LOG_LEVEL: str = "info"
 
     # ── Database
-    DATABASE_URL: str = "postgresql+asyncpg://regulai_app:dev_app_secret@172.25.0.3:5432/regulai"
+    DATABASE_URL: str = "postgresql+asyncpg://regulai_app:dev_app_secret@172.25.0.2:5432/regulai"
     DATABASE_POOL_SIZE: int = 20
     DATABASE_MAX_OVERFLOW: int = 40
     DATABASE_POOL_RECYCLE: int = 3600
