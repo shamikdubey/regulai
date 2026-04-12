@@ -23,6 +23,7 @@ from app.middleware.security_headers import SecurityHeadersMiddleware
 from app.middleware.rate_limit import limiter
 
 from app.api.v1.endpoints import (
+    document_editor,
     filing_wizard,
     query, regulations, documents, audit, tenants, health, auth,
     gap_assessment, dossier, alerts,
@@ -105,7 +106,7 @@ def create_app() -> FastAPI:
 
     @app.exception_handler(RequestValidationError)
     async def validation_error(request: Request, exc: RequestValidationError):
-        return JSONResponse(status_code=422, content={"detail": exc.errors()})
+        return JSONResponse(status_code=422, content={"detail": [{"msg": str(e.get("msg", "")), "loc": e.get("loc", [])} for e in exc.errors()]})
 
     @app.exception_handler(Exception)
     async def global_error(request: Request, exc: Exception):
@@ -134,6 +135,7 @@ def create_app() -> FastAPI:
     app.include_router(privacy.router,          prefix="/api/v1",               tags=["Privacy"])
     app.include_router(billing.router,          prefix="/api/v1",               tags=["Billing"])
     app.include_router(filing_wizard.router,    prefix="/api/v1",               tags=["Filing Wizard"])
+    app.include_router(document_editor.router,  prefix="/api/v1",               tags=["Document Editor"])
 
     return app
 
