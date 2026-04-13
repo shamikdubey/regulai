@@ -30,7 +30,6 @@ def upgrade():
         )
     """)
     op.execute("CREATE INDEX IF NOT EXISTS ix_compliance_reviews_tenant_id ON compliance_reviews(tenant_id)")
-    op.execute("GRANT SELECT, INSERT, UPDATE, DELETE ON compliance_reviews TO regulai_app")
 
 def downgrade():
     op.execute("DROP TABLE IF EXISTS compliance_reviews")

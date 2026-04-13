@@ -58,9 +58,6 @@ def upgrade():
     """)
     op.execute("CREATE INDEX IF NOT EXISTS ix_filing_projects_tenant_id ON filing_projects(tenant_id)")
     op.execute("CREATE INDEX IF NOT EXISTS ix_filing_checklist_project_id ON filing_checklist_items(project_id)")
-    op.execute("GRANT SELECT, INSERT, UPDATE, DELETE ON filing_templates TO regulai_app")
-    op.execute("GRANT SELECT, INSERT, UPDATE, DELETE ON filing_projects TO regulai_app")
-    op.execute("GRANT SELECT, INSERT, UPDATE, DELETE ON filing_checklist_items TO regulai_app")
 
 def downgrade():
     op.execute("DROP TABLE IF EXISTS filing_checklist_items")

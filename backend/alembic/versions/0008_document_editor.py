@@ -39,8 +39,6 @@ def upgrade():
     """)
     op.execute("CREATE INDEX IF NOT EXISTS ix_document_drafts_tenant_id ON document_drafts(tenant_id)")
     op.execute("CREATE INDEX IF NOT EXISTS ix_document_draft_versions_draft_id ON document_draft_versions(draft_id)")
-    op.execute("GRANT SELECT, INSERT, UPDATE, DELETE ON document_drafts TO regulai_app")
-    op.execute("GRANT SELECT, INSERT, UPDATE, DELETE ON document_draft_versions TO regulai_app")
 
 def downgrade():
     op.execute("DROP TABLE IF EXISTS document_draft_versions")
