@@ -52,10 +52,10 @@ def upgrade() -> None:
     # ── Enable RLS on each tenant-scoped table ────────────────────────────────
     for table in TENANT_SCOPED_TABLES:
         # Enable RLS
-        conn.execute(sa.text(f"ALTER TABLE {table} ENABLE ROW LEVEL SECURITY;"))
+        conn.execute(sa.text(f"ALTER TABLE {table} ENABLE ROW LEVEL SECURITY"))
 
         # Force RLS even for table owner (critical — superuser bypasses RLS by default)
-        conn.execute(sa.text(f"ALTER TABLE {table} FORCE ROW LEVEL SECURITY;"))
+        conn.execute(sa.text(f"ALTER TABLE {table} FORCE ROW LEVEL SECURITY"))
 
         # DROP existing policies if re-running
         conn.execute(sa.text(f"DROP POLICY IF EXISTS tenant_isolation ON {table}"))
@@ -152,9 +152,9 @@ def downgrade() -> None:
     conn = op.get_bind()
 
     for table in TENANT_SCOPED_TABLES + ["regulation_chunks"]:
-        conn.execute(sa.text(f"DROP POLICY IF EXISTS tenant_isolation ON {table};"))
-        conn.execute(sa.text(f"DROP POLICY IF EXISTS corpus_isolation ON {table};"))
-        conn.execute(sa.text(f"ALTER TABLE {table} DISABLE ROW LEVEL SECURITY;"))
+        conn.execute(sa.text(f"DROP POLICY IF EXISTS tenant_isolation ON {table}"))
+        conn.execute(sa.text(f"DROP POLICY IF EXISTS corpus_isolation ON {table}"))
+        conn.execute(sa.text(f"ALTER TABLE {table} DISABLE ROW LEVEL SECURITY"))
 
     conn.execute(sa.text("DROP FUNCTION IF EXISTS set_tenant_context(uuid);"))
     conn.execute(sa.text("DROP FUNCTION IF EXISTS set_bypass_rls(boolean);"))
