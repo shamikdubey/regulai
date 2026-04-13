@@ -117,8 +117,8 @@ export default function AppLayout() {
     collapsed: boolean;
     onClose?: () => void;
   }) => {
-    // ✅ Reset on every render — was previously a module-level let which caused
-    //    stale group labels after re-renders.
+    // Reset on every render — was previously a module-level let which caused
+    // stale group labels after re-renders.
     let lastGroup = "";
 
     return (
@@ -126,19 +126,19 @@ export default function AppLayout() {
         {/* Logo row */}
         <div
           className={cn(
-            "flex items-center gap-3 border-b border-[#1f2530] flex-shrink-0",
+            "flex items-center gap-3 border-b border-[#e2e8f0] flex-shrink-0",
             collapsed ? "px-3 py-3.5 justify-center" : "px-4 py-3.5",
           )}
         >
-          <div className="w-8 h-8 flex-shrink-0 bg-[#00d4aa] rounded-lg flex items-center justify-center font-mono text-xs font-bold text-black select-none">
+          <div className="w-8 h-8 flex-shrink-0 bg-[#2563eb] rounded-lg flex items-center justify-center font-mono text-xs font-bold text-white select-none">
             R∧
           </div>
 
           {!collapsed && (
             <>
               <div className="min-w-0 flex-1">
-                <div className="text-sm font-bold text-[#e8ecf2]">RegulAI</div>
-                <div className="text-[9px] text-[#4a5568] font-mono tracking-widest">
+                <div className="text-sm font-bold text-[#0f172a]">RegulAI</div>
+                <div className="text-[9px] text-[#94a3b8] font-mono tracking-widest">
                   COMPLIANCE AI
                 </div>
               </div>
@@ -147,7 +147,7 @@ export default function AppLayout() {
               {onClose ? (
                 <button
                   onClick={onClose}
-                  className="text-[#4a5568] hover:text-[#e8ecf2] transition-colors flex-shrink-0"
+                  className="text-[#94a3b8] hover:text-[#0f172a] transition-colors flex-shrink-0"
                   aria-label="Close menu"
                 >
                   <X size={15} />
@@ -156,7 +156,7 @@ export default function AppLayout() {
                 /* Desktop collapse toggle */
                 <button
                   onClick={() => setSidebarOpen(!sidebarOpen)}
-                  className="hidden lg:flex flex-shrink-0 text-[#4a5568] hover:text-[#e8ecf2] transition-colors"
+                  className="hidden lg:flex flex-shrink-0 text-[#94a3b8] hover:text-[#0f172a] transition-colors"
                   aria-label="Toggle sidebar"
                 >
                   <ChevronLeft size={15} />
@@ -169,7 +169,7 @@ export default function AppLayout() {
           {collapsed && (
             <button
               onClick={() => setSidebarOpen(true)}
-              className="hidden lg:flex flex-shrink-0 text-[#4a5568] hover:text-[#e8ecf2] transition-colors"
+              className="hidden lg:flex flex-shrink-0 text-[#94a3b8] hover:text-[#0f172a] transition-colors"
               aria-label="Expand sidebar"
             >
               <ChevronRight size={15} />
@@ -179,7 +179,7 @@ export default function AppLayout() {
 
         {/* Global filters — expanded only */}
         {!collapsed && (
-          <div className="px-3 py-2.5 border-b border-[#1f2530] space-y-2 flex-shrink-0">
+          <div className="px-3 py-2.5 border-b border-[#e2e8f0] space-y-2 flex-shrink-0">
             <JurisdictionSelector compact />
             <DomainSelector compact />
           </div>
@@ -197,10 +197,10 @@ export default function AppLayout() {
             return (
               <div key={to}>
                 {showGroup && (
-                  /* Group header with teal accent bar */
+                  /* Group header with blue accent bar */
                   <div className="flex items-center gap-2 px-3 pt-3 pb-1">
-                    <div className="w-0.5 h-3 rounded-full bg-[#00d4aa] opacity-40 flex-shrink-0" />
-                    <span className="text-[9px] font-mono text-[#3a4558] uppercase tracking-widest">
+                    <div className="w-0.5 h-3 rounded-full bg-[#2563eb] opacity-40 flex-shrink-0" />
+                    <span className="text-[9px] font-mono text-[#cbd5e1] uppercase tracking-widest">
                       {group}
                     </span>
                   </div>
@@ -212,8 +212,8 @@ export default function AppLayout() {
                         "flex items-center gap-2.5 mx-2 px-2 py-2 rounded-lg transition-all cursor-pointer relative",
                         collapsed && "justify-center",
                         isActive
-                          ? "bg-[rgba(0,212,170,0.1)] text-[#00d4aa] border border-[rgba(0,212,170,0.2)]"
-                          : "text-[#8892a4] hover:text-[#e8ecf2] hover:bg-[#181c24]",
+                          ? "bg-[#eff6ff] text-[#2563eb] border border-[#bfdbfe]"
+                          : "text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]",
                       )}
                       title={collapsed ? label : undefined}
                     >
@@ -226,7 +226,7 @@ export default function AppLayout() {
                       {badgeCount > 0 && (
                         <span
                           className={cn(
-                            "font-mono font-bold bg-[rgba(255,71,87,0.2)] text-[#ff4757] rounded-full flex-shrink-0 flex items-center justify-center",
+                            "font-mono font-bold bg-[rgba(220,38,38,0.12)] text-[#dc2626] rounded-full flex-shrink-0 flex items-center justify-center",
                             collapsed
                               ? "text-[8px] w-4 h-4 absolute -top-1 -right-1"
                               : "text-[9px] px-1.5 py-0.5",
@@ -243,14 +243,14 @@ export default function AppLayout() {
           })}
         </nav>
 
-        {/* User footer — ✅ fixed: group class present, LogOut icon in both states */}
+        {/* User footer */}
         <div
           className={cn(
-            "border-t border-[#1f2530] p-2 flex items-center gap-2 flex-shrink-0 group",
+            "border-t border-[#e2e8f0] p-2 flex items-center gap-2 flex-shrink-0 group",
             collapsed && "justify-center",
           )}
         >
-          <div className="w-7 h-7 flex-shrink-0 rounded-full bg-[#1f2530] flex items-center justify-center text-xs font-bold text-[#00d4aa]">
+          <div className="w-7 h-7 flex-shrink-0 rounded-full bg-[#eff6ff] flex items-center justify-center text-xs font-bold text-[#2563eb]">
             {user?.name?.[0]?.toUpperCase() ||
               user?.email?.[0]?.toUpperCase() ||
               "U"}
@@ -259,26 +259,26 @@ export default function AppLayout() {
           {!collapsed ? (
             <>
               <div className="flex-1 min-w-0">
-                <div className="text-xs font-semibold truncate text-[#e8ecf2]">
+                <div className="text-xs font-semibold truncate text-[#0f172a]">
                   {user?.name || user?.email}
                 </div>
-                <div className="text-[10px] text-[#4a5568] truncate">
+                <div className="text-[10px] text-[#94a3b8] truncate">
                   {tenant?.name}
                 </div>
               </div>
               <button
                 onClick={handleLogout}
-                className="text-[#4a5568] hover:text-[#ff4757] transition-colors flex-shrink-0"
+                className="text-[#94a3b8] hover:text-[#dc2626] transition-colors flex-shrink-0"
                 title="Sign out"
               >
                 <LogOut size={14} />
               </button>
             </>
           ) : (
-            /* Collapsed logout — always visible, not hidden behind opacity-0 */
+            /* Collapsed logout */
             <button
               onClick={handleLogout}
-              className="text-[#4a5568] hover:text-[#ff4757] transition-colors"
+              className="text-[#94a3b8] hover:text-[#dc2626] transition-colors"
               title="Sign out"
             >
               <LogOut size={14} />
@@ -292,7 +292,7 @@ export default function AppLayout() {
   // ── Layout render ───────────────────────────────────────────────────────────
 
   return (
-    <div className="flex h-screen bg-[#0a0c10] text-[#e8ecf2] overflow-hidden">
+    <div className="flex h-screen bg-[#f8fafc] text-[#0f172a] overflow-hidden">
 
       {/* ── Mobile overlay ────────────────────────────────────────────────── */}
       <AnimatePresence>
@@ -302,7 +302,7 @@ export default function AppLayout() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/60 z-40 lg:hidden"
+              className="fixed inset-0 bg-black/20 z-40 lg:hidden"
               onClick={() => setMobileOpen(false)}
             />
             <motion.aside
@@ -310,7 +310,7 @@ export default function AppLayout() {
               animate={{ x: 0 }}
               exit={{ x: -280 }}
               transition={{ type: "spring", damping: 28, stiffness: 300 }}
-              className="fixed left-0 top-0 h-full w-72 bg-gradient-to-b from-[#111318] to-[#0e1218] border-r border-[#1f2530] z-50 lg:hidden flex flex-col"
+              className="fixed left-0 top-0 h-full w-72 bg-white border-r border-[#e2e8f0] z-50 lg:hidden flex flex-col shadow-xl"
             >
               <SidebarContent
                 collapsed={false}
@@ -325,7 +325,7 @@ export default function AppLayout() {
       <motion.aside
         animate={{ width: sidebarOpen ? 240 : 56 }}
         transition={{ duration: 0.18, ease: "easeInOut" }}
-        className="hidden lg:flex flex-shrink-0 flex-col bg-gradient-to-b from-[#111318] to-[#0e1218] border-r border-[#1f2530] overflow-hidden"
+        className="hidden lg:flex flex-shrink-0 flex-col bg-white border-r border-[#e2e8f0] overflow-hidden shadow-sm"
       >
         <SidebarContent collapsed={!sidebarOpen} />
       </motion.aside>
@@ -334,11 +334,11 @@ export default function AppLayout() {
       <main className="flex-1 overflow-hidden flex flex-col min-w-0">
 
         {/* Top bar with breadcrumb */}
-        <header className="h-12 border-b border-[#1f2530] flex items-center px-4 gap-3 flex-shrink-0 bg-[#0a0c10]">
+        <header className="h-12 border-b border-[#e2e8f0] flex items-center px-4 gap-3 flex-shrink-0 bg-white shadow-sm">
           {/* Mobile hamburger */}
           <button
             onClick={() => setMobileOpen(true)}
-            className="lg:hidden text-[#4a5568] hover:text-[#e8ecf2] transition-colors"
+            className="lg:hidden text-[#94a3b8] hover:text-[#0f172a] transition-colors"
             aria-label="Open menu"
           >
             <Menu size={18} />
@@ -346,13 +346,13 @@ export default function AppLayout() {
 
           {/* Breadcrumb */}
           <div className="flex items-center gap-1.5 min-w-0">
-            <span className="text-[10px] text-[#2a3040] font-mono hidden sm:block select-none">
+            <span className="text-[10px] text-[#cbd5e1] font-mono hidden sm:block select-none">
               RegulAI
             </span>
-            <span className="text-[10px] text-[#2a3040] hidden sm:block select-none">
+            <span className="text-[10px] text-[#cbd5e1] hidden sm:block select-none">
               /
             </span>
-            <span className="text-xs font-semibold text-[#8892a4] truncate">
+            <span className="text-xs font-semibold text-[#64748b] truncate">
               {currentPageTitle}
             </span>
           </div>
@@ -360,7 +360,7 @@ export default function AppLayout() {
           <div className="flex-1" />
 
           {/* Version badge */}
-          <span className="text-[10px] text-[#2a3040] font-mono hidden sm:block">
+          <span className="text-[10px] text-[#cbd5e1] font-mono hidden sm:block">
             v{import.meta.env.VITE_APP_VERSION || "4.0.0"}
           </span>
         </header>

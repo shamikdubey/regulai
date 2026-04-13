@@ -157,7 +157,7 @@ export default function AdminPanelPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/60 z-40"
+              className="fixed inset-0 bg-black/20 z-40"
               onClick={() => setInviteOpen(false)}
             />
             <motion.div
@@ -168,22 +168,22 @@ export default function AdminPanelPage() {
               className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
             >
               <div
-                className="w-full max-w-md bg-[#111318] border border-[#1f2530] rounded-2xl p-6 pointer-events-auto"
+                className="w-full max-w-md bg-white border border-[#e2e8f0] rounded-2xl p-6 pointer-events-auto shadow-xl"
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Modal header */}
                 <div className="flex items-center justify-between mb-5">
                   <div>
-                    <h2 className="text-sm font-bold text-[#e8ecf2]">
+                    <h2 className="text-sm font-bold text-[#0f172a]">
                       Invite User
                     </h2>
-                    <p className="text-[10px] text-[#4a5568] mt-0.5">
+                    <p className="text-[10px] text-[#94a3b8] mt-0.5">
                       Send an invitation email to add a new team member
                     </p>
                   </div>
                   <button
                     onClick={() => setInviteOpen(false)}
-                    className="text-[#4a5568] hover:text-[#e8ecf2] transition-colors"
+                    className="text-[#94a3b8] hover:text-[#0f172a] transition-colors"
                   >
                     <X size={15} />
                   </button>
@@ -191,7 +191,7 @@ export default function AdminPanelPage() {
 
                 {/* Email */}
                 <div className="mb-4">
-                  <label className="block text-[10px] font-mono text-[#4a5568] mb-1 uppercase tracking-wider">
+                  <label className="block text-[10px] font-mono text-[#94a3b8] mb-1 uppercase tracking-wider">
                     Email address *
                   </label>
                   <input
@@ -199,14 +199,14 @@ export default function AdminPanelPage() {
                     value={inviteEmail}
                     onChange={(e) => setInviteEmail(e.target.value)}
                     placeholder="colleague@company.com"
-                    className="w-full px-3 py-2 bg-[#0a0c10] border border-[#2a3040] rounded-xl text-sm text-[#e8ecf2] outline-none focus:border-[#00d4aa] transition-colors"
+                    className="w-full px-3 py-2 bg-[#f8fafc] border border-[#e2e8f0] rounded-xl text-sm text-[#0f172a] outline-none focus:border-[#2563eb] transition-colors"
                     autoFocus
                   />
                 </div>
 
                 {/* Role */}
                 <div className="mb-6">
-                  <label className="block text-[10px] font-mono text-[#4a5568] mb-1 uppercase tracking-wider">
+                  <label className="block text-[10px] font-mono text-[#94a3b8] mb-1 uppercase tracking-wider">
                     Role
                   </label>
                   <div className="flex gap-2">
@@ -218,8 +218,8 @@ export default function AdminPanelPage() {
                         className={cn(
                           "flex-1 py-2 rounded-xl text-xs font-bold border capitalize transition-all",
                           inviteRole === r
-                            ? "bg-[rgba(0,212,170,0.12)] border-[rgba(0,212,170,0.4)] text-[#00d4aa]"
-                            : "border-[#2a3040] text-[#4a5568] hover:text-[#8892a4] hover:border-[#4a5568]",
+                            ? "bg-[#eff6ff] border-[#bfdbfe] text-[#2563eb]"
+                            : "border-[#e2e8f0] text-[#94a3b8] hover:text-[#64748b] hover:border-[#cbd5e1]",
                         )}
                       >
                         {r}
@@ -232,7 +232,7 @@ export default function AdminPanelPage() {
                 <div className="flex gap-2">
                   <button
                     onClick={() => setInviteOpen(false)}
-                    className="flex-1 py-2 rounded-xl text-xs font-bold border border-[#2a3040] text-[#4a5568] hover:text-[#8892a4] transition-all"
+                    className="flex-1 py-2 rounded-xl text-xs font-bold border border-[#e2e8f0] text-[#64748b] hover:text-[#0f172a] transition-all"
                   >
                     Cancel
                   </button>
@@ -251,8 +251,8 @@ export default function AdminPanelPage() {
                     className={cn(
                       "flex-1 flex items-center justify-center gap-2 py-2 rounded-xl text-xs font-bold transition-all",
                       inviteMutation.isPending || !inviteEmail.trim()
-                        ? "bg-[#1f2530] text-[#4a5568] cursor-not-allowed"
-                        : "bg-[#00d4aa] text-black hover:bg-[#00bfa5]",
+                        ? "bg-[#e2e8f0] text-[#94a3b8] cursor-not-allowed"
+                        : "bg-[#2563eb] text-white hover:bg-[#1d4ed8]",
                     )}
                   >
                     {inviteMutation.isPending ? (
@@ -273,10 +273,10 @@ export default function AdminPanelPage() {
       <div className="mb-6 flex items-start justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <ShieldAlert size={16} className="text-[#00d4aa]" />
-            <h1 className="text-xl font-bold text-[#e8ecf2]">Admin Panel</h1>
+            <ShieldAlert size={16} className="text-[#2563eb]" />
+            <h1 className="text-xl font-bold text-[#0f172a]">Admin Panel</h1>
           </div>
-          <p className="text-xs text-[#4a5568]">
+          <p className="text-xs text-[#94a3b8]">
             Manage users, tenants, and monitor system health — admin access only
           </p>
         </div>
@@ -286,7 +286,7 @@ export default function AdminPanelPage() {
             qc.invalidateQueries({ queryKey: ["admin-users"] });
             qc.invalidateQueries({ queryKey: ["admin-tenants"] });
           }}
-          className="flex items-center gap-1.5 px-3 py-2 bg-[#111318] border border-[#1f2530] rounded-xl text-xs text-[#8892a4] hover:text-[#e8ecf2] hover:border-[#2a3040] transition-all flex-shrink-0"
+          className="flex items-center gap-1.5 px-3 py-2 bg-white border border-[#e2e8f0] rounded-xl text-xs text-[#64748b] hover:text-[#0f172a] hover:border-[#cbd5e1] transition-all flex-shrink-0 shadow-sm"
         >
           <RefreshCw size={12} />
           Refresh
@@ -294,7 +294,7 @@ export default function AdminPanelPage() {
       </div>
 
       {/* ── Tabs ──────────────────────────────────────────────────────────── */}
-      <div className="flex gap-1 bg-[#111318] border border-[#1f2530] rounded-xl p-1 mb-6 w-fit">
+      <div className="flex gap-1 bg-[#f8fafc] border border-[#e2e8f0] rounded-xl p-1 mb-6 w-fit">
         {TABS.map(({ key, label, icon: Icon }) => (
           <button
             key={key}
@@ -302,8 +302,8 @@ export default function AdminPanelPage() {
             className={cn(
               "flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-bold transition-all",
               tab === key
-                ? "bg-[#00d4aa] text-black"
-                : "text-[#4a5568] hover:text-[#8892a4]",
+                ? "bg-[#2563eb] text-white"
+                : "text-[#94a3b8] hover:text-[#64748b]",
             )}
           >
             <Icon size={12} />
@@ -323,61 +323,60 @@ export default function AdminPanelPage() {
             exit={{ opacity: 0, y: -8 }}
           >
             {statsQ.isLoading ? (
-              <div className="flex items-center justify-center gap-2 py-20 text-[#4a5568]">
+              <div className="flex items-center justify-center gap-2 py-20 text-[#94a3b8]">
                 <Loader2 size={16} className="animate-spin" />
                 <span className="text-sm">Loading stats…</span>
               </div>
             ) : statsQ.isError ? (
-              <div className="py-20 text-center text-sm text-[#ff4757]">
+              <div className="py-20 text-center text-sm text-[#dc2626]">
                 Failed to load stats
               </div>
             ) : statsQ.data ? (
-              /* ✅ Fixed: 6 cards in md:grid-cols-3 for even 2×3 layout */
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                 {[
                   {
                     label: "Total Users",
                     value: statsQ.data.total_users,
                     sub: `${statsQ.data.active_users} active`,
-                    color: "#00d4aa",
+                    color: "#2563eb",
                   },
                   {
                     label: "Tenants",
                     value: statsQ.data.total_tenants,
                     sub: "organisations",
-                    color: "#8892a4",
+                    color: "#64748b",
                   },
                   {
                     label: "Queries Today",
                     value: statsQ.data.total_queries_today,
                     sub: `${statsQ.data.total_queries_this_month} this month`,
-                    color: "#f5a623",
+                    color: "#f59e0b",
                   },
                   {
                     label: "Documents",
                     value: statsQ.data.total_documents,
                     sub: "uploaded",
-                    color: "#8892a4",
+                    color: "#64748b",
                   },
                   {
                     label: "Gap Assessments",
                     value: statsQ.data.total_gap_assessments,
                     sub: "all time",
-                    color: "#8892a4",
+                    color: "#64748b",
                   },
                   {
                     label: "Avg Response",
                     value: `${statsQ.data.avg_response_ms}ms`,
                     sub: "per query",
                     color:
-                      statsQ.data.avg_response_ms < 2000 ? "#00d4aa" : "#f5a623",
+                      statsQ.data.avg_response_ms < 2000 ? "#0d9488" : "#f59e0b",
                   },
                 ].map((stat) => (
                   <div
                     key={stat.label}
-                    className="bg-[#111318] border border-[#1f2530] rounded-2xl p-5"
+                    className="bg-white border border-[#e2e8f0] rounded-2xl p-5 shadow-sm"
                   >
-                    <p className="text-[10px] font-mono text-[#4a5568] uppercase tracking-wider mb-2">
+                    <p className="text-[10px] font-mono text-[#94a3b8] uppercase tracking-wider mb-2">
                       {stat.label}
                     </p>
                     <p
@@ -386,7 +385,7 @@ export default function AdminPanelPage() {
                     >
                       {stat.value}
                     </p>
-                    <p className="text-[10px] text-[#4a5568] mt-1">{stat.sub}</p>
+                    <p className="text-[10px] text-[#94a3b8] mt-1">{stat.sub}</p>
                   </div>
                 ))}
               </div>
@@ -402,23 +401,23 @@ export default function AdminPanelPage() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
           >
-            {/* ✅ Search + invite row */}
+            {/* Search + invite row */}
             <div className="flex items-center gap-2 mb-4">
               <div className="relative flex-1">
                 <Search
                   size={13}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-[#4a5568] pointer-events-none"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94a3b8] pointer-events-none"
                 />
                 <input
                   value={userSearch}
                   onChange={(e) => setUserSearch(e.target.value)}
                   placeholder="Search by name or email…"
-                  className="w-full pl-8 pr-3 py-2 bg-[#111318] border border-[#2a3040] rounded-xl text-xs text-[#e8ecf2] outline-none focus:border-[#00d4aa] transition-colors"
+                  className="w-full pl-8 pr-3 py-2 bg-white border border-[#e2e8f0] rounded-xl text-xs text-[#0f172a] outline-none focus:border-[#2563eb] transition-colors shadow-sm"
                 />
                 {userSearch && (
                   <button
                     onClick={() => setUserSearch("")}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#4a5568] hover:text-[#e8ecf2] transition-colors"
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#94a3b8] hover:text-[#0f172a] transition-colors"
                   >
                     <X size={12} />
                   </button>
@@ -426,7 +425,7 @@ export default function AdminPanelPage() {
               </div>
               <button
                 onClick={() => setInviteOpen(true)}
-                className="flex items-center gap-1.5 px-3 py-2 bg-[#00d4aa] text-black rounded-xl text-xs font-bold hover:bg-[#00bfa5] active:scale-[0.98] transition-all flex-shrink-0"
+                className="flex items-center gap-1.5 px-3 py-2 bg-[#2563eb] text-white rounded-xl text-xs font-bold hover:bg-[#1d4ed8] active:scale-[0.98] transition-all flex-shrink-0"
               >
                 <UserPlus size={13} />
                 Invite User
@@ -434,24 +433,24 @@ export default function AdminPanelPage() {
             </div>
 
             {usersQ.isLoading ? (
-              <div className="flex items-center justify-center gap-2 py-20 text-[#4a5568]">
+              <div className="flex items-center justify-center gap-2 py-20 text-[#94a3b8]">
                 <Loader2 size={16} className="animate-spin" />
                 <span className="text-sm">Loading users…</span>
               </div>
             ) : usersQ.isError ? (
-              <div className="py-20 text-center text-sm text-[#ff4757]">
+              <div className="py-20 text-center text-sm text-[#dc2626]">
                 Failed to load users
               </div>
             ) : filteredUsers.length === 0 ? (
               <div className="py-20 text-center">
-                <Users size={32} className="text-[#2a3040] mx-auto mb-3" />
-                <p className="text-sm text-[#4a5568]">
+                <Users size={32} className="text-[#e2e8f0] mx-auto mb-3" />
+                <p className="text-sm text-[#94a3b8]">
                   {userSearch ? `No users matching "${userSearch}"` : "No users found"}
                 </p>
                 {userSearch && (
                   <button
                     onClick={() => setUserSearch("")}
-                    className="mt-2 text-xs text-[#00d4aa] hover:underline"
+                    className="mt-2 text-xs text-[#2563eb] hover:underline"
                   >
                     Clear search
                   </button>
@@ -459,7 +458,7 @@ export default function AdminPanelPage() {
               </div>
             ) : (
               <div className="space-y-2">
-                <p className="text-[10px] font-mono text-[#4a5568] uppercase tracking-wider mb-3">
+                <p className="text-[10px] font-mono text-[#94a3b8] uppercase tracking-wider mb-3">
                   {filteredUsers.length} of {(usersQ.data ?? []).length} user
                   {(usersQ.data ?? []).length !== 1 ? "s" : ""}
                   {userSearch && ` matching "${userSearch}"`}
@@ -467,15 +466,15 @@ export default function AdminPanelPage() {
                 {filteredUsers.map((u) => (
                   <div
                     key={u.id}
-                    className="flex items-center gap-4 p-4 bg-[#111318] border border-[#1f2530] rounded-xl"
+                    className="flex items-center gap-4 p-4 bg-white border border-[#e2e8f0] rounded-xl shadow-sm"
                   >
                     {/* Avatar */}
                     <div
                       className={cn(
                         "w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0",
                         u.is_active
-                          ? "bg-[rgba(0,212,170,0.12)] text-[#00d4aa]"
-                          : "bg-[#1f2530] text-[#4a5568]",
+                          ? "bg-[#eff6ff] text-[#2563eb]"
+                          : "bg-[#f1f5f9] text-[#94a3b8]",
                       )}
                     >
                       {u.full_name?.[0]?.toUpperCase() ?? "?"}
@@ -484,25 +483,25 @@ export default function AdminPanelPage() {
                     {/* Info */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <p className="text-xs font-medium text-[#e8ecf2] truncate">
+                        <p className="text-xs font-medium text-[#0f172a] truncate">
                           {u.full_name}
                         </p>
                         <span
                           className={cn(
                             "text-[9px] font-bold px-1.5 py-0.5 rounded font-mono uppercase",
                             u.role === "admin"
-                              ? "bg-[rgba(0,212,170,0.12)] text-[#00d4aa]"
-                              : "bg-[#1f2530] text-[#4a5568]",
+                              ? "bg-[#eff6ff] text-[#2563eb]"
+                              : "bg-[#f1f5f9] text-[#94a3b8]",
                           )}
                         >
                           {u.role}
                         </span>
                       </div>
-                      <p className="text-[10px] text-[#4a5568] font-mono mt-0.5 truncate">
+                      <p className="text-[10px] text-[#94a3b8] font-mono mt-0.5 truncate">
                         {u.email}
                       </p>
                       {u.last_login && (
-                        <p className="text-[9px] text-[#2a3040] font-mono mt-0.5">
+                        <p className="text-[9px] text-[#cbd5e1] font-mono mt-0.5">
                           Last login:{" "}
                           {new Date(u.last_login).toLocaleDateString()}
                         </p>
@@ -514,8 +513,8 @@ export default function AdminPanelPage() {
                       className={cn(
                         "text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0",
                         u.is_active
-                          ? "bg-[rgba(0,212,170,0.12)] text-[#00d4aa]"
-                          : "bg-[rgba(255,71,87,0.1)] text-[#ff4757]",
+                          ? "bg-[#f0fdf9] text-[#0d9488]"
+                          : "bg-[rgba(220,38,38,0.08)] text-[#dc2626]",
                       )}
                     >
                       {u.is_active ? "Active" : "Inactive"}
@@ -533,7 +532,7 @@ export default function AdminPanelPage() {
                           }
                           disabled={toggleUserMutation.isPending}
                           title={u.is_active ? "Deactivate" : "Activate"}
-                          className="p-1.5 rounded-lg text-[#4a5568] hover:text-[#00d4aa] hover:bg-[rgba(0,212,170,0.08)] transition-all"
+                          className="p-1.5 rounded-lg text-[#94a3b8] hover:text-[#2563eb] hover:bg-[#eff6ff] transition-all"
                         >
                           {u.is_active ? (
                             <UserX size={13} />
@@ -553,7 +552,7 @@ export default function AdminPanelPage() {
                           }}
                           disabled={deleteUserMutation.isPending}
                           title="Delete user"
-                          className="p-1.5 rounded-lg text-[#4a5568] hover:text-[#ff4757] hover:bg-[rgba(255,71,87,0.08)] transition-all"
+                          className="p-1.5 rounded-lg text-[#94a3b8] hover:text-[#dc2626] hover:bg-[rgba(220,38,38,0.06)] transition-all"
                         >
                           <Trash2 size={13} />
                         </button>
@@ -575,45 +574,45 @@ export default function AdminPanelPage() {
             exit={{ opacity: 0, y: -8 }}
           >
             {tenantsQ.isLoading ? (
-              <div className="flex items-center justify-center gap-2 py-20 text-[#4a5568]">
+              <div className="flex items-center justify-center gap-2 py-20 text-[#94a3b8]">
                 <Loader2 size={16} className="animate-spin" />
                 <span className="text-sm">Loading tenants…</span>
               </div>
             ) : tenantsQ.isError ? (
-              <div className="py-20 text-center text-sm text-[#ff4757]">
+              <div className="py-20 text-center text-sm text-[#dc2626]">
                 Failed to load tenants
               </div>
             ) : (tenantsQ.data ?? []).length === 0 ? (
               <div className="py-20 text-center">
-                <Building2 size={32} className="text-[#2a3040] mx-auto mb-3" />
-                <p className="text-sm text-[#4a5568]">No tenants found</p>
+                <Building2 size={32} className="text-[#e2e8f0] mx-auto mb-3" />
+                <p className="text-sm text-[#94a3b8]">No tenants found</p>
               </div>
             ) : (
               <div className="space-y-2">
-                <p className="text-[10px] font-mono text-[#4a5568] uppercase tracking-wider mb-3">
+                <p className="text-[10px] font-mono text-[#94a3b8] uppercase tracking-wider mb-3">
                   {(tenantsQ.data ?? []).length} tenant
                   {(tenantsQ.data ?? []).length !== 1 ? "s" : ""}
                 </p>
                 {(tenantsQ.data ?? []).map((t) => (
                   <div
                     key={t.id}
-                    className="bg-[#111318] border border-[#1f2530] rounded-xl overflow-hidden"
+                    className="bg-white border border-[#e2e8f0] rounded-xl overflow-hidden shadow-sm"
                   >
                     <button
-                      className="w-full flex items-center justify-between p-4 text-left"
+                      className="w-full flex items-center justify-between p-4 text-left hover:bg-[#f8fafc] transition-colors"
                       onClick={() =>
                         setExpandedTenant((p) => (p === t.id ? null : t.id))
                       }
                     >
                       <div className="flex items-center gap-3 min-w-0">
-                        <div className="w-8 h-8 rounded-lg bg-[rgba(0,212,170,0.08)] flex items-center justify-center flex-shrink-0">
-                          <Building2 size={14} className="text-[#00d4aa]" />
+                        <div className="w-8 h-8 rounded-lg bg-[#eff6ff] flex items-center justify-center flex-shrink-0">
+                          <Building2 size={14} className="text-[#2563eb]" />
                         </div>
                         <div className="min-w-0">
-                          <p className="text-xs font-bold text-[#e8ecf2]">
+                          <p className="text-xs font-bold text-[#0f172a]">
                             {t.name}
                           </p>
-                          <p className="text-[10px] text-[#4a5568] font-mono">
+                          <p className="text-[10px] text-[#94a3b8] font-mono">
                             {t.slug}
                             {t.user_count !== undefined &&
                               ` · ${t.user_count} user${t.user_count !== 1 ? "s" : ""}`}
@@ -621,13 +620,13 @@ export default function AdminPanelPage() {
                         </div>
                       </div>
                       <div className="flex items-center gap-3 flex-shrink-0 ml-3">
-                        <span className="text-[10px] font-mono text-[#4a5568]">
+                        <span className="text-[10px] font-mono text-[#94a3b8]">
                           {t.query_limit_per_day}/day
                         </span>
                         {expandedTenant === t.id ? (
-                          <ChevronUp size={13} className="text-[#4a5568]" />
+                          <ChevronUp size={13} className="text-[#94a3b8]" />
                         ) : (
-                          <ChevronDown size={13} className="text-[#4a5568]" />
+                          <ChevronDown size={13} className="text-[#94a3b8]" />
                         )}
                       </div>
                     </button>
@@ -641,9 +640,9 @@ export default function AdminPanelPage() {
                           transition={{ duration: 0.2 }}
                           className="overflow-hidden"
                         >
-                          <div className="px-4 pb-4 space-y-3 border-t border-[#1f2530] pt-3">
+                          <div className="px-4 pb-4 space-y-3 border-t border-[#e2e8f0] pt-3 bg-[#f8fafc]">
                             <div>
-                              <p className="text-[9px] font-mono text-[#4a5568] uppercase tracking-wider mb-1.5">
+                              <p className="text-[9px] font-mono text-[#94a3b8] uppercase tracking-wider mb-1.5">
                                 Allowed jurisdictions
                               </p>
                               <div className="flex flex-wrap gap-1">
@@ -651,20 +650,20 @@ export default function AdminPanelPage() {
                                   t.allowed_jurisdictions.map((j) => (
                                     <span
                                       key={j}
-                                      className="text-[10px] px-2 py-0.5 bg-[#0a0c10] border border-[#1f2530] rounded font-mono text-[#8892a4]"
+                                      className="text-[10px] px-2 py-0.5 bg-white border border-[#e2e8f0] rounded font-mono text-[#64748b]"
                                     >
                                       {j}
                                     </span>
                                   ))
                                 ) : (
-                                  <span className="text-[10px] text-[#4a5568]">
+                                  <span className="text-[10px] text-[#94a3b8]">
                                     All
                                   </span>
                                 )}
                               </div>
                             </div>
                             <div>
-                              <p className="text-[9px] font-mono text-[#4a5568] uppercase tracking-wider mb-1.5">
+                              <p className="text-[9px] font-mono text-[#94a3b8] uppercase tracking-wider mb-1.5">
                                 Allowed domains
                               </p>
                               <div className="flex flex-wrap gap-1">
@@ -672,19 +671,19 @@ export default function AdminPanelPage() {
                                   t.allowed_domains.map((d) => (
                                     <span
                                       key={d}
-                                      className="text-[10px] px-2 py-0.5 bg-[#0a0c10] border border-[#1f2530] rounded font-mono text-[#8892a4]"
+                                      className="text-[10px] px-2 py-0.5 bg-white border border-[#e2e8f0] rounded font-mono text-[#64748b]"
                                     >
                                       {d}
                                     </span>
                                   ))
                                 ) : (
-                                  <span className="text-[10px] text-[#4a5568]">
+                                  <span className="text-[10px] text-[#94a3b8]">
                                     All
                                   </span>
                                 )}
                               </div>
                             </div>
-                            <div className="flex items-center justify-between text-[10px] font-mono text-[#4a5568]">
+                            <div className="flex items-center justify-between text-[10px] font-mono text-[#94a3b8]">
                               <span>
                                 Query limit: {t.query_limit_per_day}/day
                               </span>

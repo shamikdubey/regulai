@@ -10,8 +10,8 @@ html, body, #root {
   height: 100%;
   margin: 0;
   padding: 0;
-  background: #0a0c10;
-  color: #e8ecf2;
+  background: #f8fafc;
+  color: #0f172a;
   font-family: 'Syne', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -20,18 +20,18 @@ html, body, #root {
 /* Custom scrollbar */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #2a3040; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #4a5568; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
-/* Prose dark theme overrides */
-.prose-invert { color: #e8ecf2; }
-.prose-invert h1, .prose-invert h2, .prose-invert h3 { color: #e8ecf2; }
-.prose-invert code { color: #00d4aa; background: rgba(0,212,170,0.08); padding: 1px 5px; border-radius: 3px; }
-.prose-invert strong { color: #e8ecf2; }
-.prose-invert a { color: #6699ff; }
-.prose-invert blockquote { border-left-color: #2a3040; color: #8892a4; }
-.prose-invert ul > li::marker,
-.prose-invert ol > li::marker { color: #4a5568; }
+/* Prose light theme */
+.prose { color: #0f172a; }
+.prose h1, .prose h2, .prose h3 { color: #0f172a; }
+.prose code { color: #2563eb; background: rgba(37,99,235,0.08); padding: 1px 5px; border-radius: 3px; }
+.prose strong { color: #0f172a; }
+.prose a { color: #2563eb; }
+.prose blockquote { border-left-color: #e2e8f0; color: #64748b; }
+.prose ul > li::marker,
+.prose ol > li::marker { color: #94a3b8; }
 .prose-sm { font-size: 13px; line-height: 1.7; }
 
 /* Line clamp utilities */
@@ -50,15 +50,15 @@ html, body, #root {
 
 /* Focus ring for accessibility */
 :focus-visible {
-  outline: 2px solid #00d4aa;
+  outline: 2px solid #2563eb;
   outline-offset: 2px;
   border-radius: 4px;
 }
 
 /* Selection colour */
 ::selection {
-  background: rgba(0, 212, 170, 0.2);
-  color: #e8ecf2;
+  background: rgba(37, 99, 235, 0.15);
+  color: #0f172a;
 }
 
 /* Mobile: prevent horizontal scroll */

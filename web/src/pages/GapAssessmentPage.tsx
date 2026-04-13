@@ -31,9 +31,9 @@ type GapResult = {
 // ── Constants ─────────────────────────────────────────────────────────────────
 
 const RISK_COLORS: Record<string, string> = {
-  HIGH: "#ff4757",
-  MEDIUM: "#f5a623",
-  LOW: "#00d4aa",
+  HIGH: "#dc2626",
+  MEDIUM: "#f59e0b",
+  LOW: "#0d9488",
 };
 
 const PRODUCT_TYPES = ["food", "pharma", "device", "nutra", "ayurveda"];
@@ -171,8 +171,8 @@ export default function GapAssessmentPage() {
       {/* Page header */}
       <div className="mb-6 flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold text-[#e8ecf2]">Gap Assessment</h1>
-          <p className="text-xs text-[#4a5568] mt-1">
+          <h1 className="text-xl font-bold text-[#0f172a]">Gap Assessment</h1>
+          <p className="text-xs text-[#94a3b8] mt-1">
             Identify compliance gaps and required actions across target markets
           </p>
         </div>
@@ -181,7 +181,7 @@ export default function GapAssessmentPage() {
         {result && (
           <button
             onClick={handleNewAssessment}
-            className="flex items-center gap-1.5 px-3 py-2 bg-[#111318] border border-[#1f2530] rounded-xl text-xs text-[#8892a4] hover:text-[#e8ecf2] hover:border-[#2a3040] transition-all flex-shrink-0"
+            className="flex items-center gap-1.5 px-3 py-2 bg-white border border-[#e2e8f0] rounded-xl text-xs text-[#64748b] hover:text-[#0f172a] hover:border-[#cbd5e1] transition-all flex-shrink-0 shadow-sm"
           >
             <RotateCcw size={12} />
             New Assessment
@@ -193,7 +193,7 @@ export default function GapAssessmentPage() {
       <form onSubmit={handleSubmit} className="space-y-4 mb-6">
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-[10px] font-mono text-[#4a5568] mb-1 uppercase tracking-wider">
+            <label className="block text-[10px] font-mono text-[#94a3b8] mb-1 uppercase tracking-wider">
               Product name *
             </label>
             <input
@@ -201,17 +201,17 @@ export default function GapAssessmentPage() {
               onChange={(e) => setProductName(e.target.value)}
               required
               placeholder="e.g. OmegaPlus Fish Oil Capsules"
-              className="w-full px-3 py-2 bg-[#111318] border border-[#2a3040] rounded-xl text-sm text-[#e8ecf2] outline-none focus:border-[#00d4aa] transition-colors"
+              className="w-full px-3 py-2 bg-white border border-[#e2e8f0] rounded-xl text-sm text-[#0f172a] outline-none focus:border-[#2563eb] transition-colors"
             />
           </div>
           <div>
-            <label className="block text-[10px] font-mono text-[#4a5568] mb-1 uppercase tracking-wider">
+            <label className="block text-[10px] font-mono text-[#94a3b8] mb-1 uppercase tracking-wider">
               Product type *
             </label>
             <select
               value={productType}
               onChange={(e) => setProductType(e.target.value)}
-              className="w-full px-3 py-2 bg-[#111318] border border-[#2a3040] rounded-xl text-sm text-[#e8ecf2] outline-none focus:border-[#00d4aa] capitalize"
+              className="w-full px-3 py-2 bg-white border border-[#e2e8f0] rounded-xl text-sm text-[#0f172a] outline-none focus:border-[#2563eb] capitalize"
             >
               {PRODUCT_TYPES.map((t) => (
                 <option key={t} value={t} className="capitalize">
@@ -223,7 +223,7 @@ export default function GapAssessmentPage() {
         </div>
 
         <div>
-          <label className="block text-[10px] font-mono text-[#4a5568] mb-1 uppercase tracking-wider">
+          <label className="block text-[10px] font-mono text-[#94a3b8] mb-1 uppercase tracking-wider">
             Product description
           </label>
           <textarea
@@ -231,41 +231,40 @@ export default function GapAssessmentPage() {
             onChange={(e) => setDescription(e.target.value)}
             rows={3}
             placeholder="Describe composition, intended use, dosage form..."
-            className="w-full px-3 py-2 bg-[#111318] border border-[#2a3040] rounded-xl text-sm text-[#e8ecf2] outline-none focus:border-[#00d4aa] transition-colors resize-none"
+            className="w-full px-3 py-2 bg-white border border-[#e2e8f0] rounded-xl text-sm text-[#0f172a] outline-none focus:border-[#2563eb] transition-colors resize-none"
           />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-[10px] font-mono text-[#4a5568] mb-1 uppercase tracking-wider">
+            <label className="block text-[10px] font-mono text-[#94a3b8] mb-1 uppercase tracking-wider">
               Intended claims (optional)
             </label>
             <input
               value={claims}
               onChange={(e) => setClaims(e.target.value)}
               placeholder="e.g. supports heart health, omega-3 supplement"
-              className="w-full px-3 py-2 bg-[#111318] border border-[#2a3040] rounded-xl text-sm text-[#e8ecf2] outline-none focus:border-[#00d4aa] transition-colors"
+              className="w-full px-3 py-2 bg-white border border-[#e2e8f0] rounded-xl text-sm text-[#0f172a] outline-none focus:border-[#2563eb] transition-colors"
             />
           </div>
           <div>
-            {/* ✅ Current approvals field — was missing from UI, now wired */}
-            <label className="block text-[10px] font-mono text-[#4a5568] mb-1 uppercase tracking-wider">
+            <label className="block text-[10px] font-mono text-[#94a3b8] mb-1 uppercase tracking-wider">
               Current approvals (optional)
             </label>
             <input
               value={approvalsInput}
               onChange={(e) => setApprovalsInput(e.target.value)}
               placeholder="e.g. US, EU, India (comma-separated)"
-              className="w-full px-3 py-2 bg-[#111318] border border-[#2a3040] rounded-xl text-sm text-[#e8ecf2] outline-none focus:border-[#00d4aa] transition-colors"
+              className="w-full px-3 py-2 bg-white border border-[#e2e8f0] rounded-xl text-sm text-[#0f172a] outline-none focus:border-[#2563eb] transition-colors"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-[10px] font-mono text-[#4a5568] mb-2 uppercase tracking-wider">
+          <label className="block text-[10px] font-mono text-[#94a3b8] mb-2 uppercase tracking-wider">
             Target jurisdictions * ({jurisdictions.length} selected)
           </label>
-          <div className="flex flex-wrap gap-1.5 max-h-48 overflow-y-auto p-2 bg-[#111318] border border-[#2a3040] rounded-xl">
+          <div className="flex flex-wrap gap-1.5 max-h-48 overflow-y-auto p-2 bg-[#f8fafc] border border-[#e2e8f0] rounded-xl">
             {JURISDICTIONS.map((j) => (
               <button
                 type="button"
@@ -274,8 +273,8 @@ export default function GapAssessmentPage() {
                 className={cn(
                   "flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs transition-all border",
                   jurisdictions.includes(j.value)
-                    ? "bg-[rgba(0,212,170,0.12)] border-[rgba(0,212,170,0.4)] text-[#00d4aa]"
-                    : "border-[#2a3040] text-[#4a5568] hover:border-[#4a5568] hover:text-[#8892a4]",
+                    ? "bg-[#eff6ff] border-[#bfdbfe] text-[#2563eb]"
+                    : "border-[#e2e8f0] text-[#94a3b8] hover:border-[#cbd5e1] hover:text-[#64748b]",
                 )}
               >
                 <span>{j.flag}</span>
@@ -291,8 +290,8 @@ export default function GapAssessmentPage() {
           className={cn(
             "flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-sm transition-all",
             submitting || job.isRunning
-              ? "bg-[#1f2530] text-[#4a5568] cursor-not-allowed"
-              : "bg-[#00d4aa] text-black hover:bg-[#00bfa5] active:scale-[0.98]",
+              ? "bg-[#e2e8f0] text-[#94a3b8] cursor-not-allowed"
+              : "bg-[#2563eb] text-white hover:bg-[#1d4ed8] active:scale-[0.98]",
           )}
         >
           {submitting || job.isRunning ? (
@@ -323,22 +322,22 @@ export default function GapAssessmentPage() {
             className="space-y-4 mt-4"
           >
             {/* Summary */}
-            <div className="bg-[#111318] border border-[#1f2530] rounded-2xl p-5">
+            <div className="bg-white border border-[#e2e8f0] rounded-2xl p-5 shadow-sm">
               <div className="flex items-start justify-between mb-3 gap-3">
                 <div className="min-w-0">
-                  <h2 className="text-base font-bold text-[#e8ecf2]">
+                  <h2 className="text-base font-bold text-[#0f172a]">
                     {result.product_name}
                   </h2>
                 </div>
                 <div className="flex items-center gap-2 flex-shrink-0">
-                  {/* ✅ Copy report button */}
+                  {/* Copy report button */}
                   <button
                     onClick={handleCopy}
                     className={cn(
                       "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold border transition-all",
                       copied
-                        ? "bg-[rgba(0,212,170,0.12)] border-[rgba(0,212,170,0.4)] text-[#00d4aa]"
-                        : "bg-[#111318] border-[#2a3040] text-[#4a5568] hover:text-[#e8ecf2] hover:border-[#4a5568]",
+                        ? "bg-[#eff6ff] border-[#bfdbfe] text-[#2563eb]"
+                        : "bg-white border-[#e2e8f0] text-[#94a3b8] hover:text-[#0f172a] hover:border-[#cbd5e1]",
                     )}
                   >
                     {copied ? (
@@ -350,7 +349,7 @@ export default function GapAssessmentPage() {
                   <span
                     className="text-xs font-bold px-3 py-1 rounded-full"
                     style={{
-                      background: `${RISK_COLORS[result.overall_risk]}20`,
+                      background: `${RISK_COLORS[result.overall_risk]}15`,
                       color: RISK_COLORS[result.overall_risk],
                     }}
                   >
@@ -359,11 +358,11 @@ export default function GapAssessmentPage() {
                 </div>
               </div>
 
-              <p className="text-sm text-[#8892a4] leading-relaxed">
+              <p className="text-sm text-[#64748b] leading-relaxed">
                 {result.summary}
               </p>
 
-              <div className="flex gap-4 mt-3 text-[11px] text-[#4a5568] font-mono">
+              <div className="flex gap-4 mt-3 text-[11px] text-[#94a3b8] font-mono">
                 <span>{result.gaps.length} gaps identified</span>
                 <span>~{result.estimated_total_months} months to full compliance</span>
                 {result.latency_ms && <span>{result.latency_ms}ms</span>}
@@ -373,20 +372,20 @@ export default function GapAssessmentPage() {
             {/* Gaps */}
             {result.gaps.length > 0 && (
               <div className="space-y-2">
-                <h3 className="text-xs font-bold text-[#e8ecf2] uppercase tracking-wider">
+                <h3 className="text-xs font-bold text-[#0f172a] uppercase tracking-wider">
                   Compliance gaps
                 </h3>
                 {result.gaps.map((g, i) => (
                   <div
                     key={i}
-                    className="bg-[#111318] border border-[#1f2530] rounded-xl p-4"
+                    className="bg-white border border-[#e2e8f0] rounded-xl p-4 shadow-sm"
                     style={{
                       borderLeftWidth: 3,
                       borderLeftColor: RISK_COLORS[g.risk_level],
                     }}
                   >
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-xs font-mono font-bold text-[#e8ecf2]">
+                      <span className="text-xs font-mono font-bold text-[#0f172a]">
                         {g.jurisdiction.toUpperCase()}
                       </span>
                       <span
@@ -396,13 +395,13 @@ export default function GapAssessmentPage() {
                         {g.risk_level}
                       </span>
                     </div>
-                    <p className="text-xs font-semibold text-[#e8ecf2] mb-1">
+                    <p className="text-xs font-semibold text-[#0f172a] mb-1">
                       {g.gap}
                     </p>
-                    <p className="text-xs text-[#8892a4] mb-2">
+                    <p className="text-xs text-[#64748b] mb-2">
                       {g.requirement}
                     </p>
-                    <div className="flex items-center justify-between text-[10px] text-[#4a5568]">
+                    <div className="flex items-center justify-between text-[10px] text-[#94a3b8]">
                       <span>→ {g.action_required}</span>
                       <span className="font-mono">{g.estimated_timeline}</span>
                     </div>
@@ -413,16 +412,16 @@ export default function GapAssessmentPage() {
 
             {/* Critical path */}
             {result.critical_path.length > 0 && (
-              <div className="bg-[#111318] border border-[#1f2530] rounded-2xl p-5">
-                <h3 className="text-xs font-bold text-[#e8ecf2] uppercase tracking-wider mb-3">
+              <div className="bg-white border border-[#e2e8f0] rounded-2xl p-5 shadow-sm">
+                <h3 className="text-xs font-bold text-[#0f172a] uppercase tracking-wider mb-3">
                   Critical path
                 </h3>
                 {result.critical_path.map((s, i) => (
                   <div key={i} className="flex items-start gap-3 mb-2">
-                    <span className="w-5 h-5 rounded-full bg-[rgba(0,212,170,0.12)] text-[#00d4aa] text-[10px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="w-5 h-5 rounded-full bg-[#eff6ff] text-[#2563eb] text-[10px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5">
                       {i + 1}
                     </span>
-                    <p className="text-xs text-[#8892a4]">{s}</p>
+                    <p className="text-xs text-[#64748b]">{s}</p>
                   </div>
                 ))}
               </div>
