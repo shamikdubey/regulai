@@ -83,7 +83,13 @@ export default function FilingWizardPage() {
   // ── Mutations ──────────────────────────────────────────────────────────────
 
   const createMutation = useMutation({
-    mutationFn: (payload: { product_name: string; template_id: string }) =>
+    mutationFn: (payload: {
+      product_name: string;
+      country: string;
+      domain: string;
+      device_class: string | null;
+      food_category: string | null;
+    }) =>
       getApiClient()
         .post<Project>("/filing-wizard/projects", payload)
         .then((r) => r.data),
@@ -138,7 +144,10 @@ export default function FilingWizardPage() {
     }
     createMutation.mutate({
       product_name: productName,
-      template_id: selectedTemplate.id,
+      country: selectedTemplate.country,
+      domain: selectedTemplate.domain,
+      device_class: selectedTemplate.device_class ?? null,
+      food_category: selectedTemplate.food_category ?? null,
     });
   };
 
