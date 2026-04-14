@@ -163,9 +163,13 @@ async def _run_gap_assessment_async(
 
     domain_key = product_type if product_type in DOMAIN_SYSTEM_PROMPTS else "general"
 
-    system_prompt = """You are a senior regulatory affairs expert with 20+ years experience across \
-global markets including FDA, EMA, CDSCO, TGA, PMDA, NMPA, and ANVISA. \
-You provide specific, actionable, jurisdiction-accurate compliance guidance."""
+    system_prompt = """You are a regulatory affairs expert. Base your analysis ONLY on \
+established, verifiable regulatory requirements. Do not invent or guess requirements. \
+Be consistent — the same product in the same jurisdiction must always produce the same core gaps.
+
+You have 20+ years experience across global markets including FDA, EMA, CDSCO, TGA, PMDA, \
+NMPA, and ANVISA. You provide specific, actionable, jurisdiction-accurate compliance guidance \
+grounded in published regulations and official guidance documents."""
 
     user_message = f"""Analyze compliance gaps for:
 Product: {product_name}
@@ -176,39 +180,59 @@ Target jurisdictions: {jur_list}{approvals_note}{claims_note}
 REGULATORY CONTEXT FROM CORPUS:
 {context}
 
-For EACH jurisdiction provide a detailed analysis:
-1. Regulatory framework overview for this product type in that jurisdiction
-2. Whether similar products are commonly registered there (common/rare/restricted)
-3. Specific gaps between current status and requirements — reference actual regulations \
-   (e.g. "EU MDR 2017/745", "US 21 CFR Part 820", "India MDR 2017", "FSSAI FSS Act 2006", \
-   "ICH Q8/Q9/Q10", "DSHEA 1994", "WHO TRS guidelines")
-4. Required documents and studies
-5. Realistic timeline in months and cost range in USD
-6. Risk level: HIGH/MEDIUM/LOW with a specific reason tied to the regulation
-7. The single most important question the applicant must answer first
+STEP 1 — PRODUCT RECOGNITION:
+First, identify if this product is likely already marketed or registered globally \
+(e.g. well-known branded medical devices, established drugs, widely sold food supplements).
+If it appears to be an already-marketed product:
+- State which markets it is likely already approved in
+- Focus gaps ONLY on markets where it is NOT yet approved
+- Include a note in the summary: "This product appears to be already marketed in [X markets]"
 
-Be specific — do NOT give generic advice. Reference actual regulation names and article numbers.
+STEP 2 — PER-JURISDICTION GAP ANALYSIS:
+For EACH jurisdiction, provide a structured analysis in this fixed order:
+1. Regulatory framework: name the exact law/regulation governing this product type
+2. Market status: whether similar products are commonly/rarely/restricted in that market
+3. Specific compliance gaps: reference the exact regulation name AND article/rule number \
+   (e.g. "EU MDR 2017/745 Article 52", "21 CFR Part 820.30", "India MDR 2017 Schedule 4", \
+   "FSSAI FSS Act 2006 Section 22", "ICH Q8(R2)", "DSHEA 1994 Section 5", \
+   "WHO TRS No. 961 Annex 4")
+4. Minimum required documents: enumerate the mandatory submission documents
+5. Realistic timeline in months and cost range in USD based on regulatory authority data
+6. Risk level HIGH/MEDIUM/LOW with reason tied to a specific regulation or enforcement record
+7. The single most important question the applicant must answer before proceeding
+
+ORDERING RULE: Within each jurisdiction, always list gaps in severity order: HIGH → MEDIUM → LOW.
+
+DATA CONFIDENCE RULE: For each gap, assign data_confidence based on:
+- HIGH = requirement is stated explicitly in a published regulation or official guidance
+- MEDIUM = based on established regulatory practice or agency precedent
+- LOW = estimated or inferred from analogous products or markets
+
+Be specific — do NOT give generic advice. Do NOT invent regulation names or article numbers. \
+If a specific article number is uncertain, state the regulation name and mark data_confidence as MEDIUM.
 
 Provide the response in this exact JSON format:
 {{
   "product_name": "{product_name}",
   "overall_risk": "HIGH|MEDIUM|LOW",
-  "summary": "2-3 sentence executive summary referencing specific regulatory context",
+  "already_marketed_in": ["list of markets where product appears already approved, or empty list"],
+  "summary": "2-3 sentence executive summary. If product is already marketed globally, note which markets.",
   "gaps": [
     {{
       "jurisdiction": "country/region name",
-      "gap": "specific gap referencing actual regulation",
-      "requirement": "exact regulatory requirement (cite regulation name and section)",
+      "gap": "specific gap referencing the exact regulation name and article/rule number",
+      "requirement": "exact regulatory requirement (cite regulation name, article/rule number, and issuing authority)",
       "risk_level": "HIGH|MEDIUM|LOW",
-      "risk_reason": "specific reason tied to the regulation or enforcement history",
+      "risk_reason": "specific reason tied to the cited regulation or documented enforcement history",
+      "data_confidence": "HIGH|MEDIUM|LOW",
       "estimated_timeline": "e.g. 18-24 months",
       "cost_range_usd": "e.g. $50,000-$150,000",
-      "required_documents": ["list", "of", "required", "documents"],
+      "required_documents": ["specific document 1", "specific document 2"],
       "action_required": "specific first step the applicant must take",
       "key_question": "the single most important question to answer before proceeding"
     }}
   ],
-  "critical_path": ["ordered list of 3-5 critical actions referencing actual regulations"],
+  "critical_path": ["ordered list of 3-5 critical actions referencing actual regulation names"],
   "estimated_total_months": integer_months_to_full_compliance
 }}"""
 
