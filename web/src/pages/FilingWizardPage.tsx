@@ -5,22 +5,14 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   FileCheck, Plus, Loader2, CheckSquare, Square,
   ArrowLeft, ClipboardList, RefreshCw, Wand2, ArrowRight,
+  Apple, Activity, Pill, Leaf, Sprout,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { getApiClient } from "@/lib/api";
 import { cn } from "@/lib/utils";
+import SearchableMultiSelect from "@/components/ui/SearchableMultiSelect";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
-
-type Template = {
-  id: string;
-  label: string;
-  country: string;
-  domain: string;
-  description: string;
-  device_class?: string;
-  food_category?: string;
-};
 
 type ChecklistItem = {
   id: string;
@@ -45,6 +37,70 @@ type Project = {
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
+const DOMAINS = [
+  {
+    value: "FOOD",
+    label: "Food & Food Additives",
+    icon: Apple,
+    color: "#f59e0b",
+    desc: "Food products, beverages, food additives",
+  },
+  {
+    value: "MEDICAL_DEVICE",
+    label: "Medical Devices",
+    icon: Activity,
+    color: "#047857",
+    desc: "Class I, II, or III medical devices",
+  },
+  {
+    value: "PHARMA",
+    label: "Pharmaceuticals/APIs",
+    icon: Pill,
+    color: "#7c3aed",
+    desc: "Drugs, APIs, biologics, generics",
+  },
+  {
+    value: "NUTRACEUTICAL",
+    label: "Nutraceuticals/Supplements",
+    icon: Leaf,
+    color: "#0d9488",
+    desc: "Dietary supplements, vitamins, minerals",
+  },
+  {
+    value: "TRADITIONAL",
+    label: "Ayurveda/Traditional Medicine",
+    icon: Sprout,
+    color: "#92400e",
+    desc: "Ayurveda, Unani, Siddha, herbal drugs",
+  },
+];
+
+const DEVICE_CLASSES = [
+  "Class A (Low Risk)",
+  "Class B (Low-Moderate Risk)",
+  "Class C (Moderate-High Risk)",
+  "Class D (High Risk)",
+  "Class I (US FDA)",
+  "Class II (US FDA)",
+  "Class III (US FDA)",
+  "Class IIa (EU MDR)",
+  "Class IIb (EU MDR)",
+  "Class III (EU MDR)",
+];
+
+const COUNTRIES = [
+  "India", "USA", "UK", "EU", "China", "Japan",
+  "Brazil", "Australia", "Canada", "Singapore",
+  "South Korea", "Indonesia", "Thailand", "Malaysia", "Philippines",
+  "UAE", "Saudi Arabia", "Turkey", "Israel", "South Africa",
+  "Nigeria", "Kenya", "Ghana", "New Zealand", "Mexico",
+  "Argentina", "Colombia", "Chile", "Peru", "Switzerland",
+  "Norway", "Russia", "Poland", "Kazakhstan", "Vietnam",
+  "Bangladesh", "Pakistan", "Sri Lanka", "Myanmar", "Ethiopia",
+  "Taiwan", "Hong Kong", "Egypt", "Algeria", "Morocco",
+  "Tanzania", "Uganda", "Cameroon", "Ivory Coast", "Senegal",
+];
+
 const STATUS_COLORS: Record<string, string> = {
   planning: "#6b7280",
   in_progress: "#f59e0b",
@@ -54,22 +110,18 @@ const STATUS_COLORS: Record<string, string> = {
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function FilingWizardPage() {
-  const [view, setView] = useState<"wizard" | "tracker">("wizard");
-  const [step, setStep] = useState(1);
-  const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(null);
+  const [view, setView]               = useState<"wizard" | "tracker">("wizard");
+  const [step, setStep]               = useState(1);
   const [productName, setProductName] = useState("");
+  const [domain, setDomain]           = useState<string | null>(null);
+  const [selectedCountry, setSelectedCountry] = useState<string[]>([]);
+  const [deviceClass, setDeviceClass] = useState("");
+  const [foodCategory, setFoodCategory] = useState("");
   const [activeProject, setActiveProject] = useState<Project | null>(null);
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const qc = useQueryClient();
 
   // ── Queries ────────────────────────────────────────────────────────────────
-
-  const templatesQ = useQuery({
-    queryKey: ["filing-templates"],
-    queryFn: () =>
-      getApiClient()
-        .get<Template[]>("/filing-wizard/templates")
-        .then((r) => r.data),
-  });
 
   const projectsQ = useQuery({
     queryKey: ["filing-projects"],
@@ -137,17 +189,25 @@ export default function FilingWizardPage() {
 
   // ── Handlers ───────────────────────────────────────────────────────────────
 
+  const validate = (): boolean => {
+    const e: Record<string, string> = {};
+    if (!productName.trim())           e.productName = "Product name is required";
+    if (!domain)                        e.domain      = "Select a regulatory domain";
+    if (selectedCountry.length === 0)  e.country     = "Select a target country";
+    if (domain === "MEDICAL_DEVICE" && !deviceClass)
+      e.deviceClass = "Select a device class";
+    setErrors(e);
+    return Object.keys(e).length === 0;
+  };
+
   const handleGenerateChecklist = () => {
-    if (!selectedTemplate || !productName.trim()) {
-      toast.error("Select a template and enter a product name");
-      return;
-    }
+    if (!validate()) return;
     createMutation.mutate({
-      product_name: productName,
-      country: selectedTemplate.country,
-      domain: selectedTemplate.domain,
-      device_class: selectedTemplate.device_class ?? null,
-      food_category: selectedTemplate.food_category ?? null,
+      product_name: productName.trim(),
+      country: selectedCountry[0],
+      domain: domain!,
+      device_class: deviceClass || null,
+      food_category: foodCategory.trim() || null,
     });
   };
 
@@ -162,10 +222,21 @@ export default function FilingWizardPage() {
 
   const resetWizard = () => {
     setStep(1);
-    setSelectedTemplate(null);
     setProductName("");
+    setDomain(null);
+    setSelectedCountry([]);
+    setDeviceClass("");
+    setFoodCategory("");
     setActiveProject(null);
+    setErrors({});
   };
+
+  const canSubmit =
+    !createMutation.isPending &&
+    !!domain &&
+    selectedCountry.length > 0 &&
+    !!productName.trim() &&
+    (domain !== "MEDICAL_DEVICE" || !!deviceClass);
 
   // ── Render ─────────────────────────────────────────────────────────────────
 
@@ -220,18 +291,18 @@ export default function FilingWizardPage() {
                   { label: "Filing Wizard", to: "/filing-wizard" },
                   { label: "Document Editor", to: "/document-editor" },
                   { label: "Compliance Review", to: "/compliance-review" },
-                ].map((step, i, arr) => (
-                  <div key={step.to} className="flex items-center gap-1.5">
+                ].map((wfStep, i, arr) => (
+                  <div key={wfStep.to} className="flex items-center gap-1.5">
                     <Link
-                      to={step.to}
+                      to={wfStep.to}
                       className={cn(
                         "text-xs px-2 py-1 rounded-lg font-semibold transition-colors",
-                        step.to === "/filing-wizard"
+                        wfStep.to === "/filing-wizard"
                           ? "bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857]"
                           : "text-[#6b7280] hover:text-[#047857]",
                       )}
                     >
-                      {step.label}
+                      {wfStep.label}
                     </Link>
                     {i < arr.length - 1 && (
                       <ArrowRight size={11} className="text-[#cbd5e1] flex-shrink-0" />
@@ -246,7 +317,7 @@ export default function FilingWizardPage() {
               <p className="text-[10px] font-mono text-[#9ca3af] uppercase tracking-wider mb-3">How it works</p>
               <div className="grid grid-cols-3 gap-3">
                 {[
-                  { n: 1, title: "Choose a template", desc: "Pick your target country and regulatory domain" },
+                  { n: 1, title: "Configure your filing", desc: "Pick your target country, domain and product details" },
                   { n: 2, title: "Generate checklist", desc: "AI creates your filing requirements automatically" },
                   { n: 3, title: "Track progress", desc: "Check off items as you complete your submission" },
                 ].map((s) => (
@@ -283,97 +354,166 @@ export default function FilingWizardPage() {
                       step >= s ? "text-[#111827]" : "text-[#9ca3af]",
                     )}
                   >
-                    {s === 1 ? "Select Template" : "Checklist"}
+                    {s === 1 ? "Configure Filing" : "Checklist"}
                   </span>
                   {s < 2 && <div className="w-8 h-px bg-[#e2ede9]" />}
                 </div>
               ))}
             </div>
 
-            {/* ── STEP 1: Template + product name ── */}
+            {/* ── STEP 1: Configure filing ── */}
             {step === 1 && (
-              <div className="space-y-4">
+              <div className="space-y-5">
+
+                {/* A) Product name */}
                 <div>
                   <label className="block text-[10px] font-mono text-[#9ca3af] mb-1 uppercase tracking-wider">
                     Product name *
                   </label>
                   <input
                     value={productName}
-                    onChange={(e) => setProductName(e.target.value)}
-                    placeholder="e.g. CardioStent Pro"
-                    className="w-full px-3 py-2 bg-white border border-[#e2ede9] rounded-xl text-sm text-[#111827] outline-none focus:border-[#047857] transition-colors"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[10px] font-mono text-[#9ca3af] mb-2 uppercase tracking-wider">
-                    Filing template
-                    {selectedTemplate && (
-                      <span className="ml-2 text-[#047857] normal-case">
-                        — {selectedTemplate.label}
-                      </span>
+                    onChange={(e) => {
+                      setProductName(e.target.value);
+                      setErrors((p) => ({ ...p, productName: "" }));
+                    }}
+                    placeholder="e.g. CardioStent Pro, VitaFlex Capsules"
+                    className={cn(
+                      "w-full px-3 py-2.5 bg-white border rounded-xl text-sm text-[#111827] outline-none focus:border-[#047857] transition-colors",
+                      errors.productName ? "border-[#dc2626]" : "border-[#e2ede9]",
                     )}
-                  </label>
-
-                  {templatesQ.isLoading ? (
-                    <div className="flex items-center justify-center gap-2 py-10 text-[#9ca3af]">
-                      <Loader2 size={14} className="animate-spin" />
-                      <span className="text-xs">Loading templates…</span>
-                    </div>
-                  ) : templatesQ.isError ? (
-                    <div className="py-8 text-center text-xs text-[#dc2626]">
-                      Failed to load templates
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-2 gap-2 max-h-80 overflow-y-auto pr-1">
-                      {(templatesQ.data ?? []).map((t) => (
-                        <button
-                          key={t.id}
-                          type="button"
-                          onClick={() => setSelectedTemplate(t)}
-                          className={cn(
-                            "text-left p-3 rounded-xl border transition-all",
-                            selectedTemplate?.id === t.id
-                              ? "bg-[#ecfdf5] border-[#a7f3d0]"
-                              : "bg-white border-[#e2ede9] hover:border-[#cbd5e1]",
-                          )}
-                        >
-                          <div className="text-xs font-bold text-[#111827] mb-0.5">
-                            {t.label}
-                          </div>
-                          <div className="text-[10px] text-[#6b7280]">
-                            {t.description}
-                          </div>
-                          {t.device_class && (
-                            <div className="text-[9px] text-[#9ca3af] mt-1 font-mono">
-                              {t.device_class}
-                            </div>
-                          )}
-                          {t.food_category && (
-                            <div className="text-[9px] text-[#9ca3af] mt-1 font-mono">
-                              {t.food_category}
-                            </div>
-                          )}
-                        </button>
-                      ))}
-                    </div>
+                  />
+                  {errors.productName && (
+                    <p className="text-[10px] text-[#dc2626] mt-1">{errors.productName}</p>
                   )}
                 </div>
 
+                {/* B) Domain — 5 cards */}
+                <div>
+                  <label className="block text-[10px] font-mono text-[#9ca3af] mb-2 uppercase tracking-wider">
+                    Regulatory domain *
+                  </label>
+                  <div className="grid grid-cols-2 gap-2.5">
+                    {DOMAINS.map((d) => {
+                      const Icon = d.icon;
+                      const sel = domain === d.value;
+                      return (
+                        <button
+                          key={d.value}
+                          type="button"
+                          onClick={() => {
+                            setDomain(d.value);
+                            setDeviceClass("");
+                            setErrors((p) => ({ ...p, domain: "", deviceClass: "" }));
+                          }}
+                          className={cn(
+                            "flex flex-col items-start p-3.5 rounded-xl border-2 text-left transition-all",
+                            sel
+                              ? "border-[#047857] bg-[#ecfdf5]"
+                              : "border-[#e2ede9] hover:border-[#a7f3d0]",
+                            d.value === "TRADITIONAL" && "col-span-2 sm:col-span-1 sm:col-start-1",
+                          )}
+                        >
+                          <div
+                            className="w-8 h-8 rounded-lg flex items-center justify-center mb-2 flex-shrink-0"
+                            style={{
+                              background: `${d.color}15`,
+                              border: `1px solid ${d.color}30`,
+                            }}
+                          >
+                            <Icon size={16} style={{ color: d.color }} />
+                          </div>
+                          <p className={cn(
+                            "text-xs font-bold leading-snug",
+                            sel ? "text-[#047857]" : "text-[#111827]",
+                          )}>
+                            {d.label}
+                          </p>
+                          <p className="text-[10px] text-[#9ca3af] mt-0.5">{d.desc}</p>
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {errors.domain && (
+                    <p className="text-[10px] text-[#dc2626] mt-1">{errors.domain}</p>
+                  )}
+                </div>
+
+                {/* C) Country — searchable single-select */}
+                <div>
+                  <label className="block text-[10px] font-mono text-[#9ca3af] mb-1.5 uppercase tracking-wider">
+                    Target country *
+                  </label>
+                  <div className={cn(errors.country && "ring-1 ring-[#dc2626] rounded-xl")}>
+                    <SearchableMultiSelect
+                      options={COUNTRIES}
+                      selected={selectedCountry}
+                      onChange={(sel) => {
+                        // single-select: keep only the last picked item
+                        const next = sel.length > 1 ? [sel[sel.length - 1]] : sel;
+                        setSelectedCountry(next);
+                        setErrors((p) => ({ ...p, country: "" }));
+                      }}
+                      placeholder="Search countries…"
+                    />
+                  </div>
+                  {errors.country && (
+                    <p className="text-[10px] text-[#dc2626] mt-1">{errors.country}</p>
+                  )}
+                </div>
+
+                {/* D) Device Class (conditional) */}
+                {domain === "MEDICAL_DEVICE" && (
+                  <div>
+                    <label className="block text-[10px] font-mono text-[#9ca3af] mb-1.5 uppercase tracking-wider">
+                      Device class *
+                    </label>
+                    <select
+                      value={deviceClass}
+                      onChange={(e) => {
+                        setDeviceClass(e.target.value);
+                        setErrors((p) => ({ ...p, deviceClass: "" }));
+                      }}
+                      className={cn(
+                        "w-full px-3 py-2.5 bg-white border rounded-xl text-sm text-[#111827] outline-none focus:border-[#047857] transition-colors",
+                        errors.deviceClass ? "border-[#dc2626]" : "border-[#e2ede9]",
+                      )}
+                    >
+                      <option value="">Select device class…</option>
+                      {DEVICE_CLASSES.map((c) => (
+                        <option key={c} value={c}>{c}</option>
+                      ))}
+                    </select>
+                    {errors.deviceClass && (
+                      <p className="text-[10px] text-[#dc2626] mt-1">{errors.deviceClass}</p>
+                    )}
+                  </div>
+                )}
+
+                {/* E) Food Category (conditional) */}
+                {(domain === "FOOD" || domain === "NUTRACEUTICAL") && (
+                  <div>
+                    <label className="block text-[10px] font-mono text-[#9ca3af] mb-1 uppercase tracking-wider">
+                      Food / supplement category
+                      <span className="ml-1 normal-case text-[#9ca3af] font-normal">(optional)</span>
+                    </label>
+                    <input
+                      value={foodCategory}
+                      onChange={(e) => setFoodCategory(e.target.value)}
+                      placeholder="e.g. Processed Foods, Dietary Supplements, Beverages"
+                      className="w-full px-3 py-2.5 bg-white border border-[#e2ede9] rounded-xl text-sm text-[#111827] outline-none focus:border-[#047857] transition-colors"
+                    />
+                  </div>
+                )}
+
+                {/* F) Generate Checklist */}
                 <button
                   onClick={handleGenerateChecklist}
-                  disabled={
-                    createMutation.isPending ||
-                    !selectedTemplate ||
-                    !productName.trim()
-                  }
+                  disabled={!canSubmit}
                   className={cn(
                     "flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-sm transition-all",
-                    createMutation.isPending ||
-                      !selectedTemplate ||
-                      !productName.trim()
-                      ? "bg-[#e2ede9] text-[#9ca3af] cursor-not-allowed"
-                      : "bg-[#047857] text-white hover:bg-[#065f46] active:scale-[0.98]",
+                    canSubmit
+                      ? "bg-[#047857] text-white hover:bg-[#065f46] active:scale-[0.98]"
+                      : "bg-[#e2ede9] text-[#9ca3af] cursor-not-allowed",
                   )}
                 >
                   {createMutation.isPending ? (
