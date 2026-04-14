@@ -1,14 +1,15 @@
 import { Outlet, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  LayoutDashboard, MessageSquare, TrendingUp, FileEdit,
+  Home, MessageSquare, BarChart2, FileEdit,
   Bell, Compass, FileText, ClipboardList, Settings,
-  LogOut, ChevronLeft, ChevronRight, FlaskConical,
-  BarChart2, Tag, FileCheck, Menu, X, CreditCard,
+  LogOut, ChevronLeft, ChevronRight,
+  Menu, X, CreditCard,
   Wand2, PenLine, ShieldCheck, Shield,
+  Database, FolderOpen, Search,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useAuthStore } from "@/stores/authStore";
 import { useAppStore } from "@/stores/appStore";
 import { api } from "@/lib/api";
@@ -23,50 +24,149 @@ const NAV: Array<{
   icon: any;
   label: string;
   group: string;
+  description: string;
   badge?: boolean;
   adminOnly?: boolean;
 }> = [
-  { to: "/dashboard",         icon: LayoutDashboard, label: "Dashboard",           group: "Intelligence" },
-  { to: "/query",             icon: MessageSquare,   label: "AI Query",            group: "Intelligence" },
-  { to: "/gap-assessment",    icon: TrendingUp,      label: "Gap Assessment",      group: "Intelligence" },
-  { to: "/dossier",           icon: FileEdit,        label: "Dossier Drafting",    group: "Intelligence" },
-  { to: "/alerts",            icon: Bell,            label: "Alerts",              group: "Intelligence", badge: true },
-  { to: "/ingredient-specs",  icon: FlaskConical,    label: "Ingredient Specs",    group: "Standards" },
-  { to: "/allowable-limits",  icon: BarChart2,       label: "Allowable Limits",    group: "Standards" },
-  { to: "/labeling",          icon: Tag,             label: "Labeling Rules",      group: "Standards" },
-  { to: "/licensing",         icon: FileCheck,       label: "Licensing Navigator", group: "Standards" },
-  { to: "/filing-wizard",     icon: Wand2,           label: "Filing Wizard",       group: "Workflows" },
-  { to: "/document-editor",   icon: PenLine,         label: "Document Editor",     group: "Workflows" },
-  { to: "/compliance-review", icon: ShieldCheck,     label: "Compliance Review",   group: "Workflows" },
-  { to: "/explorer",          icon: Compass,         label: "Reg Explorer",        group: "Reference" },
-  { to: "/documents",         icon: FileText,        label: "Documents",           group: "Reference" },
-  { to: "/audit",             icon: ClipboardList,   label: "Audit Log",           group: "Reference" },
-  { to: "/settings",          icon: Settings,        label: "Settings",            group: "System" },
-  { to: "/billing",           icon: CreditCard,      label: "Billing",             group: "System" },
-  { to: "/admin",             icon: Shield,          label: "Admin Panel",         group: "System", adminOnly: true },
+  {
+    to: "/dashboard",
+    icon: Home,
+    label: "Dashboard",
+    group: "AI Tools",
+    description: "Your compliance command center — active projects, alerts, and quick actions",
+  },
+  {
+    to: "/query",
+    icon: MessageSquare,
+    label: "Ask RegulAI",
+    group: "AI Tools",
+    description: "Ask anything about regulations, get cited answers",
+  },
+  {
+    to: "/gap-assessment",
+    icon: BarChart2,
+    label: "Gap Assessment",
+    group: "AI Tools",
+    description: "Identify compliance gaps across multiple jurisdictions before filing",
+  },
+  {
+    to: "/alerts",
+    icon: Bell,
+    label: "Regulatory Alerts",
+    group: "AI Tools",
+    description: "Live alerts for high-severity regulatory changes",
+    badge: true,
+  },
+  {
+    to: "/regulatory-database",
+    icon: Database,
+    label: "Regulatory Database",
+    group: "AI Tools",
+    description: "Unified search: ingredient specs, limits, labeling, licensing",
+  },
+  {
+    to: "/projects",
+    icon: FolderOpen,
+    label: "My Projects",
+    group: "Filing & Documents",
+    description: "Manage your active regulatory filing projects",
+  },
+  {
+    to: "/filing-wizard",
+    icon: Wand2,
+    label: "Filing Wizard",
+    group: "Filing & Documents",
+    description: "Step-by-step guided submission workflow",
+  },
+  {
+    to: "/document-editor",
+    icon: PenLine,
+    label: "Document Editor",
+    group: "Filing & Documents",
+    description: "Draft and edit regulatory documents",
+  },
+  {
+    to: "/dossier",
+    icon: FileEdit,
+    label: "Dossier Drafting",
+    group: "Filing & Documents",
+    description: "Assemble technical dossiers for submission",
+  },
+  {
+    to: "/compliance-review",
+    icon: ShieldCheck,
+    label: "Compliance Review",
+    group: "Filing & Documents",
+    description: "Review documents for compliance gaps",
+  },
+  {
+    to: "/documents",
+    icon: FileText,
+    label: "My Documents",
+    group: "My Library",
+    description: "Your saved and uploaded regulatory documents",
+  },
+  {
+    to: "/audit",
+    icon: ClipboardList,
+    label: "Audit Log",
+    group: "My Library",
+    description: "Full activity history and change tracking",
+  },
+  {
+    to: "/explorer",
+    icon: Compass,
+    label: "Document Explorer",
+    group: "My Library",
+    description: "Browse the regulatory document archive",
+  },
+  {
+    to: "/settings",
+    icon: Settings,
+    label: "Settings",
+    group: "System",
+    description: "Account and application preferences",
+  },
+  {
+    to: "/billing",
+    icon: CreditCard,
+    label: "Billing",
+    group: "System",
+    description: "Subscription, usage, and invoices",
+  },
+  {
+    to: "/admin",
+    icon: Shield,
+    label: "Admin Panel",
+    group: "System",
+    description: "Tenant management and user administration",
+    adminOnly: true,
+  },
 ];
 
-// ── Page title map (for top-bar breadcrumb) ───────────────────────────────────
+// ── Page title map ────────────────────────────────────────────────────────────
 
 const PAGE_TITLES: Record<string, string> = {
-  "/dashboard":         "Dashboard",
-  "/query":             "AI Query",
-  "/gap-assessment":    "Gap Assessment",
-  "/dossier":           "Dossier Drafting",
-  "/alerts":            "Alerts",
-  "/ingredient-specs":  "Ingredient Specs",
-  "/allowable-limits":  "Allowable Limits",
-  "/labeling":          "Labeling Rules",
-  "/licensing":         "Licensing Navigator",
-  "/filing-wizard":     "Filing Wizard",
-  "/document-editor":   "Document Editor",
-  "/compliance-review": "Compliance Review",
-  "/explorer":          "Reg Explorer",
-  "/documents":         "Documents",
-  "/audit":             "Audit Log",
-  "/settings":          "Settings",
-  "/billing":           "Billing",
-  "/admin":             "Admin Panel",
+  "/dashboard":           "Dashboard",
+  "/query":               "Ask RegulAI",
+  "/gap-assessment":      "Gap Assessment",
+  "/dossier":             "Dossier Drafting",
+  "/alerts":              "Regulatory Alerts",
+  "/ingredient-specs":    "Ingredient Specs",
+  "/allowable-limits":    "Allowable Limits",
+  "/labeling":            "Labeling Rules",
+  "/licensing":           "Licensing Navigator",
+  "/filing-wizard":       "Filing Wizard",
+  "/document-editor":     "Document Editor",
+  "/compliance-review":   "Compliance Review",
+  "/explorer":            "Document Explorer",
+  "/documents":           "My Documents",
+  "/audit":               "Audit Log",
+  "/settings":            "Settings",
+  "/billing":             "Billing",
+  "/admin":               "Admin Panel",
+  "/regulatory-database": "Regulatory Database",
+  "/projects":            "My Projects",
 };
 
 // ── Component ─────────────────────────────────────────────────────────────────
@@ -77,6 +177,12 @@ export default function AppLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  // Global search state
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchOpen, setSearchOpen] = useState(false);
+  const searchWrapperRef = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   // Collapse sidebar on small screens
   useEffect(() => {
@@ -93,6 +199,39 @@ export default function AppLayout() {
     setMobileOpen(false);
   }, [location.pathname]);
 
+  // Cmd+K / Ctrl+K to focus search; Escape to close
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+        setSearchOpen(true);
+      }
+      if (e.key === "Escape") {
+        setSearchOpen(false);
+        setSearchQuery("");
+        searchInputRef.current?.blur();
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  // Click outside to close search dropdown
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        searchWrapperRef.current &&
+        !searchWrapperRef.current.contains(e.target as Node)
+      ) {
+        setSearchOpen(false);
+        setSearchQuery("");
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const alertsQ = useQuery({
     queryKey: ["alerts-badge"],
     queryFn: () => api.getAlerts({ severity: "high" }),
@@ -107,8 +246,17 @@ export default function AppLayout() {
 
   const currentPageTitle = PAGE_TITLES[location.pathname] ?? "RegulAI";
 
+  // Filtered search results — respects adminOnly, max 6
+  const searchResults =
+    searchQuery.length > 0
+      ? NAV.filter(
+          (item) =>
+            (!item.adminOnly || user?.role === "admin") &&
+            item.label.toLowerCase().includes(searchQuery.toLowerCase()),
+        ).slice(0, 6)
+      : [];
+
   // ── SidebarContent ──────────────────────────────────────────────────────────
-  // lastGroup declared INSIDE the component function so it resets on every render.
 
   const SidebarContent = ({
     collapsed,
@@ -117,8 +265,6 @@ export default function AppLayout() {
     collapsed: boolean;
     onClose?: () => void;
   }) => {
-    // Reset on every render — was previously a module-level let which caused
-    // stale group labels after re-renders.
     let lastGroup = "";
 
     return (
@@ -143,7 +289,6 @@ export default function AppLayout() {
                 </div>
               </div>
 
-              {/* Mobile close button — shown only when onClose is provided */}
               {onClose ? (
                 <button
                   onClick={onClose}
@@ -153,7 +298,6 @@ export default function AppLayout() {
                   <X size={15} />
                 </button>
               ) : (
-                /* Desktop collapse toggle */
                 <button
                   onClick={() => setSidebarOpen(!sidebarOpen)}
                   className="hidden lg:flex flex-shrink-0 text-[#94a3b8] hover:text-[#0f172a] transition-colors"
@@ -165,7 +309,6 @@ export default function AppLayout() {
             </>
           )}
 
-          {/* Collapsed desktop — only show expand toggle */}
           {collapsed && (
             <button
               onClick={() => setSidebarOpen(true)}
@@ -189,7 +332,7 @@ export default function AppLayout() {
         <nav className="flex-1 overflow-y-auto py-2">
           {NAV.filter(
             ({ adminOnly }) => !adminOnly || user?.role === "admin",
-          ).map(({ to, icon: Icon, label, group, badge }) => {
+          ).map(({ to, icon: Icon, label, group, description, badge }) => {
             const showGroup = !collapsed && group !== lastGroup;
             lastGroup = group;
             const badgeCount = badge ? highAlertCount : 0;
@@ -197,7 +340,6 @@ export default function AppLayout() {
             return (
               <div key={to}>
                 {showGroup && (
-                  /* Group header with blue accent bar */
                   <div className="flex items-center gap-2 px-3 pt-3 pb-1">
                     <div className="w-0.5 h-3 rounded-full bg-[#2563eb] opacity-40 flex-shrink-0" />
                     <span className="text-[9px] font-mono text-[#cbd5e1] uppercase tracking-widest">
@@ -215,7 +357,7 @@ export default function AppLayout() {
                           ? "bg-[#eff6ff] text-[#2563eb] border border-[#bfdbfe]"
                           : "text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]",
                       )}
-                      title={collapsed ? label : undefined}
+                      title={collapsed ? `${label} — ${description}` : undefined}
                     >
                       <Icon size={16} className="flex-shrink-0" />
                       {!collapsed && (
@@ -275,7 +417,6 @@ export default function AppLayout() {
               </button>
             </>
           ) : (
-            /* Collapsed logout */
             <button
               onClick={handleLogout}
               className="text-[#94a3b8] hover:text-[#dc2626] transition-colors"
@@ -333,7 +474,7 @@ export default function AppLayout() {
       {/* ── Main content ──────────────────────────────────────────────────── */}
       <main className="flex-1 overflow-hidden flex flex-col min-w-0">
 
-        {/* Top bar with breadcrumb */}
+        {/* Top bar */}
         <header className="h-12 border-b border-[#e2e8f0] flex items-center px-4 gap-3 flex-shrink-0 bg-white shadow-sm">
           {/* Mobile hamburger */}
           <button
@@ -358,6 +499,51 @@ export default function AppLayout() {
           </div>
 
           <div className="flex-1" />
+
+          {/* Global search */}
+          <div ref={searchWrapperRef} className="relative hidden sm:block">
+            <div className="flex items-center gap-1.5 bg-[#f1f5f9] border border-[#e2e8f0] rounded-lg px-2.5 py-1.5 w-48 focus-within:border-[#2563eb] focus-within:bg-white transition-all">
+              <Search size={12} className="text-[#94a3b8] flex-shrink-0" />
+              <input
+                ref={searchInputRef}
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setSearchOpen(true);
+                }}
+                onFocus={() => setSearchOpen(true)}
+                placeholder="Search… ⌘K"
+                className="flex-1 text-xs bg-transparent outline-none text-[#0f172a] placeholder-[#cbd5e1] min-w-0"
+              />
+            </div>
+
+            {/* Search dropdown */}
+            {searchOpen && searchResults.length > 0 && (
+              <div className="absolute top-full right-0 mt-1.5 w-72 bg-white border border-[#e2e8f0] rounded-xl shadow-lg z-50 overflow-hidden">
+                {searchResults.map((item) => (
+                  <button
+                    key={item.to}
+                    onClick={() => {
+                      navigate(item.to);
+                      setSearchOpen(false);
+                      setSearchQuery("");
+                    }}
+                    className="w-full flex items-center gap-2.5 px-3 py-2.5 hover:bg-[#f1f5f9] transition-colors text-left"
+                  >
+                    <item.icon size={14} className="text-[#2563eb] flex-shrink-0" />
+                    <div className="min-w-0">
+                      <p className="text-xs font-semibold text-[#0f172a] truncate">
+                        {item.label}
+                      </p>
+                      <p className="text-[10px] text-[#94a3b8] truncate">
+                        {item.description}
+                      </p>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
 
           {/* Version badge */}
           <span className="text-[10px] text-[#cbd5e1] font-mono hidden sm:block">

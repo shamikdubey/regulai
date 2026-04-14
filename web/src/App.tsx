@@ -27,6 +27,8 @@ const FilingWizardPage      = lazy(() => import("@/pages/FilingWizardPage"));
 const DocumentEditorPage    = lazy(() => import("@/pages/DocumentEditorPage"));
 const ComplianceReviewPage  = lazy(() => import("@/pages/ComplianceReviewPage"));
 const AdminPanelPage        = lazy(() => import("@/pages/AdminPanelPage"));
+const RegulatoryDatabasePage = lazy(() => import("@/pages/RegulatoryDatabasePage"));
+const ProjectsPage          = lazy(() => import("@/pages/ProjectsPage"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -111,24 +113,26 @@ export default function App() {
               }
             >
               <Route index element={<Navigate to="/dashboard" replace />} />
-              <Route path="dashboard"        element={<DashboardPage />} />
-              <Route path="query"            element={<QueryPage />} />
-              <Route path="gap-assessment"   element={<GapAssessmentPage />} />
-              <Route path="dossier"          element={<DossierPage />} />
-              <Route path="alerts"           element={<AlertsPage />} />
-              <Route path="ingredient-specs" element={<IngredientSpecsPage />} />
-              <Route path="allowable-limits" element={<AllowableLimitsPage />} />
-              <Route path="labeling"         element={<LabelingPage />} />
-              <Route path="licensing"        element={<LicensingPage />} />
-              <Route path="explorer"         element={<ExplorerPage />} />
-              <Route path="documents"        element={<DocumentsPage />} />
-              <Route path="audit"            element={<AuditPage />} />
-              <Route path="settings"           element={<SettingsPage />} />
-              <Route path="billing"            element={<BillingPage />} />
-              <Route path="filing-wizard"      element={<FilingWizardPage />} />
-              <Route path="document-editor"    element={<DocumentEditorPage />} />
-              <Route path="compliance-review"  element={<ComplianceReviewPage />} />
-              <Route path="admin"              element={<AdminPanelPage />} />
+              <Route path="dashboard"           element={<DashboardPage />} />
+              <Route path="query"               element={<QueryPage />} />
+              <Route path="gap-assessment"      element={<GapAssessmentPage />} />
+              <Route path="dossier"             element={<DossierPage />} />
+              <Route path="alerts"              element={<AlertsPage />} />
+              <Route path="ingredient-specs"    element={<IngredientSpecsPage />} />
+              <Route path="allowable-limits"    element={<AllowableLimitsPage />} />
+              <Route path="labeling"            element={<LabelingPage />} />
+              <Route path="licensing"           element={<LicensingPage />} />
+              <Route path="explorer"            element={<ExplorerPage />} />
+              <Route path="documents"           element={<DocumentsPage />} />
+              <Route path="audit"               element={<AuditPage />} />
+              <Route path="settings"            element={<SettingsPage />} />
+              <Route path="billing"             element={<BillingPage />} />
+              <Route path="filing-wizard"       element={<FilingWizardPage />} />
+              <Route path="document-editor"     element={<DocumentEditorPage />} />
+              <Route path="compliance-review"   element={<ComplianceReviewPage />} />
+              <Route path="admin"               element={<AdminPanelPage />} />
+              <Route path="regulatory-database" element={<RegulatoryDatabasePage />} />
+              <Route path="projects"            element={<ProjectsPage />} />
             </Route>
 
             {/* 404 → home */}
