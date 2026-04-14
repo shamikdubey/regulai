@@ -178,12 +178,12 @@ export default function DocumentEditorPage() {
       {/* Page header */}
       <div className="mb-5 flex items-start justify-between gap-4">
         <div className="flex items-center gap-3 min-w-0">
-          <div className="w-10 h-10 bg-[#eff6ff] border border-[#bfdbfe] rounded-xl flex items-center justify-center flex-shrink-0">
-            <PenLine size={18} className="text-[#2563eb]" />
+          <div className="w-10 h-10 bg-[#ecfdf5] border border-[#a7f3d0] rounded-xl flex items-center justify-center flex-shrink-0">
+            <PenLine size={18} className="text-[#047857]" />
           </div>
           <div className="min-w-0">
-            <h1 className="text-xl font-bold text-[#0f172a]">Document Editor</h1>
-            <p className="text-xs text-[#94a3b8] mt-0.5">
+            <h1 className="text-xl font-bold text-[#111827]">Document Editor</h1>
+            <p className="text-xs text-[#9ca3af] mt-0.5">
               Draft, edit and AI-review regulatory documents. Use this to write submission letters, technical files, and reports.
             </p>
           </div>
@@ -191,7 +191,7 @@ export default function DocumentEditorPage() {
         <div className="flex items-center gap-2 flex-shrink-0">
           <button
             onClick={() => setShowDrafts((p) => !p)}
-            className="flex items-center gap-1.5 px-3 py-2 bg-white border border-[#e2e8f0] rounded-xl text-xs text-[#64748b] hover:text-[#0f172a] hover:border-[#cbd5e1] transition-all shadow-sm"
+            className="flex items-center gap-1.5 px-3 py-2 bg-white border border-[#e2ede9] rounded-xl text-xs text-[#6b7280] hover:text-[#111827] hover:border-[#cbd5e1] transition-all shadow-sm"
           >
             <FileText size={13} />
             Drafts
@@ -203,7 +203,7 @@ export default function DocumentEditorPage() {
           </button>
           <button
             onClick={handleNewDraft}
-            className="flex items-center gap-1.5 px-3 py-2 bg-white border border-[#e2e8f0] rounded-xl text-xs text-[#64748b] hover:text-[#0f172a] hover:border-[#cbd5e1] transition-all shadow-sm"
+            className="flex items-center gap-1.5 px-3 py-2 bg-white border border-[#e2ede9] rounded-xl text-xs text-[#6b7280] hover:text-[#111827] hover:border-[#cbd5e1] transition-all shadow-sm"
           >
             <Plus size={13} />
             New
@@ -214,8 +214,8 @@ export default function DocumentEditorPage() {
             className={cn(
               "flex items-center gap-1.5 px-4 py-2 rounded-xl font-bold text-xs transition-all",
               saveMutation.isPending
-                ? "bg-[#e2e8f0] text-[#94a3b8] cursor-not-allowed"
-                : "bg-[#2563eb] text-white hover:bg-[#1d4ed8] active:scale-[0.98]",
+                ? "bg-[#e2ede9] text-[#9ca3af] cursor-not-allowed"
+                : "bg-[#047857] text-white hover:bg-[#065f46] active:scale-[0.98]",
             )}
           >
             {saveMutation.isPending ? (
@@ -235,24 +235,24 @@ export default function DocumentEditorPage() {
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
-            className="mb-5 bg-white border border-[#e2e8f0] rounded-2xl p-4 shadow-sm"
+            className="mb-5 bg-white border border-[#e2ede9] rounded-2xl p-4 shadow-sm"
           >
             <div className="flex items-center justify-between mb-3">
-              <span className="text-[10px] font-mono text-[#94a3b8] uppercase tracking-wider">
+              <span className="text-[10px] font-mono text-[#9ca3af] uppercase tracking-wider">
                 Saved drafts
               </span>
               <button
                 onClick={() =>
                   qc.invalidateQueries({ queryKey: ["document-drafts"] })
                 }
-                className="text-[#94a3b8] hover:text-[#0f172a] transition-colors"
+                className="text-[#9ca3af] hover:text-[#111827] transition-colors"
               >
                 <RefreshCw size={12} />
               </button>
             </div>
 
             {draftsQ.isLoading ? (
-              <div className="flex items-center justify-center gap-2 py-6 text-[#94a3b8]">
+              <div className="flex items-center justify-center gap-2 py-6 text-[#9ca3af]">
                 <Loader2 size={13} className="animate-spin" />
                 <span className="text-xs">Loading…</span>
               </div>
@@ -262,11 +262,11 @@ export default function DocumentEditorPage() {
               </p>
             ) : (draftsQ.data ?? []).length === 0 ? (
               <div className="py-6 text-center">
-                <FileText size={24} className="text-[#e2e8f0] mx-auto mb-2" />
-                <p className="text-xs text-[#94a3b8] mb-2">No documents yet</p>
+                <FileText size={24} className="text-[#e2ede9] mx-auto mb-2" />
+                <p className="text-xs text-[#9ca3af] mb-2">No documents yet</p>
                 <button
                   onClick={handleNewDraft}
-                  className="text-xs text-[#2563eb] hover:underline"
+                  className="text-xs text-[#047857] hover:underline"
                 >
                   Create your first regulatory document
                 </button>
@@ -279,8 +279,8 @@ export default function DocumentEditorPage() {
                     className={cn(
                       "flex items-center justify-between p-2.5 rounded-xl border transition-all",
                       activeDraftId === d.id
-                        ? "bg-[#eff6ff] border-[#bfdbfe]"
-                        : "border-[#e2e8f0] hover:border-[#cbd5e1]",
+                        ? "bg-[#ecfdf5] border-[#a7f3d0]"
+                        : "border-[#e2ede9] hover:border-[#cbd5e1]",
                     )}
                   >
                     <button
@@ -288,10 +288,10 @@ export default function DocumentEditorPage() {
                       onClick={() => loadDraftMutation.mutate(d.id)}
                       disabled={loadDraftMutation.isPending}
                     >
-                      <p className="text-xs font-medium text-[#0f172a] truncate">
+                      <p className="text-xs font-medium text-[#111827] truncate">
                         {d.title}
                       </p>
-                      <p className="text-[10px] text-[#94a3b8] font-mono mt-0.5">
+                      <p className="text-[10px] text-[#9ca3af] font-mono mt-0.5">
                         {d.doc_type} · {d.jurisdiction} ·{" "}
                         {new Date(d.updated_at).toLocaleDateString()}
                       </p>
@@ -299,7 +299,7 @@ export default function DocumentEditorPage() {
                     <button
                       onClick={() => deleteMutation.mutate(d.id)}
                       disabled={deleteMutation.isPending}
-                      className="ml-2 p-1 text-[#94a3b8] hover:text-[#dc2626] transition-colors flex-shrink-0"
+                      className="ml-2 p-1 text-[#9ca3af] hover:text-[#dc2626] transition-colors flex-shrink-0"
                     >
                       <X size={12} />
                     </button>
@@ -314,7 +314,7 @@ export default function DocumentEditorPage() {
       {/* Editor meta: title + selectors */}
       <div className="grid grid-cols-3 gap-3 mb-4">
         <div className="col-span-3 md:col-span-1">
-          <label className="block text-[10px] font-mono text-[#94a3b8] mb-1 uppercase tracking-wider">
+          <label className="block text-[10px] font-mono text-[#9ca3af] mb-1 uppercase tracking-wider">
             Document title
           </label>
           <input
@@ -323,11 +323,11 @@ export default function DocumentEditorPage() {
               setTitle(e.target.value);
               setIsDirty(true);
             }}
-            className="w-full px-3 py-2 bg-white border border-[#e2e8f0] rounded-xl text-sm text-[#0f172a] outline-none focus:border-[#2563eb] transition-colors"
+            className="w-full px-3 py-2 bg-white border border-[#e2ede9] rounded-xl text-sm text-[#111827] outline-none focus:border-[#047857] transition-colors"
           />
         </div>
         <div>
-          <label className="block text-[10px] font-mono text-[#94a3b8] mb-1 uppercase tracking-wider">
+          <label className="block text-[10px] font-mono text-[#9ca3af] mb-1 uppercase tracking-wider">
             Document type
           </label>
           <select
@@ -336,7 +336,7 @@ export default function DocumentEditorPage() {
               setDocType(e.target.value);
               setIsDirty(true);
             }}
-            className="w-full px-3 py-2 bg-white border border-[#e2e8f0] rounded-xl text-sm text-[#0f172a] outline-none focus:border-[#2563eb] transition-colors"
+            className="w-full px-3 py-2 bg-white border border-[#e2ede9] rounded-xl text-sm text-[#111827] outline-none focus:border-[#047857] transition-colors"
           >
             {DOC_TYPES.map((t) => (
               <option key={t} value={t}>
@@ -346,7 +346,7 @@ export default function DocumentEditorPage() {
           </select>
         </div>
         <div>
-          <label className="block text-[10px] font-mono text-[#94a3b8] mb-1 uppercase tracking-wider">
+          <label className="block text-[10px] font-mono text-[#9ca3af] mb-1 uppercase tracking-wider">
             Jurisdiction
           </label>
           <select
@@ -355,7 +355,7 @@ export default function DocumentEditorPage() {
               setJurisdiction(e.target.value);
               setIsDirty(true);
             }}
-            className="w-full px-3 py-2 bg-white border border-[#e2e8f0] rounded-xl text-sm text-[#0f172a] outline-none focus:border-[#2563eb] transition-colors"
+            className="w-full px-3 py-2 bg-white border border-[#e2ede9] rounded-xl text-sm text-[#111827] outline-none focus:border-[#047857] transition-colors"
           >
             {JURISDICTIONS.map((j) => (
               <option key={j} value={j}>
@@ -367,27 +367,27 @@ export default function DocumentEditorPage() {
       </div>
 
       {/* Editor area */}
-      <div className="bg-white border border-[#e2e8f0] rounded-2xl overflow-hidden shadow-sm">
+      <div className="bg-white border border-[#e2ede9] rounded-2xl overflow-hidden shadow-sm">
         <textarea
           value={content}
           onChange={(e) => handleContentChange(e.target.value)}
           placeholder={`Start writing your ${docType} for ${jurisdiction}…\n\nTip: Use clear section headings and reference specific regulations.`}
           rows={24}
-          className="w-full px-5 py-4 bg-transparent text-sm text-[#0f172a] outline-none resize-none font-mono leading-relaxed placeholder:text-[#cbd5e1]"
+          className="w-full px-5 py-4 bg-transparent text-sm text-[#111827] outline-none resize-none font-mono leading-relaxed placeholder:text-[#cbd5e1]"
         />
 
         {/* Status bar */}
-        <div className="flex items-center justify-between px-5 py-2.5 border-t border-[#e2e8f0] bg-[#f8fafc]">
-          <div className="flex items-center gap-4 text-[10px] font-mono text-[#94a3b8]">
+        <div className="flex items-center justify-between px-5 py-2.5 border-t border-[#e2ede9] bg-[#f7faf9]">
+          <div className="flex items-center gap-4 text-[10px] font-mono text-[#9ca3af]">
             <span>{wordCount} words</span>
             <span>{content.length} chars</span>
             {activeDraftId && (
-              <span className="text-[#2563eb]">ID: {activeDraftId.slice(0, 8)}</span>
+              <span className="text-[#047857]">ID: {activeDraftId.slice(0, 8)}</span>
             )}
           </div>
           <div className="flex items-center gap-1.5 text-[10px] font-mono">
             {saveMutation.isPending ? (
-              <span className="flex items-center gap-1 text-[#94a3b8]">
+              <span className="flex items-center gap-1 text-[#9ca3af]">
                 <Loader2 size={10} className="animate-spin" />
                 Saving…
               </span>

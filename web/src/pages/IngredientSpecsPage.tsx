@@ -9,7 +9,13 @@ import { cn } from "@/lib/utils";
 
 const PHARMA_SOURCES = ["USP","EP","BP","IP","JP","ChP","NF","FCC","JECFA","FSSAI","AYUSH","WHO","IS"];
 const CATEGORIES = ["All","vitamin","mineral","botanical","food additive","excipient","API"];
-const DOMAINS = ["All","food","pharma","nutra","ayurveda"];
+const DOMAINS = [
+  { value: "All",            label: "All Domains" },
+  { value: "food",           label: "Food & Food Additives" },
+  { value: "pharma",         label: "Pharmaceuticals/APIs" },
+  { value: "nutra",          label: "Nutraceuticals/Supplements" },
+  { value: "ayurveda",       label: "Ayurveda/Traditional Medicine" },
+];
 
 function useIngredientSpecs(params: Record<string,string>) {
   return useQuery({
@@ -66,7 +72,7 @@ export default function IngredientSpecsPage() {
             </select>
             <select value={domain} onChange={e => setSelectedDomain(e.target.value)}
               className="text-xs bg-[#111318] border border-[#2a3040] text-[#8892a4] rounded-lg px-2 py-1.5 outline-none focus:border-[#00d4aa]">
-              {DOMAINS.map(d => <option key={d}>{d}</option>)}
+              {DOMAINS.map(d => <option key={d.value} value={d.value}>{d.label}</option>)}
             </select>
             {specs.length === 0 && !specsQ.isLoading && (
               <button onClick={() => seedMut.mutate()} disabled={seedMut.isPending}

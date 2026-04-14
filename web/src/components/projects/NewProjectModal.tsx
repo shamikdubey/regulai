@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { X, Loader2, Search, ShoppingCart, Activity } from "lucide-react";
+import {
+  X, Loader2, Apple, Activity, Pill, Leaf, Sprout,
+} from "lucide-react";
 import toast from "react-hot-toast";
 import { getApiClient } from "@/lib/api";
 import { cn } from "@/lib/utils";
+import SearchableMultiSelect from "@/components/ui/SearchableMultiSelect";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -34,43 +37,52 @@ type Project = {
 const DOMAINS = [
   {
     value: "FOOD",
-    label: "Food Product",
-    icon: ShoppingCart,
+    label: "Food & Food Additives",
+    icon: Apple,
     color: "#f59e0b",
-    desc: "Food, beverage, nutraceutical",
+    desc: "Food products, beverages, food additives",
   },
   {
     value: "MEDICAL_DEVICE",
-    label: "Medical Device",
+    label: "Medical Devices",
     icon: Activity,
-    color: "#2563eb",
-    desc: "Class I, II, or III devices",
+    color: "#047857",
+    desc: "Class I, II, or III medical devices",
+  },
+  {
+    value: "PHARMA",
+    label: "Pharmaceuticals/APIs",
+    icon: Pill,
+    color: "#7c3aed",
+    desc: "Drugs, APIs, biologics, generics",
+  },
+  {
+    value: "NUTRACEUTICAL",
+    label: "Nutraceuticals/Supplements",
+    icon: Leaf,
+    color: "#0d9488",
+    desc: "Dietary supplements, vitamins, minerals",
+  },
+  {
+    value: "TRADITIONAL",
+    label: "Ayurveda/Traditional Medicine",
+    icon: Sprout,
+    color: "#92400e",
+    desc: "Ayurveda, Unani, Siddha, herbal drugs",
   },
 ];
 
 const DEVICE_CLASSES = ["Class I", "Class II", "Class III"];
 
 const COUNTRIES = [
-  { value: "india",        label: "India",          flag: "🇮🇳" },
-  { value: "usa",          label: "United States",  flag: "🇺🇸" },
-  { value: "eu",           label: "European Union", flag: "🇪🇺" },
-  { value: "china",        label: "China",          flag: "🇨🇳" },
-  { value: "japan",        label: "Japan",          flag: "🇯🇵" },
-  { value: "uk",           label: "United Kingdom", flag: "🇬🇧" },
-  { value: "australia",    label: "Australia",      flag: "🇦🇺" },
-  { value: "canada",       label: "Canada",         flag: "🇨🇦" },
-  { value: "brazil",       label: "Brazil",         flag: "🇧🇷" },
-  { value: "singapore",    label: "Singapore",      flag: "🇸🇬" },
-  { value: "south_korea",  label: "South Korea",    flag: "🇰🇷" },
-  { value: "malaysia",     label: "Malaysia",       flag: "🇲🇾" },
-  { value: "thailand",     label: "Thailand",       flag: "🇹🇭" },
-  { value: "indonesia",    label: "Indonesia",      flag: "🇮🇩" },
-  { value: "saudi_arabia", label: "Saudi Arabia",   flag: "🇸🇦" },
-  { value: "uae",          label: "UAE",            flag: "🇦🇪" },
-  { value: "south_africa", label: "South Africa",   flag: "🇿🇦" },
-  { value: "turkey",       label: "Turkey",         flag: "🇹🇷" },
-  { value: "russia",       label: "Russia",         flag: "🇷🇺" },
-  { value: "mexico",       label: "Mexico",         flag: "🇲🇽" },
+  "India", "USA", "UK", "EU (European Union)", "China", "Japan",
+  "Brazil", "Australia", "Canada", "Singapore", "South Korea",
+  "Indonesia", "Thailand", "Malaysia", "Philippines", "UAE",
+  "Saudi Arabia", "Turkey", "Israel", "South Africa", "Nigeria",
+  "Kenya", "Ghana", "New Zealand", "Mexico", "Argentina",
+  "Colombia", "Chile", "Peru", "Switzerland", "Norway", "Russia",
+  "Poland", "Kazakhstan", "Vietnam", "Bangladesh", "Pakistan",
+  "Sri Lanka", "Myanmar", "Ethiopia",
 ];
 
 // ── Component ─────────────────────────────────────────────────────────────────
@@ -79,10 +91,8 @@ export default function NewProjectModal({ onClose }: { onClose: () => void }) {
   const navigate = useNavigate();
   const [productName, setProductName]         = useState("");
   const [selectedDomain, setSelectedDomain]   = useState<string | null>(null);
-  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
-  const [countrySearch, setCountrySearch]     = useState("");
+  const [selectedCountry, setSelectedCountry] = useState<string[]>([]);
   const [deviceClass, setDeviceClass]         = useState("");
-  const [foodCategory, setFoodCategory]       = useState("");
   const [errors, setErrors]                   = useState<Record<string, string>>({});
 
   const templatesQ = useQuery({
@@ -104,32 +114,30 @@ export default function NewProjectModal({ onClose }: { onClose: () => void }) {
     onError: () => toast.error("Failed to create project"),
   });
 
-  const filteredCountries = COUNTRIES.filter(
-    (c) =>
-      c.label.toLowerCase().includes(countrySearch.toLowerCase()) ||
-      c.value.toLowerCase().includes(countrySearch.toLowerCase()),
-  );
-
   const validate = (): boolean => {
     const e: Record<string, string> = {};
-    if (!productName.trim())  e.productName = "Product name is required";
-    if (!selectedDomain)      e.domain      = "Select a domain";
-    if (!selectedCountry)     e.country     = "Select a target country";
+    if (!productName.trim())      e.productName = "Product name is required";
+    if (!selectedDomain)          e.domain      = "Select a domain";
+    if (selectedCountry.length === 0) e.country = "Select a target country";
     if (selectedDomain === "MEDICAL_DEVICE" && !deviceClass)
       e.deviceClass = "Select a device class";
     setErrors(e);
     return Object.keys(e).length === 0;
   };
 
+  // Country name → API value
+  const countryToValue = (label: string): string =>
+    label.toLowerCase().replace(/[\s()\/]+/g, "_").replace(/_{2,}/g, "_");
+
   const handleSubmit = () => {
     if (!validate()) return;
     const templates = templatesQ.data ?? [];
-    // Match on domain + country, then domain only, then first available
+    const countryValue = countryToValue(selectedCountry[0] ?? "");
     const match =
       templates.find(
         (t) =>
           t.domain.toUpperCase() === selectedDomain &&
-          t.country.toLowerCase() === selectedCountry,
+          t.country.toLowerCase() === countryValue,
       ) ||
       templates.find((t) => t.domain.toUpperCase() === selectedDomain) ||
       templates[0];
@@ -147,27 +155,27 @@ export default function NewProjectModal({ onClose }: { onClose: () => void }) {
       <div className="absolute inset-0 bg-black/30" onClick={onClose} />
 
       {/* Modal */}
-      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4 overflow-hidden">
+      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-xl mx-4 overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-5 border-b border-[#e2e8f0]">
+        <div className="flex items-center justify-between px-6 py-5 border-b border-[#e2ede9]">
           <div>
-            <h2 className="text-base font-bold text-[#0f172a]">New Project</h2>
-            <p className="text-[11px] text-[#94a3b8] mt-0.5">
+            <h2 className="text-base font-bold text-[#111827]">New Project</h2>
+            <p className="text-[11px] text-[#9ca3af] mt-0.5">
               Set up a new regulatory filing project
             </p>
           </div>
           <button
             onClick={onClose}
-            className="text-[#94a3b8] hover:text-[#0f172a] transition-colors"
+            className="text-[#9ca3af] hover:text-[#111827] transition-colors"
           >
             <X size={18} />
           </button>
         </div>
 
-        <div className="px-6 py-5 space-y-5 max-h-[70vh] overflow-y-auto">
+        <div className="px-6 py-5 space-y-5 max-h-[75vh] overflow-y-auto">
           {/* Product name */}
           <div>
-            <label className="block text-[10px] font-mono text-[#94a3b8] uppercase tracking-wider mb-1.5">
+            <label className="block text-[10px] font-mono text-[#9ca3af] uppercase tracking-wider mb-1.5">
               Product name *
             </label>
             <input
@@ -178,8 +186,8 @@ export default function NewProjectModal({ onClose }: { onClose: () => void }) {
               }}
               placeholder="e.g. CardioStent Pro, VitaFlex Capsules"
               className={cn(
-                "w-full px-3 py-2.5 bg-white border rounded-xl text-sm text-[#0f172a] outline-none focus:border-[#2563eb] transition-colors",
-                errors.productName ? "border-[#dc2626]" : "border-[#e2e8f0]",
+                "w-full px-3 py-2.5 bg-white border rounded-xl text-sm text-[#111827] outline-none focus:border-[#047857] focus:ring-1 focus:ring-[#047857] transition-colors",
+                errors.productName ? "border-[#dc2626]" : "border-[#e2ede9]",
               )}
             />
             {errors.productName && (
@@ -187,12 +195,12 @@ export default function NewProjectModal({ onClose }: { onClose: () => void }) {
             )}
           </div>
 
-          {/* Domain */}
+          {/* Domain — 5 cards, 2-col grid (last centered via CSS) */}
           <div>
-            <label className="block text-[10px] font-mono text-[#94a3b8] uppercase tracking-wider mb-2">
+            <label className="block text-[10px] font-mono text-[#9ca3af] uppercase tracking-wider mb-2">
               Domain *
             </label>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-2.5">
               {DOMAINS.map((d) => {
                 const Icon = d.icon;
                 const sel = selectedDomain === d.value;
@@ -205,14 +213,16 @@ export default function NewProjectModal({ onClose }: { onClose: () => void }) {
                       setErrors((p) => ({ ...p, domain: "" }));
                     }}
                     className={cn(
-                      "flex flex-col items-start p-4 rounded-xl border-2 text-left transition-all",
+                      "flex flex-col items-start p-3.5 rounded-xl border-2 text-left transition-all",
                       sel
-                        ? "border-[#2563eb] bg-[#eff6ff]"
-                        : "border-[#e2e8f0] hover:border-[#cbd5e1]",
+                        ? "border-[#047857] bg-[#ecfdf5]"
+                        : "border-[#e2ede9] hover:border-[#a7f3d0]",
+                      /* last item (5th) spans to center in 2-col grid */
+                      d.value === "TRADITIONAL" && "col-span-2 sm:col-span-1 sm:col-start-1",
                     )}
                   >
                     <div
-                      className="w-8 h-8 rounded-lg flex items-center justify-center mb-2"
+                      className="w-8 h-8 rounded-lg flex items-center justify-center mb-2 flex-shrink-0"
                       style={{
                         background: `${d.color}15`,
                         border: `1px solid ${d.color}30`,
@@ -222,13 +232,13 @@ export default function NewProjectModal({ onClose }: { onClose: () => void }) {
                     </div>
                     <p
                       className={cn(
-                        "text-xs font-bold",
-                        sel ? "text-[#2563eb]" : "text-[#0f172a]",
+                        "text-xs font-bold leading-snug",
+                        sel ? "text-[#047857]" : "text-[#111827]",
                       )}
                     >
                       {d.label}
                     </p>
-                    <p className="text-[10px] text-[#94a3b8] mt-0.5">{d.desc}</p>
+                    <p className="text-[10px] text-[#9ca3af] mt-0.5">{d.desc}</p>
                   </button>
                 );
               })}
@@ -241,7 +251,7 @@ export default function NewProjectModal({ onClose }: { onClose: () => void }) {
           {/* Conditional: Device class */}
           {selectedDomain === "MEDICAL_DEVICE" && (
             <div>
-              <label className="block text-[10px] font-mono text-[#94a3b8] uppercase tracking-wider mb-1.5">
+              <label className="block text-[10px] font-mono text-[#9ca3af] uppercase tracking-wider mb-1.5">
                 Device class *
               </label>
               <select
@@ -251,15 +261,13 @@ export default function NewProjectModal({ onClose }: { onClose: () => void }) {
                   setErrors((p) => ({ ...p, deviceClass: "" }));
                 }}
                 className={cn(
-                  "w-full px-3 py-2.5 bg-white border rounded-xl text-sm text-[#0f172a] outline-none focus:border-[#2563eb]",
-                  errors.deviceClass ? "border-[#dc2626]" : "border-[#e2e8f0]",
+                  "w-full px-3 py-2.5 bg-white border rounded-xl text-sm text-[#111827] outline-none focus:border-[#047857]",
+                  errors.deviceClass ? "border-[#dc2626]" : "border-[#e2ede9]",
                 )}
               >
                 <option value="">Select device class</option>
                 {DEVICE_CLASSES.map((c) => (
-                  <option key={c} value={c}>
-                    {c}
-                  </option>
+                  <option key={c} value={c}>{c}</option>
                 ))}
               </select>
               {errors.deviceClass && (
@@ -268,62 +276,23 @@ export default function NewProjectModal({ onClose }: { onClose: () => void }) {
             </div>
           )}
 
-          {/* Conditional: Food category */}
-          {selectedDomain === "FOOD" && (
-            <div>
-              <label className="block text-[10px] font-mono text-[#94a3b8] uppercase tracking-wider mb-1.5">
-                Food category
-              </label>
-              <input
-                value={foodCategory}
-                onChange={(e) => setFoodCategory(e.target.value)}
-                placeholder="e.g. nutraceutical, beverage, dairy supplement"
-                className="w-full px-3 py-2.5 bg-white border border-[#e2e8f0] rounded-xl text-sm text-[#0f172a] outline-none focus:border-[#2563eb] transition-colors"
-              />
-            </div>
-          )}
-
-          {/* Country */}
+          {/* Target country — single-select via SearchableMultiSelect */}
           <div>
-            <label className="block text-[10px] font-mono text-[#94a3b8] uppercase tracking-wider mb-1.5">
+            <label className="block text-[10px] font-mono text-[#9ca3af] uppercase tracking-wider mb-1.5">
               Target country *
             </label>
-            <div
-              className={cn(
-                "border rounded-xl overflow-hidden",
-                errors.country ? "border-[#dc2626]" : "border-[#e2e8f0]",
-              )}
-            >
-              <div className="flex items-center gap-2 px-3 py-2 border-b border-[#e2e8f0] bg-[#f8fafc]">
-                <Search size={12} className="text-[#94a3b8] flex-shrink-0" />
-                <input
-                  value={countrySearch}
-                  onChange={(e) => setCountrySearch(e.target.value)}
-                  placeholder="Search countries…"
-                  className="flex-1 text-xs bg-transparent outline-none text-[#0f172a] placeholder-[#cbd5e1]"
-                />
-              </div>
-              <div className="max-h-44 overflow-y-auto">
-                {filteredCountries.map((c) => (
-                  <button
-                    key={c.value}
-                    type="button"
-                    onClick={() => {
-                      setSelectedCountry(c.value);
-                      setErrors((p) => ({ ...p, country: "" }));
-                    }}
-                    className={cn(
-                      "w-full flex items-center gap-2.5 px-3 py-2 text-left hover:bg-[#f8fafc] transition-colors text-xs",
-                      selectedCountry === c.value
-                        ? "bg-[#eff6ff] text-[#2563eb] font-semibold"
-                        : "text-[#0f172a]",
-                    )}
-                  >
-                    <span className="text-sm">{c.flag}</span>
-                    <span>{c.label}</span>
-                  </button>
-                ))}
-              </div>
+            <div className={cn(errors.country && "ring-1 ring-[#dc2626] rounded-xl")}>
+              <SearchableMultiSelect
+                options={COUNTRIES}
+                selected={selectedCountry}
+                onChange={(sel) => {
+                  // single-select: keep only the last picked item
+                  const next = sel.length > 1 ? [sel[sel.length - 1]] : sel;
+                  setSelectedCountry(next);
+                  setErrors((p) => ({ ...p, country: "" }));
+                }}
+                placeholder="Search countries…"
+              />
             </div>
             {errors.country && (
               <p className="text-[10px] text-[#dc2626] mt-1">{errors.country}</p>
@@ -332,10 +301,10 @@ export default function NewProjectModal({ onClose }: { onClose: () => void }) {
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-[#e2e8f0] bg-[#f8fafc]">
+        <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-[#e2ede9] bg-[#f7faf9]">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-sm text-[#64748b] hover:text-[#0f172a] transition-colors"
+            className="px-4 py-2 text-sm text-[#6b7280] hover:text-[#111827] transition-colors"
           >
             Cancel
           </button>
@@ -345,8 +314,8 @@ export default function NewProjectModal({ onClose }: { onClose: () => void }) {
             className={cn(
               "flex items-center gap-2 px-5 py-2 rounded-xl text-sm font-bold transition-all",
               createMut.isPending || templatesQ.isLoading
-                ? "bg-[#e2e8f0] text-[#94a3b8] cursor-not-allowed"
-                : "bg-[#2563eb] text-white hover:bg-[#1d4ed8] active:scale-[0.98]",
+                ? "bg-[#e2ede9] text-[#9ca3af] cursor-not-allowed"
+                : "bg-[#047857] text-white hover:bg-[#065f46] active:scale-[0.98]",
             )}
           >
             {createMut.isPending ? (

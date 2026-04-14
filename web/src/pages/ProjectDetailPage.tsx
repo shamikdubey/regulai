@@ -37,15 +37,15 @@ type Project = {
 // ── Constants ─────────────────────────────────────────────────────────────────
 
 const STATUS_CONFIG: Record<string, { label: string; color: string }> = {
-  planning:    { label: "Planning",    color: "#64748b" },
+  planning:    { label: "Planning",    color: "#6b7280" },
   in_progress: { label: "In Progress", color: "#f59e0b" },
   submitted:   { label: "Submitted",   color: "#0d9488" },
-  approved:    { label: "Approved",    color: "#2563eb" },
+  approved:    { label: "Approved",    color: "#047857" },
 };
 
 const DOMAIN_COLORS: Record<string, string> = {
   FOOD: "#f59e0b", food: "#f59e0b",
-  MEDICAL_DEVICE: "#2563eb", medical_device: "#2563eb",
+  MEDICAL_DEVICE: "#047857", medical_device: "#047857",
   PHARMA: "#0d9488", pharma: "#0d9488",
   NUTRA: "#8b5cf6", nutra: "#8b5cf6",
 };
@@ -133,7 +133,7 @@ export default function ProjectDetailPage() {
 
   if (projectsQ.isLoading) {
     return (
-      <div className="flex items-center justify-center h-full gap-2 text-[#94a3b8]">
+      <div className="flex items-center justify-center h-full gap-2 text-[#9ca3af]">
         <Loader2 size={16} className="animate-spin" />
         <span className="text-sm">Loading project…</span>
       </div>
@@ -143,10 +143,10 @@ export default function ProjectDetailPage() {
   if (!project) {
     return (
       <div className="flex flex-col items-center justify-center h-full gap-3">
-        <p className="text-sm text-[#0f172a] font-semibold">Project not found</p>
+        <p className="text-sm text-[#111827] font-semibold">Project not found</p>
         <button
           onClick={() => navigate("/projects")}
-          className="text-xs text-[#2563eb] hover:underline"
+          className="text-xs text-[#047857] hover:underline"
         >
           ← Back to projects
         </button>
@@ -156,7 +156,7 @@ export default function ProjectDetailPage() {
 
   const country    = JURISDICTION_MAP[project.country];
   const statusCfg  = STATUS_CONFIG[project.status] ?? STATUS_CONFIG.planning;
-  const domainColor = DOMAIN_COLORS[project.domain] ?? "#64748b";
+  const domainColor = DOMAIN_COLORS[project.domain] ?? "#6b7280";
   const completedCount = project.checklist.filter((c) => c.completed).length;
 
   // ── Render ─────────────────────────────────────────────────────────────────
@@ -168,14 +168,14 @@ export default function ProjectDetailPage() {
       <div className="flex items-start gap-4 mb-6">
         <button
           onClick={() => navigate("/projects")}
-          className="mt-1 text-[#94a3b8] hover:text-[#0f172a] transition-colors flex-shrink-0"
+          className="mt-1 text-[#9ca3af] hover:text-[#111827] transition-colors flex-shrink-0"
         >
           <ArrowLeft size={18} />
         </button>
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-3 flex-wrap">
             <div className="min-w-0">
-              <h1 className="text-xl font-bold text-[#0f172a] truncate">
+              <h1 className="text-xl font-bold text-[#111827] truncate">
                 {project.product_name}
               </h1>
               <div className="flex items-center gap-3 mt-1 flex-wrap">
@@ -190,7 +190,7 @@ export default function ProjectDetailPage() {
                   {project.domain.replace(/_/g, " ")}
                 </span>
                 {country && (
-                  <span className="text-xs text-[#64748b]">
+                  <span className="text-xs text-[#6b7280]">
                     {country.flag} {country.label}
                   </span>
                 )}
@@ -210,16 +210,16 @@ export default function ProjectDetailPage() {
           {/* Progress */}
           <div className="mt-4">
             <div className="flex items-center justify-between mb-1.5">
-              <span className="text-[10px] text-[#94a3b8] font-mono">
+              <span className="text-[10px] text-[#9ca3af] font-mono">
                 {completedCount}/{project.checklist.length} checklist items complete
               </span>
-              <span className="text-[10px] font-mono font-bold text-[#2563eb]">
+              <span className="text-[10px] font-mono font-bold text-[#047857]">
                 {project.progress}%
               </span>
             </div>
-            <div className="h-2 bg-[#e2e8f0] rounded-full overflow-hidden">
+            <div className="h-2 bg-[#e2ede9] rounded-full overflow-hidden">
               <motion.div
-                className="h-full bg-[#2563eb] rounded-full"
+                className="h-full bg-[#047857] rounded-full"
                 initial={{ width: 0 }}
                 animate={{ width: `${project.progress}%` }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
@@ -230,7 +230,7 @@ export default function ProjectDetailPage() {
       </div>
 
       {/* Pipeline stepper tabs */}
-      <div className="flex items-center gap-0 mb-6 bg-white border border-[#e2e8f0] rounded-2xl overflow-hidden shadow-sm">
+      <div className="flex items-center gap-0 mb-6 bg-white border border-[#e2ede9] rounded-2xl overflow-hidden shadow-sm">
         {PIPELINE_TABS.map((tab, ti) => {
           const state   = getTabState(ti, project.progress);
           const isActive = activeTab === tab.id;
@@ -240,10 +240,10 @@ export default function ProjectDetailPage() {
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={cn(
-                "flex-1 flex items-center justify-center gap-2 px-3 py-3.5 text-xs font-semibold transition-all border-r last:border-r-0 border-[#e2e8f0]",
+                "flex-1 flex items-center justify-center gap-2 px-3 py-3.5 text-xs font-semibold transition-all border-r last:border-r-0 border-[#e2ede9]",
                 isActive
-                  ? "bg-[#eff6ff] text-[#2563eb]"
-                  : "text-[#64748b] hover:bg-[#f8fafc] hover:text-[#0f172a]",
+                  ? "bg-[#ecfdf5] text-[#047857]"
+                  : "text-[#6b7280] hover:bg-[#f7faf9] hover:text-[#111827]",
               )}
             >
               {/* Step circle */}
@@ -253,8 +253,8 @@ export default function ProjectDetailPage() {
                   state === "done"
                     ? "bg-[#0d9488] text-white"
                     : isActive
-                      ? "bg-[#2563eb] text-white"
-                      : "bg-[#e2e8f0] text-[#94a3b8]",
+                      ? "bg-[#047857] text-white"
+                      : "bg-[#e2ede9] text-[#9ca3af]",
                 )}
               >
                 {state === "done" ? "✓" : ti + 1}
@@ -272,16 +272,16 @@ export default function ProjectDetailPage() {
         {/* ── Step 1: Gap Analysis ── */}
         {activeTab === "gap" && (
           <div className="space-y-4">
-            <div className="bg-white border border-[#e2e8f0] rounded-2xl p-6 shadow-sm">
+            <div className="bg-white border border-[#e2ede9] rounded-2xl p-6 shadow-sm">
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 rounded-xl bg-[#f3f0ff] flex items-center justify-center flex-shrink-0">
                   <BarChart2 size={20} className="text-[#8b5cf6]" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-sm font-bold text-[#0f172a] mb-1">
+                  <h3 className="text-sm font-bold text-[#111827] mb-1">
                     Run Gap Assessment
                   </h3>
-                  <p className="text-xs text-[#64748b] leading-relaxed mb-4">
+                  <p className="text-xs text-[#6b7280] leading-relaxed mb-4">
                     Identify compliance gaps for{" "}
                     <strong>{project.product_name}</strong>
                     {country ? ` in ${country.flag} ${country.label}` : ""}.
@@ -304,33 +304,33 @@ export default function ProjectDetailPage() {
               </div>
             </div>
 
-            <div className="bg-[#f8fafc] border border-[#e2e8f0] rounded-xl p-4">
-              <p className="text-[10px] font-mono text-[#94a3b8] uppercase tracking-wider mb-2">
+            <div className="bg-[#f7faf9] border border-[#e2ede9] rounded-xl p-4">
+              <p className="text-[10px] font-mono text-[#9ca3af] uppercase tracking-wider mb-2">
                 Project info
               </p>
               <div className="grid grid-cols-2 gap-3 text-xs">
                 <div>
-                  <p className="text-[10px] text-[#94a3b8]">Domain</p>
-                  <p className="font-semibold text-[#0f172a]">
+                  <p className="text-[10px] text-[#9ca3af]">Domain</p>
+                  <p className="font-semibold text-[#111827]">
                     {project.domain.replace(/_/g, " ")}
                   </p>
                 </div>
                 <div>
-                  <p className="text-[10px] text-[#94a3b8]">Target market</p>
-                  <p className="font-semibold text-[#0f172a]">
+                  <p className="text-[10px] text-[#9ca3af]">Target market</p>
+                  <p className="font-semibold text-[#111827]">
                     {country ? `${country.flag} ${country.label}` : project.country}
                   </p>
                 </div>
                 {project.device_class && (
                   <div>
-                    <p className="text-[10px] text-[#94a3b8]">Device class</p>
-                    <p className="font-semibold text-[#0f172a]">{project.device_class}</p>
+                    <p className="text-[10px] text-[#9ca3af]">Device class</p>
+                    <p className="font-semibold text-[#111827]">{project.device_class}</p>
                   </div>
                 )}
                 {project.food_category && (
                   <div>
-                    <p className="text-[10px] text-[#94a3b8]">Food category</p>
-                    <p className="font-semibold text-[#0f172a]">{project.food_category}</p>
+                    <p className="text-[10px] text-[#9ca3af]">Food category</p>
+                    <p className="font-semibold text-[#111827]">{project.food_category}</p>
                   </div>
                 )}
               </div>
@@ -342,12 +342,12 @@ export default function ProjectDetailPage() {
         {activeTab === "checklist" && (
           <div className="space-y-4">
             {project.checklist.length === 0 ? (
-              <div className="bg-white border border-[#e2e8f0] rounded-2xl p-8 shadow-sm text-center">
-                <ClipboardList size={32} className="text-[#e2e8f0] mx-auto mb-3" />
-                <p className="text-sm font-semibold text-[#0f172a] mb-1">
+              <div className="bg-white border border-[#e2ede9] rounded-2xl p-8 shadow-sm text-center">
+                <ClipboardList size={32} className="text-[#e2ede9] mx-auto mb-3" />
+                <p className="text-sm font-semibold text-[#111827] mb-1">
                   No checklist yet
                 </p>
-                <p className="text-xs text-[#94a3b8] mb-4">
+                <p className="text-xs text-[#9ca3af] mb-4">
                   Generate a checklist tailored to your product domain and target market
                 </p>
                 <button
@@ -356,8 +356,8 @@ export default function ProjectDetailPage() {
                   className={cn(
                     "flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold mx-auto transition-all",
                     generateMut.isPending
-                      ? "bg-[#e2e8f0] text-[#94a3b8] cursor-not-allowed"
-                      : "bg-[#2563eb] text-white hover:bg-[#1d4ed8]",
+                      ? "bg-[#e2ede9] text-[#9ca3af] cursor-not-allowed"
+                      : "bg-[#047857] text-white hover:bg-[#065f46]",
                   )}
                 >
                   {generateMut.isPending ? (
@@ -370,7 +370,7 @@ export default function ProjectDetailPage() {
             ) : (
               <>
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-mono text-[#94a3b8] uppercase tracking-wider">
+                  <span className="text-[10px] font-mono text-[#9ca3af] uppercase tracking-wider">
                     {project.checklist.length} filing tasks ·{" "}
                     {completedCount} completed
                   </span>
@@ -378,7 +378,7 @@ export default function ProjectDetailPage() {
                     onClick={() =>
                       qc.invalidateQueries({ queryKey: ["filing-projects"] })
                     }
-                    className="flex items-center gap-1 text-xs text-[#94a3b8] hover:text-[#0f172a] transition-colors"
+                    className="flex items-center gap-1 text-xs text-[#9ca3af] hover:text-[#111827] transition-colors"
                   >
                     <RefreshCw size={11} />
                     Refresh
@@ -396,12 +396,12 @@ export default function ProjectDetailPage() {
                         })
                       }
                       disabled={toggleMut.isPending}
-                      className="w-full flex items-start gap-3 p-3.5 bg-white border border-[#e2e8f0] rounded-xl hover:border-[#cbd5e1] transition-all text-left shadow-sm"
+                      className="w-full flex items-start gap-3 p-3.5 bg-white border border-[#e2ede9] rounded-xl hover:border-[#cbd5e1] transition-all text-left shadow-sm"
                     >
                       <div
                         className={cn(
                           "mt-0.5 flex-shrink-0 transition-colors",
-                          item.completed ? "text-[#2563eb]" : "text-[#cbd5e1]",
+                          item.completed ? "text-[#047857]" : "text-[#cbd5e1]",
                         )}
                       >
                         {item.completed ? (
@@ -415,14 +415,14 @@ export default function ProjectDetailPage() {
                           className={cn(
                             "text-xs font-medium",
                             item.completed
-                              ? "text-[#94a3b8] line-through"
-                              : "text-[#0f172a]",
+                              ? "text-[#9ca3af] line-through"
+                              : "text-[#111827]",
                           )}
                         >
                           {item.task}
                         </p>
                         {item.required_document && (
-                          <p className="text-[10px] text-[#94a3b8] mt-0.5 font-mono">
+                          <p className="text-[10px] text-[#9ca3af] mt-0.5 font-mono">
                             Required: {item.required_document}
                           </p>
                         )}
@@ -439,14 +439,14 @@ export default function ProjectDetailPage() {
         {activeTab === "documents" && (
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-white border border-[#e2e8f0] rounded-2xl p-5 shadow-sm">
-                <div className="w-9 h-9 rounded-xl bg-[#eff6ff] flex items-center justify-center mb-3">
-                  <PenLine size={18} className="text-[#2563eb]" />
+              <div className="bg-white border border-[#e2ede9] rounded-2xl p-5 shadow-sm">
+                <div className="w-9 h-9 rounded-xl bg-[#ecfdf5] flex items-center justify-center mb-3">
+                  <PenLine size={18} className="text-[#047857]" />
                 </div>
-                <h3 className="text-sm font-bold text-[#0f172a] mb-1">
+                <h3 className="text-sm font-bold text-[#111827] mb-1">
                   Document Editor
                 </h3>
-                <p className="text-xs text-[#64748b] mb-4">
+                <p className="text-xs text-[#6b7280] mb-4">
                   Draft and edit regulatory documents for this filing
                 </p>
                 <button
@@ -455,20 +455,20 @@ export default function ProjectDetailPage() {
                       `/document-editor?project=${encodeURIComponent(project.id)}&product=${encodeURIComponent(project.product_name)}`,
                     )
                   }
-                  className="flex items-center gap-1.5 text-xs font-bold text-[#2563eb] hover:text-[#1d4ed8] transition-colors"
+                  className="flex items-center gap-1.5 text-xs font-bold text-[#047857] hover:text-[#065f46] transition-colors"
                 >
                   Open editor <ArrowRight size={12} />
                 </button>
               </div>
 
-              <div className="bg-white border border-[#e2e8f0] rounded-2xl p-5 shadow-sm">
+              <div className="bg-white border border-[#e2ede9] rounded-2xl p-5 shadow-sm">
                 <div className="w-9 h-9 rounded-xl bg-[#f0fdf9] flex items-center justify-center mb-3">
                   <Wand2 size={18} className="text-[#0d9488]" />
                 </div>
-                <h3 className="text-sm font-bold text-[#0f172a] mb-1">
+                <h3 className="text-sm font-bold text-[#111827] mb-1">
                   Dossier Drafting
                 </h3>
-                <p className="text-xs text-[#64748b] mb-4">
+                <p className="text-xs text-[#6b7280] mb-4">
                   AI-generate a technical submission dossier
                 </p>
                 <button
@@ -484,8 +484,8 @@ export default function ProjectDetailPage() {
               </div>
             </div>
 
-            <div className="bg-[#f8fafc] border border-[#e2e8f0] rounded-xl p-4 text-center">
-              <p className="text-xs text-[#94a3b8]">
+            <div className="bg-[#f7faf9] border border-[#e2ede9] rounded-xl p-4 text-center">
+              <p className="text-xs text-[#9ca3af]">
                 Documents created in the editor or dossier tool will appear here
                 once document-level project linking is enabled.
               </p>
@@ -496,16 +496,16 @@ export default function ProjectDetailPage() {
         {/* ── Step 4: Compliance Review ── */}
         {activeTab === "review" && (
           <div className="space-y-4">
-            <div className="bg-white border border-[#e2e8f0] rounded-2xl p-6 shadow-sm">
+            <div className="bg-white border border-[#e2ede9] rounded-2xl p-6 shadow-sm">
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 rounded-xl bg-[#fff7ed] flex items-center justify-center flex-shrink-0">
                   <ShieldCheck size={20} className="text-[#f59e0b]" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-sm font-bold text-[#0f172a] mb-1">
+                  <h3 className="text-sm font-bold text-[#111827] mb-1">
                     Compliance Review
                   </h3>
-                  <p className="text-xs text-[#64748b] leading-relaxed mb-4">
+                  <p className="text-xs text-[#6b7280] leading-relaxed mb-4">
                     Upload your drafted document to run an AI compliance review.
                     Get a compliance score, findings list, and actionable
                     recommendations before submission.

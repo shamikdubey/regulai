@@ -46,7 +46,7 @@ type Project = {
 // ── Constants ─────────────────────────────────────────────────────────────────
 
 const STATUS_COLORS: Record<string, string> = {
-  planning: "#64748b",
+  planning: "#6b7280",
   in_progress: "#f59e0b",
   submitted: "#0d9488",
 };
@@ -165,17 +165,17 @@ export default function FilingWizardPage() {
       {/* Page header */}
       <div className="mb-6 flex items-center justify-between gap-4">
         <div className="flex items-center gap-3 min-w-0">
-          <div className="w-10 h-10 bg-[#eff6ff] border border-[#bfdbfe] rounded-xl flex items-center justify-center flex-shrink-0">
-            <Wand2 size={18} className="text-[#2563eb]" />
+          <div className="w-10 h-10 bg-[#ecfdf5] border border-[#a7f3d0] rounded-xl flex items-center justify-center flex-shrink-0">
+            <Wand2 size={18} className="text-[#047857]" />
           </div>
           <div className="min-w-0">
-            <h1 className="text-xl font-bold text-[#0f172a]">Filing Wizard</h1>
-            <p className="text-xs text-[#94a3b8] mt-0.5">
+            <h1 className="text-xl font-bold text-[#111827]">Filing Wizard</h1>
+            <p className="text-xs text-[#9ca3af] mt-0.5">
               Step-by-step guidance for regulatory submissions. Start here when you're ready to file in a new country.
             </p>
           </div>
         </div>
-        <div className="flex gap-1 bg-[#f8fafc] border border-[#e2e8f0] rounded-xl p-1 flex-shrink-0">
+        <div className="flex gap-1 bg-[#f7faf9] border border-[#e2ede9] rounded-xl p-1 flex-shrink-0">
           {(["wizard", "tracker"] as const).map((v) => (
             <button
               key={v}
@@ -183,8 +183,8 @@ export default function FilingWizardPage() {
               className={cn(
                 "px-4 py-1.5 rounded-lg text-xs font-bold capitalize transition-all",
                 view === v
-                  ? "bg-[#2563eb] text-white"
-                  : "text-[#94a3b8] hover:text-[#64748b]",
+                  ? "bg-[#047857] text-white"
+                  : "text-[#9ca3af] hover:text-[#6b7280]",
               )}
             >
               {v === "wizard" ? "New Filing" : "My Projects"}
@@ -203,8 +203,8 @@ export default function FilingWizardPage() {
             exit={{ opacity: 0, y: -8 }}
           >
             {/* Recommended workflow */}
-            <div className="mb-5 p-3.5 bg-[#f8fafc] border border-[#e2e8f0] rounded-xl">
-              <p className="text-[9px] font-mono text-[#94a3b8] uppercase tracking-wider mb-2.5">Recommended workflow</p>
+            <div className="mb-5 p-3.5 bg-[#f7faf9] border border-[#e2ede9] rounded-xl">
+              <p className="text-[9px] font-mono text-[#9ca3af] uppercase tracking-wider mb-2.5">Recommended workflow</p>
               <div className="flex items-center gap-1.5 flex-wrap">
                 {[
                   { label: "Gap Assessment", to: "/gap-assessment" },
@@ -218,8 +218,8 @@ export default function FilingWizardPage() {
                       className={cn(
                         "text-xs px-2 py-1 rounded-lg font-semibold transition-colors",
                         step.to === "/filing-wizard"
-                          ? "bg-[#eff6ff] border border-[#bfdbfe] text-[#2563eb]"
-                          : "text-[#64748b] hover:text-[#2563eb]",
+                          ? "bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857]"
+                          : "text-[#6b7280] hover:text-[#047857]",
                       )}
                     >
                       {step.label}
@@ -233,8 +233,8 @@ export default function FilingWizardPage() {
             </div>
 
             {/* How it works */}
-            <div className="mb-5 p-4 bg-[#f8fafc] border border-[#e2e8f0] rounded-xl">
-              <p className="text-[10px] font-mono text-[#94a3b8] uppercase tracking-wider mb-3">How it works</p>
+            <div className="mb-5 p-4 bg-[#f7faf9] border border-[#e2ede9] rounded-xl">
+              <p className="text-[10px] font-mono text-[#9ca3af] uppercase tracking-wider mb-3">How it works</p>
               <div className="grid grid-cols-3 gap-3">
                 {[
                   { n: 1, title: "Choose a template", desc: "Pick your target country and regulatory domain" },
@@ -242,12 +242,12 @@ export default function FilingWizardPage() {
                   { n: 3, title: "Track progress", desc: "Check off items as you complete your submission" },
                 ].map((s) => (
                   <div key={s.n} className="flex items-start gap-2.5">
-                    <div className="w-5 h-5 rounded-full bg-[#eff6ff] text-[#2563eb] text-[10px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <div className="w-5 h-5 rounded-full bg-[#ecfdf5] text-[#047857] text-[10px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5">
                       {s.n}
                     </div>
                     <div>
-                      <p className="text-xs font-semibold text-[#0f172a]">{s.title}</p>
-                      <p className="text-[10px] text-[#64748b] mt-0.5">{s.desc}</p>
+                      <p className="text-xs font-semibold text-[#111827]">{s.title}</p>
+                      <p className="text-[10px] text-[#6b7280] mt-0.5">{s.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -262,8 +262,8 @@ export default function FilingWizardPage() {
                     className={cn(
                       "w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold transition-all",
                       step >= s
-                        ? "bg-[#2563eb] text-white"
-                        : "bg-[#e2e8f0] text-[#94a3b8]",
+                        ? "bg-[#047857] text-white"
+                        : "bg-[#e2ede9] text-[#9ca3af]",
                     )}
                   >
                     {s}
@@ -271,12 +271,12 @@ export default function FilingWizardPage() {
                   <span
                     className={cn(
                       "text-xs",
-                      step >= s ? "text-[#0f172a]" : "text-[#94a3b8]",
+                      step >= s ? "text-[#111827]" : "text-[#9ca3af]",
                     )}
                   >
                     {s === 1 ? "Select Template" : "Checklist"}
                   </span>
-                  {s < 2 && <div className="w-8 h-px bg-[#e2e8f0]" />}
+                  {s < 2 && <div className="w-8 h-px bg-[#e2ede9]" />}
                 </div>
               ))}
             </div>
@@ -285,29 +285,29 @@ export default function FilingWizardPage() {
             {step === 1 && (
               <div className="space-y-4">
                 <div>
-                  <label className="block text-[10px] font-mono text-[#94a3b8] mb-1 uppercase tracking-wider">
+                  <label className="block text-[10px] font-mono text-[#9ca3af] mb-1 uppercase tracking-wider">
                     Product name *
                   </label>
                   <input
                     value={productName}
                     onChange={(e) => setProductName(e.target.value)}
                     placeholder="e.g. CardioStent Pro"
-                    className="w-full px-3 py-2 bg-white border border-[#e2e8f0] rounded-xl text-sm text-[#0f172a] outline-none focus:border-[#2563eb] transition-colors"
+                    className="w-full px-3 py-2 bg-white border border-[#e2ede9] rounded-xl text-sm text-[#111827] outline-none focus:border-[#047857] transition-colors"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-mono text-[#94a3b8] mb-2 uppercase tracking-wider">
+                  <label className="block text-[10px] font-mono text-[#9ca3af] mb-2 uppercase tracking-wider">
                     Filing template
                     {selectedTemplate && (
-                      <span className="ml-2 text-[#2563eb] normal-case">
+                      <span className="ml-2 text-[#047857] normal-case">
                         — {selectedTemplate.label}
                       </span>
                     )}
                   </label>
 
                   {templatesQ.isLoading ? (
-                    <div className="flex items-center justify-center gap-2 py-10 text-[#94a3b8]">
+                    <div className="flex items-center justify-center gap-2 py-10 text-[#9ca3af]">
                       <Loader2 size={14} className="animate-spin" />
                       <span className="text-xs">Loading templates…</span>
                     </div>
@@ -325,23 +325,23 @@ export default function FilingWizardPage() {
                           className={cn(
                             "text-left p-3 rounded-xl border transition-all",
                             selectedTemplate?.id === t.id
-                              ? "bg-[#eff6ff] border-[#bfdbfe]"
-                              : "bg-white border-[#e2e8f0] hover:border-[#cbd5e1]",
+                              ? "bg-[#ecfdf5] border-[#a7f3d0]"
+                              : "bg-white border-[#e2ede9] hover:border-[#cbd5e1]",
                           )}
                         >
-                          <div className="text-xs font-bold text-[#0f172a] mb-0.5">
+                          <div className="text-xs font-bold text-[#111827] mb-0.5">
                             {t.label}
                           </div>
-                          <div className="text-[10px] text-[#64748b]">
+                          <div className="text-[10px] text-[#6b7280]">
                             {t.description}
                           </div>
                           {t.device_class && (
-                            <div className="text-[9px] text-[#94a3b8] mt-1 font-mono">
+                            <div className="text-[9px] text-[#9ca3af] mt-1 font-mono">
                               {t.device_class}
                             </div>
                           )}
                           {t.food_category && (
-                            <div className="text-[9px] text-[#94a3b8] mt-1 font-mono">
+                            <div className="text-[9px] text-[#9ca3af] mt-1 font-mono">
                               {t.food_category}
                             </div>
                           )}
@@ -363,8 +363,8 @@ export default function FilingWizardPage() {
                     createMutation.isPending ||
                       !selectedTemplate ||
                       !productName.trim()
-                      ? "bg-[#e2e8f0] text-[#94a3b8] cursor-not-allowed"
-                      : "bg-[#2563eb] text-white hover:bg-[#1d4ed8] active:scale-[0.98]",
+                      ? "bg-[#e2ede9] text-[#9ca3af] cursor-not-allowed"
+                      : "bg-[#047857] text-white hover:bg-[#065f46] active:scale-[0.98]",
                   )}
                 >
                   {createMutation.isPending ? (
@@ -389,15 +389,15 @@ export default function FilingWizardPage() {
                 <div className="flex items-center gap-3">
                   <button
                     onClick={resetWizard}
-                    className="text-[#94a3b8] hover:text-[#0f172a] transition-colors"
+                    className="text-[#9ca3af] hover:text-[#111827] transition-colors"
                   >
                     <ArrowLeft size={16} />
                   </button>
                   <div>
-                    <h2 className="text-sm font-bold text-[#0f172a]">
+                    <h2 className="text-sm font-bold text-[#111827]">
                       {activeProject.product_name}
                     </h2>
-                    <p className="text-[10px] text-[#94a3b8]">
+                    <p className="text-[10px] text-[#9ca3af]">
                       {activeProject.country} ·{" "}
                       {activeProject.domain.replace(/_/g, " ")}
                     </p>
@@ -405,24 +405,24 @@ export default function FilingWizardPage() {
                 </div>
 
                 {/* Progress bar */}
-                <div className="bg-white border border-[#e2e8f0] rounded-2xl p-4 shadow-sm">
+                <div className="bg-white border border-[#e2ede9] rounded-2xl p-4 shadow-sm">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-bold text-[#0f172a]">
+                    <span className="text-xs font-bold text-[#111827]">
                       Progress
                     </span>
-                    <span className="text-xs font-mono text-[#2563eb]">
+                    <span className="text-xs font-mono text-[#047857]">
                       {activeProject.progress}%
                     </span>
                   </div>
-                  <div className="h-2 bg-[#e2e8f0] rounded-full overflow-hidden">
+                  <div className="h-2 bg-[#e2ede9] rounded-full overflow-hidden">
                     <motion.div
-                      className="h-full bg-[#2563eb] rounded-full"
+                      className="h-full bg-[#047857] rounded-full"
                       initial={{ width: 0 }}
                       animate={{ width: `${activeProject.progress}%` }}
                       transition={{ duration: 0.4, ease: "easeOut" }}
                     />
                   </div>
-                  <p className="text-[10px] text-[#94a3b8] font-mono mt-1.5">
+                  <p className="text-[10px] text-[#9ca3af] font-mono mt-1.5">
                     {activeProject.checklist.filter((i) => i.completed).length}/
                     {activeProject.checklist.length} items complete
                   </p>
@@ -430,7 +430,7 @@ export default function FilingWizardPage() {
 
                 {/* Checklist items */}
                 <div className="space-y-2">
-                  <h3 className="text-[10px] font-mono text-[#94a3b8] uppercase tracking-wider">
+                  <h3 className="text-[10px] font-mono text-[#9ca3af] uppercase tracking-wider">
                     Filing checklist ({activeProject.checklist.length} items)
                   </h3>
                   {activeProject.checklist.map((item) => (
@@ -438,13 +438,13 @@ export default function FilingWizardPage() {
                       key={item.id}
                       onClick={() => handleToggle(item.id, item.completed)}
                       disabled={toggleMutation.isPending}
-                      className="w-full flex items-start gap-3 p-3 bg-white border border-[#e2e8f0] rounded-xl hover:border-[#cbd5e1] transition-all text-left shadow-sm"
+                      className="w-full flex items-start gap-3 p-3 bg-white border border-[#e2ede9] rounded-xl hover:border-[#cbd5e1] transition-all text-left shadow-sm"
                     >
                       <div
                         className={cn(
                           "mt-0.5 flex-shrink-0 transition-colors",
                           item.completed
-                            ? "text-[#2563eb]"
+                            ? "text-[#047857]"
                             : "text-[#cbd5e1]",
                         )}
                       >
@@ -459,14 +459,14 @@ export default function FilingWizardPage() {
                           className={cn(
                             "text-xs font-medium",
                             item.completed
-                              ? "text-[#94a3b8] line-through"
-                              : "text-[#0f172a]",
+                              ? "text-[#9ca3af] line-through"
+                              : "text-[#111827]",
                           )}
                         >
                           {item.task}
                         </p>
                         {item.required_document && (
-                          <p className="text-[10px] text-[#94a3b8] mt-0.5 font-mono">
+                          <p className="text-[10px] text-[#9ca3af] mt-0.5 font-mono">
                             Required: {item.required_document}
                           </p>
                         )}
@@ -485,8 +485,8 @@ export default function FilingWizardPage() {
                     className={cn(
                       "flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-sm transition-all",
                       submitMutation.isPending || activeProject.progress < 100
-                        ? "bg-[#e2e8f0] text-[#94a3b8] cursor-not-allowed"
-                        : "bg-[#2563eb] text-white hover:bg-[#1d4ed8] active:scale-[0.98]",
+                        ? "bg-[#e2ede9] text-[#9ca3af] cursor-not-allowed"
+                        : "bg-[#047857] text-white hover:bg-[#065f46] active:scale-[0.98]",
                     )}
                   >
                     {submitMutation.isPending ? (
@@ -528,14 +528,14 @@ export default function FilingWizardPage() {
             exit={{ opacity: 0, y: -8 }}
           >
             <div className="flex items-center justify-between mb-4">
-              <span className="text-[10px] font-mono text-[#94a3b8] uppercase tracking-wider">
+              <span className="text-[10px] font-mono text-[#9ca3af] uppercase tracking-wider">
                 All filing projects
               </span>
               <button
                 onClick={() =>
                   qc.invalidateQueries({ queryKey: ["filing-projects"] })
                 }
-                className="flex items-center gap-1.5 text-xs text-[#94a3b8] hover:text-[#0f172a] transition-colors"
+                className="flex items-center gap-1.5 text-xs text-[#9ca3af] hover:text-[#111827] transition-colors"
               >
                 <RefreshCw size={12} />
                 Refresh
@@ -543,7 +543,7 @@ export default function FilingWizardPage() {
             </div>
 
             {projectsQ.isLoading ? (
-              <div className="flex items-center justify-center gap-2 py-16 text-[#94a3b8]">
+              <div className="flex items-center justify-center gap-2 py-16 text-[#9ca3af]">
                 <Loader2 size={16} className="animate-spin" />
                 <span className="text-sm">Loading projects…</span>
               </div>
@@ -553,16 +553,16 @@ export default function FilingWizardPage() {
               </div>
             ) : (projectsQ.data ?? []).length === 0 ? (
               <div className="flex flex-col items-center justify-center py-20">
-                <div className="w-14 h-14 bg-[#f1f5f9] rounded-2xl flex items-center justify-center mb-4">
+                <div className="w-14 h-14 bg-[#f0fdf4] rounded-2xl flex items-center justify-center mb-4">
                   <ClipboardList size={28} className="text-[#cbd5e1]" />
                 </div>
-                <h3 className="text-sm font-bold text-[#0f172a] mb-1">No filing projects yet</h3>
-                <p className="text-xs text-[#94a3b8] mb-4 max-w-xs text-center">
+                <h3 className="text-sm font-bold text-[#111827] mb-1">No filing projects yet</h3>
+                <p className="text-xs text-[#9ca3af] mb-4 max-w-xs text-center">
                   Create your first project to get started with your regulatory submission.
                 </p>
                 <button
                   onClick={() => setView("wizard")}
-                  className="flex items-center gap-1.5 px-4 py-2 bg-[#2563eb] text-white rounded-xl text-xs font-bold hover:bg-[#1d4ed8] transition-all"
+                  className="flex items-center gap-1.5 px-4 py-2 bg-[#047857] text-white rounded-xl text-xs font-bold hover:bg-[#065f46] transition-all"
                 >
                   <Plus size={12} />
                   Create first project
@@ -575,36 +575,36 @@ export default function FilingWizardPage() {
                     key={proj.id}
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-white border border-[#e2e8f0] rounded-2xl p-5 shadow-sm"
+                    className="bg-white border border-[#e2ede9] rounded-2xl p-5 shadow-sm"
                   >
                     <div className="flex items-start justify-between mb-3">
                       <div>
-                        <h3 className="text-sm font-bold text-[#0f172a]">
+                        <h3 className="text-sm font-bold text-[#111827]">
                           {proj.product_name}
                         </h3>
-                        <p className="text-[10px] text-[#94a3b8] mt-0.5 font-mono">
+                        <p className="text-[10px] text-[#9ca3af] mt-0.5 font-mono">
                           {proj.country} · {proj.domain.replace(/_/g, " ")}
                         </p>
                       </div>
                       <span
                         className="text-[10px] font-bold px-2.5 py-1 rounded-full capitalize"
                         style={{
-                          background: `${STATUS_COLORS[proj.status] ?? "#64748b"}15`,
-                          color: STATUS_COLORS[proj.status] ?? "#64748b",
+                          background: `${STATUS_COLORS[proj.status] ?? "#6b7280"}15`,
+                          color: STATUS_COLORS[proj.status] ?? "#6b7280",
                         }}
                       >
                         {proj.status.replace(/_/g, " ")}
                       </span>
                     </div>
 
-                    <div className="h-1.5 bg-[#e2e8f0] rounded-full overflow-hidden mb-2">
+                    <div className="h-1.5 bg-[#e2ede9] rounded-full overflow-hidden mb-2">
                       <div
-                        className="h-full bg-[#2563eb] rounded-full transition-all"
+                        className="h-full bg-[#047857] rounded-full transition-all"
                         style={{ width: `${proj.progress}%` }}
                       />
                     </div>
 
-                    <div className="flex items-center justify-between text-[10px] text-[#94a3b8] font-mono">
+                    <div className="flex items-center justify-between text-[10px] text-[#9ca3af] font-mono">
                       <span>
                         {proj.checklist.filter((i) => i.completed).length}/
                         {proj.checklist.length} items complete

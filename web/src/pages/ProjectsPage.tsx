@@ -33,19 +33,19 @@ type Project = {
 // ── Constants ─────────────────────────────────────────────────────────────────
 
 const STATUS_CONFIG: Record<string, { label: string; color: string }> = {
-  planning:    { label: "Planning",    color: "#64748b" },
+  planning:    { label: "Planning",    color: "#6b7280" },
   in_progress: { label: "In Progress", color: "#f59e0b" },
   submitted:   { label: "Submitted",   color: "#0d9488" },
-  approved:    { label: "Approved",    color: "#2563eb" },
+  approved:    { label: "Approved",    color: "#047857" },
 };
 
 const DOMAIN_COLORS: Record<string, string> = {
   FOOD:           "#f59e0b",
-  MEDICAL_DEVICE: "#2563eb",
+  MEDICAL_DEVICE: "#047857",
   PHARMA:         "#0d9488",
   NUTRA:          "#8b5cf6",
   food:           "#f59e0b",
-  medical_device: "#2563eb",
+  medical_device: "#047857",
   pharma:         "#0d9488",
   nutra:          "#8b5cf6",
 };
@@ -102,14 +102,14 @@ export default function ProjectsPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-xl font-bold text-[#0f172a]">My Projects</h1>
-          <p className="text-xs text-[#94a3b8] mt-1">
+          <h1 className="text-xl font-bold text-[#111827]">My Projects</h1>
+          <p className="text-xs text-[#9ca3af] mt-1">
             Manage your regulatory filing projects from gap analysis to submission
           </p>
         </div>
         <button
           onClick={() => setShowModal(true)}
-          className="flex items-center gap-2 px-4 py-2.5 bg-[#2563eb] text-white rounded-xl text-sm font-bold hover:bg-[#1d4ed8] active:scale-[0.98] transition-all shadow-sm"
+          className="flex items-center gap-2 px-4 py-2.5 bg-[#047857] text-white rounded-xl text-sm font-bold hover:bg-[#065f46] active:scale-[0.98] transition-all shadow-sm"
         >
           <Plus size={14} />
           New Project
@@ -122,7 +122,7 @@ export default function ProjectsPage() {
           <select
             value={filterDomain}
             onChange={(e) => setFilterDomain(e.target.value)}
-            className="text-xs bg-white border border-[#e2e8f0] text-[#64748b] rounded-lg px-3 py-2 outline-none focus:border-[#2563eb] transition-colors"
+            className="text-xs bg-white border border-[#e2ede9] text-[#6b7280] rounded-lg px-3 py-2 outline-none focus:border-[#047857] transition-colors"
           >
             <option value="">All domains</option>
             {domains.map((d) => (
@@ -135,7 +135,7 @@ export default function ProjectsPage() {
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="text-xs bg-white border border-[#e2e8f0] text-[#64748b] rounded-lg px-3 py-2 outline-none focus:border-[#2563eb] transition-colors"
+            className="text-xs bg-white border border-[#e2ede9] text-[#6b7280] rounded-lg px-3 py-2 outline-none focus:border-[#047857] transition-colors"
           >
             <option value="">All statuses</option>
             {statuses.map((s) => (
@@ -148,7 +148,7 @@ export default function ProjectsPage() {
           <select
             value={filterCountry}
             onChange={(e) => setFilterCountry(e.target.value)}
-            className="text-xs bg-white border border-[#e2e8f0] text-[#64748b] rounded-lg px-3 py-2 outline-none focus:border-[#2563eb] transition-colors"
+            className="text-xs bg-white border border-[#e2ede9] text-[#6b7280] rounded-lg px-3 py-2 outline-none focus:border-[#047857] transition-colors"
           >
             <option value="">All countries</option>
             {countries.map((c) => {
@@ -168,7 +168,7 @@ export default function ProjectsPage() {
                 setFilterStatus("");
                 setFilterCountry("");
               }}
-              className="text-xs text-[#94a3b8] hover:text-[#0f172a] transition-colors"
+              className="text-xs text-[#9ca3af] hover:text-[#111827] transition-colors"
             >
               Clear filters
             </button>
@@ -178,7 +178,7 @@ export default function ProjectsPage() {
 
       {/* Content */}
       {projectsQ.isLoading ? (
-        <div className="flex items-center justify-center gap-2 py-24 text-[#94a3b8]">
+        <div className="flex items-center justify-center gap-2 py-24 text-[#9ca3af]">
           <Loader2 size={16} className="animate-spin" />
           <span className="text-sm">Loading projects…</span>
         </div>
@@ -187,7 +187,7 @@ export default function ProjectsPage() {
           <p className="text-sm text-[#dc2626]">Failed to load projects</p>
           <button
             onClick={() => projectsQ.refetch()}
-            className="text-xs text-[#2563eb] mt-2 hover:underline"
+            className="text-xs text-[#047857] mt-2 hover:underline"
           >
             Try again
           </button>
@@ -195,17 +195,17 @@ export default function ProjectsPage() {
       ) : allProjects.length === 0 ? (
         /* Empty state */
         <div className="flex flex-col items-center justify-center py-24">
-          <div className="w-16 h-16 bg-[#f1f5f9] rounded-2xl flex items-center justify-center mb-4">
+          <div className="w-16 h-16 bg-[#f0fdf4] rounded-2xl flex items-center justify-center mb-4">
             <FolderOpen size={32} className="text-[#cbd5e1]" />
           </div>
-          <h2 className="text-sm font-bold text-[#0f172a] mb-1">No projects yet</h2>
-          <p className="text-xs text-[#94a3b8] mb-5 max-w-xs text-center">
+          <h2 className="text-sm font-bold text-[#111827] mb-1">No projects yet</h2>
+          <p className="text-xs text-[#9ca3af] mb-5 max-w-xs text-center">
             Create your first project to start tracking your regulatory filing
             pipeline from gap analysis to submission.
           </p>
           <button
             onClick={() => setShowModal(true)}
-            className="flex items-center gap-2 px-5 py-2.5 bg-[#2563eb] text-white rounded-xl text-sm font-bold hover:bg-[#1d4ed8] transition-all shadow-sm"
+            className="flex items-center gap-2 px-5 py-2.5 bg-[#047857] text-white rounded-xl text-sm font-bold hover:bg-[#065f46] transition-all shadow-sm"
           >
             <Plus size={14} />
             Create your first project
@@ -213,7 +213,7 @@ export default function ProjectsPage() {
         </div>
       ) : filtered.length === 0 ? (
         <div className="py-16 text-center">
-          <p className="text-sm text-[#94a3b8]">No projects match the selected filters</p>
+          <p className="text-sm text-[#9ca3af]">No projects match the selected filters</p>
         </div>
       ) : (
         /* Project cards grid */
@@ -221,7 +221,7 @@ export default function ProjectsPage() {
           {filtered.map((project, i) => {
             const country = JURISDICTION_MAP[project.country];
             const statusCfg = STATUS_CONFIG[project.status] ?? STATUS_CONFIG.planning;
-            const domainColor = DOMAIN_COLORS[project.domain] ?? "#64748b";
+            const domainColor = DOMAIN_COLORS[project.domain] ?? "#6b7280";
             const completedCount = project.checklist.filter((c) => c.completed).length;
 
             return (
@@ -230,12 +230,12 @@ export default function ProjectsPage() {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.04 }}
-                className="bg-white border border-[#e2e8f0] rounded-2xl p-5 shadow-sm hover:shadow-md hover:border-[#cbd5e1] transition-all flex flex-col gap-4"
+                className="bg-white border border-[#e2ede9] rounded-2xl p-5 shadow-sm hover:shadow-md hover:border-[#cbd5e1] transition-all flex flex-col gap-4"
               >
                 {/* Card header */}
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0">
-                    <h3 className="text-sm font-bold text-[#0f172a] truncate">
+                    <h3 className="text-sm font-bold text-[#111827] truncate">
                       {project.product_name}
                     </h3>
                     <div className="flex items-center gap-2 mt-1 flex-wrap">
@@ -250,7 +250,7 @@ export default function ProjectsPage() {
                         {project.domain.replace(/_/g, " ")}
                       </span>
                       {country && (
-                        <span className="text-[10px] text-[#64748b] flex items-center gap-1">
+                        <span className="text-[10px] text-[#6b7280] flex items-center gap-1">
                           {country.flag} {country.label}
                         </span>
                       )}
@@ -270,16 +270,16 @@ export default function ProjectsPage() {
                 {/* Progress bar */}
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-[10px] text-[#94a3b8] font-mono">
+                    <span className="text-[10px] text-[#9ca3af] font-mono">
                       {completedCount}/{project.checklist.length} items
                     </span>
-                    <span className="text-[10px] font-mono font-bold text-[#2563eb]">
+                    <span className="text-[10px] font-mono font-bold text-[#047857]">
                       {project.progress}%
                     </span>
                   </div>
-                  <div className="h-1.5 bg-[#e2e8f0] rounded-full overflow-hidden">
+                  <div className="h-1.5 bg-[#e2ede9] rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-[#2563eb] rounded-full transition-all"
+                      className="h-full bg-[#047857] rounded-full transition-all"
                       style={{ width: `${project.progress}%` }}
                     />
                   </div>
@@ -297,8 +297,8 @@ export default function ProjectsPage() {
                             state === "done"
                               ? "bg-[#0d9488] text-white"
                               : state === "active"
-                                ? "bg-[#2563eb] text-white"
-                                : "bg-[#e2e8f0] text-[#94a3b8]",
+                                ? "bg-[#047857] text-white"
+                                : "bg-[#e2ede9] text-[#9ca3af]",
                           )}
                         >
                           {state === "done" ? "✓" : si + 1}
@@ -309,7 +309,7 @@ export default function ProjectsPage() {
                             state === "done"
                               ? "text-[#0d9488]"
                               : state === "active"
-                                ? "text-[#2563eb] font-semibold"
+                                ? "text-[#047857] font-semibold"
                                 : "text-[#cbd5e1]",
                           )}
                         >
@@ -321,13 +321,13 @@ export default function ProjectsPage() {
                 </div>
 
                 {/* Footer */}
-                <div className="flex items-center justify-between pt-1 border-t border-[#f1f5f9]">
-                  <span className="text-[10px] text-[#94a3b8] font-mono">
+                <div className="flex items-center justify-between pt-1 border-t border-[#f0fdf4]">
+                  <span className="text-[10px] text-[#9ca3af] font-mono">
                     {new Date(project.created_at).toLocaleDateString()}
                   </span>
                   <button
                     onClick={() => navigate(`/projects/${project.id}`)}
-                    className="flex items-center gap-1.5 text-xs font-bold text-[#2563eb] hover:text-[#1d4ed8] transition-colors"
+                    className="flex items-center gap-1.5 text-xs font-bold text-[#047857] hover:text-[#065f46] transition-colors"
                   >
                     Continue
                     <ArrowRight size={12} />

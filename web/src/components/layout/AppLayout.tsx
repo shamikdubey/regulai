@@ -284,19 +284,19 @@ export default function AppLayout() {
         {/* Logo row */}
         <div
           className={cn(
-            "flex items-center gap-3 border-b border-[#e2e8f0] flex-shrink-0",
+            "flex items-center gap-3 border-b border-[#e2ede9] flex-shrink-0",
             collapsed ? "px-3 py-3.5 justify-center" : "px-4 py-3.5",
           )}
         >
-          <div className="w-8 h-8 flex-shrink-0 bg-[#2563eb] rounded-lg flex items-center justify-center font-mono text-xs font-bold text-white select-none">
+          <div className="w-8 h-8 flex-shrink-0 bg-[#047857] rounded-lg flex items-center justify-center font-mono text-xs font-bold text-white select-none">
             R∧
           </div>
 
           {!collapsed && (
             <>
               <div className="min-w-0 flex-1">
-                <div className="text-sm font-bold text-[#0f172a]">RegulAI</div>
-                <div className="text-[9px] text-[#94a3b8] font-mono tracking-widest">
+                <div className="text-sm font-bold text-[#111827]">RegulAI</div>
+                <div className="text-[9px] text-[#9ca3af] font-mono tracking-widest">
                   COMPLIANCE AI
                 </div>
               </div>
@@ -304,7 +304,7 @@ export default function AppLayout() {
               {onClose ? (
                 <button
                   onClick={onClose}
-                  className="p-1.5 rounded-lg text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9] transition-all flex-shrink-0"
+                  className="p-1.5 rounded-lg text-[#6b7280] hover:text-[#111827] hover:bg-[#f0fdf4] transition-all flex-shrink-0"
                   aria-label="Close menu"
                 >
                   <X size={18} />
@@ -312,7 +312,7 @@ export default function AppLayout() {
               ) : (
                 <button
                   onClick={() => setSidebarOpen(!sidebarOpen)}
-                  className="hidden lg:flex flex-shrink-0 text-[#94a3b8] hover:text-[#0f172a] transition-colors"
+                  className="hidden lg:flex flex-shrink-0 text-[#9ca3af] hover:text-[#111827] transition-colors"
                   aria-label="Toggle sidebar"
                 >
                   <ChevronLeft size={15} />
@@ -324,7 +324,7 @@ export default function AppLayout() {
           {collapsed && (
             <button
               onClick={() => setSidebarOpen(true)}
-              className="hidden lg:flex flex-shrink-0 text-[#94a3b8] hover:text-[#0f172a] transition-colors"
+              className="hidden lg:flex flex-shrink-0 text-[#9ca3af] hover:text-[#111827] transition-colors"
               aria-label="Expand sidebar"
             >
               <ChevronRight size={15} />
@@ -334,7 +334,7 @@ export default function AppLayout() {
 
         {/* Global filters — expanded only */}
         {!collapsed && (
-          <div className="px-3 py-2.5 border-b border-[#e2e8f0] space-y-2 flex-shrink-0">
+          <div className="px-3 py-2.5 border-b border-[#e2ede9] space-y-2 flex-shrink-0">
             <JurisdictionSelector compact />
             <DomainSelector compact />
           </div>
@@ -353,8 +353,7 @@ export default function AppLayout() {
               <div key={to}>
                 {showGroup && (
                   <div className="flex items-center gap-2 px-3 pt-3 pb-1">
-                    <div className="w-0.5 h-3 rounded-full bg-[#2563eb] opacity-40 flex-shrink-0" />
-                    <span className="text-[9px] font-mono text-[#cbd5e1] uppercase tracking-widest">
+                    <span className="text-[10px] text-[#6b7280] uppercase tracking-widest font-semibold">
                       {group}
                     </span>
                   </div>
@@ -366,8 +365,8 @@ export default function AppLayout() {
                         "flex items-center gap-2.5 mx-2 px-2 py-2 rounded-lg transition-all cursor-pointer relative",
                         collapsed && "justify-center",
                         isActive
-                          ? "bg-[#eff6ff] text-[#2563eb] border border-[#bfdbfe]"
-                          : "text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]",
+                          ? "bg-[#ecfdf5] text-[#047857] border-l-2 border-[#047857]"
+                          : "text-[#4b5563] hover:bg-[#f0fdf4] hover:text-[#047857]",
                       )}
                       title={collapsed ? `${label} — ${description}` : undefined}
                     >
@@ -402,7 +401,7 @@ export default function AppLayout() {
           <div className="px-3 pb-2 flex-shrink-0">
             <button
               onClick={() => navigate("/projects?new=true")}
-              className="w-full flex items-center justify-center gap-1.5 px-3 py-2 bg-[#2563eb] text-white rounded-xl text-xs font-bold hover:bg-[#1d4ed8] active:scale-[0.98] transition-all"
+              className="w-full flex items-center justify-center gap-1.5 px-3 py-2 bg-[#047857] text-white rounded-xl text-xs font-bold hover:bg-[#065f46] active:scale-[0.98] transition-all"
             >
               <Plus size={12} />
               New Project
@@ -413,11 +412,11 @@ export default function AppLayout() {
         {/* User footer */}
         <div
           className={cn(
-            "border-t border-[#e2e8f0] p-2 flex items-center gap-2 flex-shrink-0 group",
+            "border-t border-[#e2ede9] p-2 flex items-center gap-2 flex-shrink-0 group",
             collapsed && "justify-center",
           )}
         >
-          <div className="w-7 h-7 flex-shrink-0 rounded-full bg-[#eff6ff] flex items-center justify-center text-xs font-bold text-[#2563eb]">
+          <div className="w-7 h-7 flex-shrink-0 rounded-full bg-[#ecfdf5] flex items-center justify-center text-xs font-bold text-[#047857]">
             {user?.name?.[0]?.toUpperCase() ||
               user?.email?.[0]?.toUpperCase() ||
               "U"}
@@ -426,16 +425,16 @@ export default function AppLayout() {
           {!collapsed ? (
             <>
               <div className="flex-1 min-w-0">
-                <div className="text-xs font-semibold truncate text-[#0f172a]">
+                <div className="text-xs font-semibold truncate text-[#111827]">
                   {user?.name || user?.email}
                 </div>
-                <div className="text-[10px] text-[#94a3b8] truncate">
+                <div className="text-[10px] text-[#9ca3af] truncate">
                   {tenant?.name}
                 </div>
               </div>
               <button
                 onClick={handleLogout}
-                className="text-[#94a3b8] hover:text-[#dc2626] transition-colors flex-shrink-0"
+                className="text-[#9ca3af] hover:text-[#dc2626] transition-colors flex-shrink-0"
                 title="Sign out"
               >
                 <LogOut size={14} />
@@ -444,7 +443,7 @@ export default function AppLayout() {
           ) : (
             <button
               onClick={handleLogout}
-              className="text-[#94a3b8] hover:text-[#dc2626] transition-colors"
+              className="text-[#9ca3af] hover:text-[#dc2626] transition-colors"
               title="Sign out"
             >
               <LogOut size={14} />
@@ -458,7 +457,7 @@ export default function AppLayout() {
   // ── Layout render ───────────────────────────────────────────────────────────
 
   return (
-    <div className="flex h-screen bg-[#f8fafc] text-[#0f172a] overflow-hidden">
+    <div className="flex h-screen bg-[#f7faf9] text-[#111827] overflow-hidden">
 
       {/* ── Mobile overlay ────────────────────────────────────────────────── */}
       <AnimatePresence>
@@ -476,7 +475,7 @@ export default function AppLayout() {
               animate={{ x: 0 }}
               exit={{ x: -280 }}
               transition={{ type: "spring", damping: 28, stiffness: 300 }}
-              className="fixed left-0 top-0 h-full w-72 bg-white border-r border-[#e2e8f0] z-50 lg:hidden flex flex-col shadow-xl"
+              className="fixed left-0 top-0 h-full w-72 bg-white border-r border-[#e2ede9] z-50 lg:hidden flex flex-col shadow-xl"
             >
               <SidebarContent
                 collapsed={false}
@@ -491,7 +490,7 @@ export default function AppLayout() {
       <motion.aside
         animate={{ width: sidebarOpen ? 240 : 56 }}
         transition={{ duration: 0.18, ease: "easeInOut" }}
-        className="hidden lg:flex flex-shrink-0 flex-col bg-white border-r border-[#e2e8f0] overflow-hidden shadow-sm"
+        className="hidden lg:flex flex-shrink-0 flex-col bg-white border-r border-[#e2ede9] overflow-hidden shadow-sm"
       >
         <SidebarContent collapsed={!sidebarOpen} />
       </motion.aside>
@@ -500,11 +499,11 @@ export default function AppLayout() {
       <main className="flex-1 overflow-hidden flex flex-col min-w-0">
 
         {/* Top bar */}
-        <header className="h-12 border-b border-[#e2e8f0] flex items-center px-4 gap-3 flex-shrink-0 bg-white shadow-sm">
+        <header className="h-12 border-b border-[#e2ede9] flex items-center px-4 gap-3 flex-shrink-0 bg-white shadow-sm">
           {/* Mobile hamburger */}
           <button
             onClick={() => setMobileOpen(true)}
-            className="lg:hidden text-[#94a3b8] hover:text-[#0f172a] transition-colors"
+            className="lg:hidden text-[#9ca3af] hover:text-[#111827] transition-colors"
             aria-label="Open menu"
           >
             <Menu size={18} />
@@ -518,7 +517,7 @@ export default function AppLayout() {
             <span className="text-[10px] text-[#cbd5e1] hidden sm:block select-none">
               /
             </span>
-            <span className="text-xs font-semibold text-[#64748b] truncate">
+            <span className="text-xs font-semibold text-[#6b7280] truncate">
               {currentPageTitle}
             </span>
           </div>
@@ -527,8 +526,8 @@ export default function AppLayout() {
 
           {/* Global search */}
           <div ref={searchWrapperRef} className="relative hidden sm:block">
-            <div className="flex items-center gap-1.5 bg-[#f1f5f9] border border-[#e2e8f0] rounded-lg px-2.5 py-1.5 w-48 focus-within:border-[#2563eb] focus-within:bg-white transition-all">
-              <Search size={12} className="text-[#94a3b8] flex-shrink-0" />
+            <div className="flex items-center gap-1.5 bg-[#f0fdf4] border border-[#e2ede9] rounded-lg px-2.5 py-1.5 w-48 focus-within:border-[#047857] focus-within:ring-1 focus-within:ring-[#047857] focus-within:bg-white transition-all">
+              <Search size={12} className="text-[#9ca3af] flex-shrink-0" />
               <input
                 ref={searchInputRef}
                 value={searchQuery}
@@ -539,10 +538,10 @@ export default function AppLayout() {
                 onFocus={() => { setSearchOpen(true); setSearchFocused(true); }}
                 onBlur={() => setSearchFocused(false)}
                 placeholder="Search…"
-                className="flex-1 text-xs bg-transparent outline-none text-[#0f172a] placeholder-[#cbd5e1] min-w-0"
+                className="flex-1 text-xs bg-transparent outline-none text-[#111827] placeholder-[#cbd5e1] min-w-0"
               />
               {!searchFocused && !searchQuery && (
-                <span className="text-[9px] font-mono text-[#94a3b8] bg-white border border-[#e2e8f0] rounded px-1 py-0.5 flex-shrink-0 select-none">
+                <span className="text-[9px] font-mono text-[#9ca3af] bg-white border border-[#e2ede9] rounded px-1 py-0.5 flex-shrink-0 select-none">
                   ⌘K
                 </span>
               )}
@@ -550,7 +549,7 @@ export default function AppLayout() {
 
             {/* Search dropdown */}
             {searchOpen && searchResults.length > 0 && (
-              <div className="absolute top-full right-0 mt-1.5 w-72 bg-white border border-[#e2e8f0] rounded-xl shadow-lg z-50 overflow-hidden">
+              <div className="absolute top-full right-0 mt-1.5 w-72 bg-white border border-[#e2ede9] rounded-xl shadow-lg z-50 overflow-hidden">
                 {searchResults.map((item) => (
                   <button
                     key={item.to}
@@ -559,14 +558,14 @@ export default function AppLayout() {
                       setSearchOpen(false);
                       setSearchQuery("");
                     }}
-                    className="w-full flex items-center gap-2.5 px-3 py-2.5 hover:bg-[#f1f5f9] transition-colors text-left"
+                    className="w-full flex items-center gap-2.5 px-3 py-2.5 hover:bg-[#f0fdf4] transition-colors text-left"
                   >
-                    <item.icon size={14} className="text-[#2563eb] flex-shrink-0" />
+                    <item.icon size={14} className="text-[#047857] flex-shrink-0" />
                     <div className="min-w-0">
-                      <p className="text-xs font-semibold text-[#0f172a] truncate">
+                      <p className="text-xs font-semibold text-[#111827] truncate">
                         {item.label}
                       </p>
-                      <p className="text-[10px] text-[#94a3b8] truncate">
+                      <p className="text-[10px] text-[#9ca3af] truncate">
                         {item.description}
                       </p>
                     </div>

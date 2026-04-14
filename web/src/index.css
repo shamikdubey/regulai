@@ -10,8 +10,8 @@ html, body, #root {
   height: 100%;
   margin: 0;
   padding: 0;
-  background: #f8fafc;
-  color: #0f172a;
+  background: #f7faf9;
+  color: #111827;
   font-family: 'Syne', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -21,17 +21,17 @@ html, body, #root {
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
 
 /* Prose light theme */
-.prose { color: #0f172a; }
-.prose h1, .prose h2, .prose h3 { color: #0f172a; }
-.prose code { color: #2563eb; background: rgba(37,99,235,0.08); padding: 1px 5px; border-radius: 3px; }
-.prose strong { color: #0f172a; }
-.prose a { color: #2563eb; }
-.prose blockquote { border-left-color: #e2e8f0; color: #64748b; }
+.prose { color: #111827; }
+.prose h1, .prose h2, .prose h3 { color: #111827; }
+.prose code { color: #047857; background: rgba(4,120,87,0.08); padding: 1px 5px; border-radius: 3px; }
+.prose strong { color: #111827; }
+.prose a { color: #047857; }
+.prose blockquote { border-left-color: #e2ede9; color: #6b7280; }
 .prose ul > li::marker,
-.prose ol > li::marker { color: #94a3b8; }
+.prose ol > li::marker { color: #9ca3af; }
 .prose-sm { font-size: 13px; line-height: 1.7; }
 
 /* Line clamp utilities */
@@ -50,15 +50,15 @@ html, body, #root {
 
 /* Focus ring for accessibility */
 :focus-visible {
-  outline: 2px solid #2563eb;
+  outline: 2px solid #047857;
   outline-offset: 2px;
   border-radius: 4px;
 }
 
 /* Selection colour */
 ::selection {
-  background: rgba(37, 99, 235, 0.15);
-  color: #0f172a;
+  background: rgba(4, 120, 87, 0.15);
+  color: #111827;
 }
 
 /* Mobile: prevent horizontal scroll */
@@ -72,5 +72,5 @@ html, body, #root {
 .light-override .bg-\[\#181c24\],
 .light-override .bg-\[\#0d1017\],
 .light-override .bg-\[\#0f1117\] { background-color: #ffffff !important; }
-.light-override .text-\[\#e8ecf2\] { color: #0f172a !important; }
-.light-override .border-\[\#2a3040\] { border-color: #e2e8f0 !important; }
+.light-override .text-\[\#e8ecf2\] { color: #111827 !important; }
+.light-override .border-\[\#2a3040\] { border-color: #e2ede9 !important; }

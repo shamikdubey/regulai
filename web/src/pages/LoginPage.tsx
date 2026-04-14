@@ -49,19 +49,19 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] flex items-center justify-center p-6">
+    <div className="min-h-screen bg-[#f7faf9] flex items-center justify-center p-6">
       <div aria-hidden className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-[#2563eb] opacity-[0.04] rounded-full blur-3xl" />
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-[#047857] opacity-[0.04] rounded-full blur-3xl" />
       </div>
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}
         className="w-full max-w-sm relative z-10">
         <div className="text-center mb-10">
-          <div className="inline-flex w-14 h-14 bg-[#2563eb] rounded-2xl items-center justify-center font-mono text-xl font-bold text-white mb-5">R∧</div>
-          <h1 className="font-serif text-3xl font-normal text-[#0f172a] mb-1">RegulAI</h1>
-          <p className="text-xs text-[#94a3b8] font-mono tracking-[0.2em] uppercase">Compliance Intelligence</p>
+          <div className="inline-flex w-14 h-14 bg-[#047857] rounded-2xl items-center justify-center font-mono text-xl font-bold text-white mb-5">R∧</div>
+          <h1 className="font-serif text-3xl font-normal text-[#111827] mb-1">RegulAI</h1>
+          <p className="text-xs text-[#9ca3af] font-mono tracking-[0.2em] uppercase">Compliance Intelligence</p>
         </div>
-        <div className="bg-white border border-[#e2e8f0] rounded-2xl p-8 shadow-sm">
-          <h2 className="text-base font-bold mb-6 text-[#0f172a]">Sign in to your workspace</h2>
+        <div className="bg-white border border-[#e2ede9] rounded-2xl p-8 shadow-sm">
+          <h2 className="text-base font-bold mb-6 text-[#111827]">Sign in to your workspace</h2>
           {error && (
             <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }}
               className="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-[rgba(220,38,38,0.06)] border border-[rgba(220,38,38,0.2)] mb-4">
@@ -71,34 +71,34 @@ export default function LoginPage() {
           )}
           <form onSubmit={handleLogin} className="space-y-4" noValidate>
             <div>
-              <label htmlFor="email" className="block text-[10px] font-mono text-[#94a3b8] mb-1.5 uppercase tracking-wider">Work email</label>
+              <label htmlFor="email" className="block text-[10px] font-mono text-[#9ca3af] mb-1.5 uppercase tracking-wider">Work email</label>
               <input id="email" type="email" value={email} onChange={e => { setEmail(e.target.value); setError(""); }}
                 placeholder="you@company.com" autoComplete="email" autoFocus
-                className={cn("w-full px-3 py-2.5 bg-[#f8fafc] border rounded-xl text-sm text-[#0f172a] placeholder-[#cbd5e1] outline-none transition-all",
-                  error ? "border-[rgba(220,38,38,0.4)]" : "border-[#e2e8f0] focus:border-[#2563eb]")} />
+                className={cn("w-full px-3 py-2.5 bg-[#f7faf9] border rounded-xl text-sm text-[#111827] placeholder-[#cbd5e1] outline-none transition-all",
+                  error ? "border-[rgba(220,38,38,0.4)]" : "border-[#e2ede9] focus:border-[#047857]")} />
             </div>
             <div>
-              <label htmlFor="password" className="block text-[10px] font-mono text-[#94a3b8] mb-1.5 uppercase tracking-wider">Password</label>
+              <label htmlFor="password" className="block text-[10px] font-mono text-[#9ca3af] mb-1.5 uppercase tracking-wider">Password</label>
               <div className="relative">
                 <input id="password" type={showPw ? "text" : "password"} value={password}
                   onChange={e => { setPassword(e.target.value); setError(""); }}
                   placeholder="••••••••" autoComplete="current-password"
-                  className={cn("w-full px-3 py-2.5 pr-10 bg-[#f8fafc] border rounded-xl text-sm text-[#0f172a] placeholder-[#cbd5e1] outline-none transition-all",
-                    error ? "border-[rgba(220,38,38,0.4)]" : "border-[#e2e8f0] focus:border-[#2563eb]")} />
+                  className={cn("w-full px-3 py-2.5 pr-10 bg-[#f7faf9] border rounded-xl text-sm text-[#111827] placeholder-[#cbd5e1] outline-none transition-all",
+                    error ? "border-[rgba(220,38,38,0.4)]" : "border-[#e2ede9] focus:border-[#047857]")} />
                 <button type="button" onClick={() => setShowPw(v => !v)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94a3b8] hover:text-[#64748b]" aria-label="Toggle password visibility">
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9ca3af] hover:text-[#6b7280]" aria-label="Toggle password visibility">
                   {showPw ? <EyeOff size={15} /> : <Eye size={15} />}
                 </button>
               </div>
             </div>
             <button type="submit" disabled={loading}
               className={cn("w-full py-2.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-[0.98]",
-                loading ? "bg-[#e2e8f0] text-[#94a3b8] cursor-not-allowed" : "bg-[#2563eb] text-white hover:bg-[#1d4ed8]")}>
+                loading ? "bg-[#e2ede9] text-[#9ca3af] cursor-not-allowed" : "bg-[#047857] text-white hover:bg-[#065f46]")}>
               {loading ? <><Loader2 size={15} className="animate-spin" /> Signing in…</> : "Sign in"}
             </button>
           </form>
-          <p className="text-center text-[11px] text-[#94a3b8] mt-5">
-            Need access?{" "}<a href="mailto:hello@regulai.app" className="text-[#2563eb] hover:underline">Contact your administrator</a>
+          <p className="text-center text-[11px] text-[#9ca3af] mt-5">
+            Need access?{" "}<a href="mailto:hello@regulai.app" className="text-[#047857] hover:underline">Contact your administrator</a>
           </p>
         </div>
         <p className="text-center text-[10px] text-[#cbd5e1] mt-6">
