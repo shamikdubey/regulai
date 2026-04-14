@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Save, FileText, Loader2, Clock, ChevronDown, ChevronUp,
-  Plus, RefreshCw, X,
+  Plus, RefreshCw, X, PenLine,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { getApiClient } from "@/lib/api";
@@ -176,12 +176,17 @@ export default function DocumentEditorPage() {
   return (
     <div className="p-6 max-w-5xl mx-auto">
       {/* Page header */}
-      <div className="mb-6 flex items-start justify-between gap-4">
-        <div>
-          <h1 className="text-xl font-bold text-[#0f172a]">Document Editor</h1>
-          <p className="text-xs text-[#94a3b8] mt-1">
-            Draft and manage regulatory documents
-          </p>
+      <div className="mb-5 flex items-start justify-between gap-4">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="w-10 h-10 bg-[#eff6ff] border border-[#bfdbfe] rounded-xl flex items-center justify-center flex-shrink-0">
+            <PenLine size={18} className="text-[#2563eb]" />
+          </div>
+          <div className="min-w-0">
+            <h1 className="text-xl font-bold text-[#0f172a]">Document Editor</h1>
+            <p className="text-xs text-[#94a3b8] mt-0.5">
+              Draft, edit and AI-review regulatory documents. Use this to write submission letters, technical files, and reports.
+            </p>
+          </div>
         </div>
         <div className="flex items-center gap-2 flex-shrink-0">
           <button
@@ -256,9 +261,16 @@ export default function DocumentEditorPage() {
                 Failed to load drafts
               </p>
             ) : (draftsQ.data ?? []).length === 0 ? (
-              <p className="text-xs text-[#94a3b8] py-4 text-center">
-                No drafts yet
-              </p>
+              <div className="py-6 text-center">
+                <FileText size={24} className="text-[#e2e8f0] mx-auto mb-2" />
+                <p className="text-xs text-[#94a3b8] mb-2">No documents yet</p>
+                <button
+                  onClick={handleNewDraft}
+                  className="text-xs text-[#2563eb] hover:underline"
+                >
+                  Create your first regulatory document
+                </button>
+              </div>
             ) : (
               <div className="space-y-1.5 max-h-64 overflow-y-auto">
                 {(draftsQ.data ?? []).map((d) => (

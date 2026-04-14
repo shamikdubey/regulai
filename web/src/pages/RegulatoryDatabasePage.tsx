@@ -49,16 +49,16 @@ export default function RegulatoryDatabasePage() {
 
       {/* Tab content — all tabs stay mounted so React Query cache is preserved on switch */}
       <div className="flex-1 overflow-hidden">
-        <div style={{ display: activeTab === "specs" ? "flex" : "none" }} className="h-full">
+        <div style={{ display: activeTab === "specs" ? "flex" : "none" }} className="h-full light-override">
           <IngredientSpecsPage />
         </div>
-        <div style={{ display: activeTab === "limits" ? "flex" : "none" }} className="h-full">
+        <div style={{ display: activeTab === "limits" ? "flex" : "none" }} className="h-full light-override">
           <AllowableLimitsPage />
         </div>
-        <div style={{ display: activeTab === "labeling" ? "flex" : "none" }} className="h-full">
+        <div style={{ display: activeTab === "labeling" ? "flex" : "none" }} className="h-full light-override">
           <LabelingPage />
         </div>
-        <div style={{ display: activeTab === "licensing" ? "flex" : "none" }} className="h-full">
+        <div style={{ display: activeTab === "licensing" ? "flex" : "none" }} className="h-full light-override">
           <LicensingPage />
         </div>
       </div>

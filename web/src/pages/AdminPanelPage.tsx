@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Users, Building2, BarChart2, Loader2, RefreshCw,
-  ShieldAlert, Trash2, UserCheck, UserX, ChevronDown, ChevronUp,
+  ShieldAlert, Shield, Trash2, UserCheck, UserX, ChevronDown, ChevronUp,
   Search, UserPlus, X,
 } from "lucide-react";
 import toast from "react-hot-toast";
@@ -271,14 +271,16 @@ export default function AdminPanelPage() {
 
       {/* ── Page header ───────────────────────────────────────────────────── */}
       <div className="mb-6 flex items-start justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <ShieldAlert size={16} className="text-[#2563eb]" />
-            <h1 className="text-xl font-bold text-[#0f172a]">Admin Panel</h1>
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="w-10 h-10 bg-[#eff6ff] border border-[#bfdbfe] rounded-xl flex items-center justify-center flex-shrink-0">
+            <Shield size={18} className="text-[#2563eb]" />
           </div>
-          <p className="text-xs text-[#94a3b8]">
-            Manage users, tenants, and monitor system health — admin access only
-          </p>
+          <div className="min-w-0">
+            <h1 className="text-xl font-bold text-[#0f172a]">Admin Panel</h1>
+            <p className="text-xs text-[#94a3b8] mt-0.5">
+              Manage users, tenants and monitor platform usage. Only visible to administrators.
+            </p>
+          </div>
         </div>
         <button
           onClick={() => {

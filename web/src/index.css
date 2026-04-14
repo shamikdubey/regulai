@@ -65,3 +65,12 @@ html, body, #root {
 @media (max-width: 768px) {
   body { overflow-x: hidden; }
 }
+
+/* Scoped light-theme override for embedded dark-theme pages (RegulatoryDatabase tabs) */
+.light-override .bg-\[\#111318\],
+.light-override .bg-\[\#0a0c10\],
+.light-override .bg-\[\#181c24\],
+.light-override .bg-\[\#0d1017\],
+.light-override .bg-\[\#0f1117\] { background-color: #ffffff !important; }
+.light-override .text-\[\#e8ecf2\] { color: #0f172a !important; }
+.light-override .border-\[\#2a3040\] { border-color: #e2e8f0 !important; }

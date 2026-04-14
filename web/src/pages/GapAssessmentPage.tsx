@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { TrendingUp, Plus, Loader2, Copy, Check, RotateCcw } from "lucide-react";
+import { TrendingUp, Plus, Loader2, Copy, Check, RotateCcw, ArrowRight } from "lucide-react";
 import toast from "react-hot-toast";
 import { getApiClient } from "@/lib/api";
 import { useJobPoller } from "@/hooks/useJobPoller";
@@ -192,6 +192,36 @@ export default function GapAssessmentPage() {
             New Assessment
           </button>
         )}
+      </div>
+
+      {/* Recommended workflow */}
+      <div className="mb-5 p-3.5 bg-[#f8fafc] border border-[#e2e8f0] rounded-xl">
+        <p className="text-[9px] font-mono text-[#94a3b8] uppercase tracking-wider mb-2.5">Recommended workflow</p>
+        <div className="flex items-center gap-1.5 flex-wrap">
+          {[
+            { label: "Gap Assessment", to: "/gap-assessment" },
+            { label: "Filing Wizard", to: "/filing-wizard" },
+            { label: "Document Editor", to: "/document-editor" },
+            { label: "Compliance Review", to: "/compliance-review" },
+          ].map((step, i, arr) => (
+            <div key={step.to} className="flex items-center gap-1.5">
+              <Link
+                to={step.to}
+                className={cn(
+                  "text-xs px-2 py-1 rounded-lg font-semibold transition-colors",
+                  step.to === "/gap-assessment"
+                    ? "bg-[#eff6ff] border border-[#bfdbfe] text-[#2563eb]"
+                    : "text-[#64748b] hover:text-[#2563eb]",
+                )}
+              >
+                {step.label}
+              </Link>
+              {i < arr.length - 1 && (
+                <ArrowRight size={11} className="text-[#cbd5e1] flex-shrink-0" />
+              )}
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Form */}

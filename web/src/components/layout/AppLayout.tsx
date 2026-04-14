@@ -6,13 +6,13 @@ import {
   LogOut, ChevronLeft, ChevronRight,
   Menu, X, CreditCard,
   Wand2, PenLine, ShieldCheck, Shield,
-  Database, FolderOpen, Search,
+  Database, FolderOpen, Search, Plus,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useState, useEffect, useRef } from "react";
 import { useAuthStore } from "@/stores/authStore";
 import { useAppStore } from "@/stores/appStore";
-import { api } from "@/lib/api";
+import { api, getApiClient } from "@/lib/api";
 import { cn } from "@/lib/utils";
 import JurisdictionSelector from "@/components/features/JurisdictionSelector";
 import DomainSelector from "@/components/features/DomainSelector";
@@ -239,6 +239,18 @@ export default function AppLayout() {
   });
   const highAlertCount = alertsQ.data?.length ?? 0;
 
+  const projectsCountQ = useQuery({
+    queryKey: ["filing-projects"],
+    queryFn: () =>
+      getApiClient()
+        .get<Array<{ id: string }>>("/filing-wizard/projects")
+        .then((r) => r.data),
+    staleTime: 5 * 60 * 1000,
+  });
+  const projectCount = projectsCountQ.data?.length ?? 0;
+
+  const [searchFocused, setSearchFocused] = useState(false);
+
   const handleLogout = () => {
     logout();
     navigate("/login");
@@ -292,10 +304,10 @@ export default function AppLayout() {
               {onClose ? (
                 <button
                   onClick={onClose}
-                  className="text-[#94a3b8] hover:text-[#0f172a] transition-colors flex-shrink-0"
+                  className="p-1.5 rounded-lg text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9] transition-all flex-shrink-0"
                   aria-label="Close menu"
                 >
-                  <X size={15} />
+                  <X size={18} />
                 </button>
               ) : (
                 <button
@@ -335,7 +347,7 @@ export default function AppLayout() {
           ).map(({ to, icon: Icon, label, group, description, badge }) => {
             const showGroup = !collapsed && group !== lastGroup;
             lastGroup = group;
-            const badgeCount = badge ? highAlertCount : 0;
+            const badgeCount = badge ? highAlertCount : (to === "/projects" && projectCount > 0 ? projectCount : 0);
 
             return (
               <div key={to}>
@@ -384,6 +396,19 @@ export default function AppLayout() {
             );
           })}
         </nav>
+
+        {/* New Project quick action */}
+        {!collapsed && (
+          <div className="px-3 pb-2 flex-shrink-0">
+            <button
+              onClick={() => navigate("/projects?new=true")}
+              className="w-full flex items-center justify-center gap-1.5 px-3 py-2 bg-[#2563eb] text-white rounded-xl text-xs font-bold hover:bg-[#1d4ed8] active:scale-[0.98] transition-all"
+            >
+              <Plus size={12} />
+              New Project
+            </button>
+          </div>
+        )}
 
         {/* User footer */}
         <div
@@ -511,10 +536,16 @@ export default function AppLayout() {
                   setSearchQuery(e.target.value);
                   setSearchOpen(true);
                 }}
-                onFocus={() => setSearchOpen(true)}
-                placeholder="Search… ⌘K"
+                onFocus={() => { setSearchOpen(true); setSearchFocused(true); }}
+                onBlur={() => setSearchFocused(false)}
+                placeholder="Search…"
                 className="flex-1 text-xs bg-transparent outline-none text-[#0f172a] placeholder-[#cbd5e1] min-w-0"
               />
+              {!searchFocused && !searchQuery && (
+                <span className="text-[9px] font-mono text-[#94a3b8] bg-white border border-[#e2e8f0] rounded px-1 py-0.5 flex-shrink-0 select-none">
+                  ⌘K
+                </span>
+              )}
             </div>
 
             {/* Search dropdown */}

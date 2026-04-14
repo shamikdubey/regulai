@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import {
   Upload, FileText, X, Loader2, CheckCircle2,
   AlertTriangle, XCircle, RefreshCw, ChevronDown, ChevronUp,
+  ShieldCheck,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { getApiClient } from "@/lib/api";
@@ -180,13 +181,16 @@ export default function ComplianceReviewPage() {
     <div className="p-6 max-w-4xl mx-auto">
       {/* Page header */}
       <div className="mb-6 flex items-start justify-between gap-4">
-        <div>
-          <h1 className="text-xl font-bold text-[#0f172a]">
-            Compliance Review
-          </h1>
-          <p className="text-xs text-[#94a3b8] mt-1">
-            Upload a document to assess regulatory compliance
-          </p>
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="w-10 h-10 bg-[#eff6ff] border border-[#bfdbfe] rounded-xl flex items-center justify-center flex-shrink-0">
+            <ShieldCheck size={18} className="text-[#2563eb]" />
+          </div>
+          <div className="min-w-0">
+            <h1 className="text-xl font-bold text-[#0f172a]">Compliance Review</h1>
+            <p className="text-xs text-[#94a3b8] mt-0.5">
+              Upload or paste a document to get an AI compliance score (0–100) with specific issues flagged. Use before final submission.
+            </p>
+          </div>
         </div>
         <button
           onClick={() => setShowHistory((p) => !p)}
@@ -229,9 +233,13 @@ export default function ComplianceReviewPage() {
                 Failed to load history
               </p>
             ) : (historyQ.data ?? []).length === 0 ? (
-              <p className="text-xs text-[#94a3b8] py-4 text-center">
-                No reviews yet
-              </p>
+              <div className="py-6 text-center">
+                <Upload size={24} className="text-[#e2e8f0] mx-auto mb-2" />
+                <p className="text-xs text-[#94a3b8] mb-1">No reviews yet</p>
+                <p className="text-[10px] text-[#cbd5e1]">
+                  Upload a document above to check its compliance
+                </p>
+              </div>
             ) : (
               <div className="space-y-1.5 max-h-56 overflow-y-auto">
                 {(historyQ.data ?? []).map((r) => {

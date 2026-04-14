@@ -1,9 +1,10 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   FileCheck, Plus, Loader2, CheckSquare, Square,
-  ArrowLeft, ClipboardList, RefreshCw,
+  ArrowLeft, ClipboardList, RefreshCw, Wand2, ArrowRight,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { getApiClient } from "@/lib/api";
@@ -162,14 +163,19 @@ export default function FilingWizardPage() {
   return (
     <div className="p-6 max-w-4xl mx-auto">
       {/* Page header */}
-      <div className="mb-6 flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-bold text-[#0f172a]">Filing Wizard</h1>
-          <p className="text-xs text-[#94a3b8] mt-1">
-            Generate and track regulatory filing checklists
-          </p>
+      <div className="mb-6 flex items-center justify-between gap-4">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="w-10 h-10 bg-[#eff6ff] border border-[#bfdbfe] rounded-xl flex items-center justify-center flex-shrink-0">
+            <Wand2 size={18} className="text-[#2563eb]" />
+          </div>
+          <div className="min-w-0">
+            <h1 className="text-xl font-bold text-[#0f172a]">Filing Wizard</h1>
+            <p className="text-xs text-[#94a3b8] mt-0.5">
+              Step-by-step guidance for regulatory submissions. Start here when you're ready to file in a new country.
+            </p>
+          </div>
         </div>
-        <div className="flex gap-1 bg-[#f8fafc] border border-[#e2e8f0] rounded-xl p-1">
+        <div className="flex gap-1 bg-[#f8fafc] border border-[#e2e8f0] rounded-xl p-1 flex-shrink-0">
           {(["wizard", "tracker"] as const).map((v) => (
             <button
               key={v}
@@ -196,6 +202,58 @@ export default function FilingWizardPage() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
           >
+            {/* Recommended workflow */}
+            <div className="mb-5 p-3.5 bg-[#f8fafc] border border-[#e2e8f0] rounded-xl">
+              <p className="text-[9px] font-mono text-[#94a3b8] uppercase tracking-wider mb-2.5">Recommended workflow</p>
+              <div className="flex items-center gap-1.5 flex-wrap">
+                {[
+                  { label: "Gap Assessment", to: "/gap-assessment" },
+                  { label: "Filing Wizard", to: "/filing-wizard" },
+                  { label: "Document Editor", to: "/document-editor" },
+                  { label: "Compliance Review", to: "/compliance-review" },
+                ].map((step, i, arr) => (
+                  <div key={step.to} className="flex items-center gap-1.5">
+                    <Link
+                      to={step.to}
+                      className={cn(
+                        "text-xs px-2 py-1 rounded-lg font-semibold transition-colors",
+                        step.to === "/filing-wizard"
+                          ? "bg-[#eff6ff] border border-[#bfdbfe] text-[#2563eb]"
+                          : "text-[#64748b] hover:text-[#2563eb]",
+                      )}
+                    >
+                      {step.label}
+                    </Link>
+                    {i < arr.length - 1 && (
+                      <ArrowRight size={11} className="text-[#cbd5e1] flex-shrink-0" />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* How it works */}
+            <div className="mb-5 p-4 bg-[#f8fafc] border border-[#e2e8f0] rounded-xl">
+              <p className="text-[10px] font-mono text-[#94a3b8] uppercase tracking-wider mb-3">How it works</p>
+              <div className="grid grid-cols-3 gap-3">
+                {[
+                  { n: 1, title: "Choose a template", desc: "Pick your target country and regulatory domain" },
+                  { n: 2, title: "Generate checklist", desc: "AI creates your filing requirements automatically" },
+                  { n: 3, title: "Track progress", desc: "Check off items as you complete your submission" },
+                ].map((s) => (
+                  <div key={s.n} className="flex items-start gap-2.5">
+                    <div className="w-5 h-5 rounded-full bg-[#eff6ff] text-[#2563eb] text-[10px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5">
+                      {s.n}
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold text-[#0f172a]">{s.title}</p>
+                      <p className="text-[10px] text-[#64748b] mt-0.5">{s.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             {/* Step indicator */}
             <div className="flex items-center gap-2 mb-6">
               {[1, 2].map((s) => (
@@ -494,19 +552,20 @@ export default function FilingWizardPage() {
                 Failed to load projects
               </div>
             ) : (projectsQ.data ?? []).length === 0 ? (
-              <div className="py-16 text-center">
-                <ClipboardList
-                  size={32}
-                  className="text-[#e2e8f0] mx-auto mb-3"
-                />
-                <p className="text-sm text-[#94a3b8]">
-                  No filing projects yet
+              <div className="flex flex-col items-center justify-center py-20">
+                <div className="w-14 h-14 bg-[#f1f5f9] rounded-2xl flex items-center justify-center mb-4">
+                  <ClipboardList size={28} className="text-[#cbd5e1]" />
+                </div>
+                <h3 className="text-sm font-bold text-[#0f172a] mb-1">No filing projects yet</h3>
+                <p className="text-xs text-[#94a3b8] mb-4 max-w-xs text-center">
+                  Create your first project to get started with your regulatory submission.
                 </p>
                 <button
                   onClick={() => setView("wizard")}
-                  className="mt-3 text-xs text-[#2563eb] hover:underline"
+                  className="flex items-center gap-1.5 px-4 py-2 bg-[#2563eb] text-white rounded-xl text-xs font-bold hover:bg-[#1d4ed8] transition-all"
                 >
-                  Start a new filing
+                  <Plus size={12} />
+                  Create first project
                 </button>
               </div>
             ) : (
