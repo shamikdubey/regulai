@@ -29,6 +29,7 @@ const ComplianceReviewPage  = lazy(() => import("@/pages/ComplianceReviewPage"))
 const AdminPanelPage        = lazy(() => import("@/pages/AdminPanelPage"));
 const RegulatoryDatabasePage = lazy(() => import("@/pages/RegulatoryDatabasePage"));
 const ProjectsPage          = lazy(() => import("@/pages/ProjectsPage"));
+const ProjectDetailPage     = lazy(() => import("@/pages/ProjectDetailPage"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -133,6 +134,7 @@ export default function App() {
               <Route path="admin"               element={<AdminPanelPage />} />
               <Route path="regulatory-database" element={<RegulatoryDatabasePage />} />
               <Route path="projects"            element={<ProjectsPage />} />
+              <Route path="projects/:id"        element={<ProjectDetailPage />} />
             </Route>
 
             {/* 404 → home */}

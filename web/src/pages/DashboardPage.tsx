@@ -4,8 +4,9 @@ import { motion } from "framer-motion";
 import {
   MessageSquare, TrendingUp, FileEdit, Bell, FileText,
   ArrowRight, AlertTriangle, Clock, CheckCircle, Zap,
+  FolderOpen, Plus,
 } from "lucide-react";
-import { api } from "@/lib/api";
+import { api, getApiClient } from "@/lib/api";
 import { useAuthStore } from "@/stores/authStore";
 import { cn, JURISDICTION_MAP, DOMAIN_MAP } from "@/lib/utils";
 
@@ -33,6 +34,10 @@ export default function DashboardPage() {
   const bodiesQ   = useQuery({ queryKey: ["bodies", null, null], queryFn: () => api.getBodies() });
   const docsQ     = useQuery({ queryKey: ["documents"], queryFn: api.getDocuments });
   const auditAllQ = useQuery({ queryKey: ["audit-all-count"], queryFn: () => api.getAuditLog({ limit: 200 }) });
+  const projectsQ = useQuery({
+    queryKey: ["filing-projects"],
+    queryFn: () => getApiClient().get<any[]>("/filing-wizard/projects").then((r) => r.data),
+  });
 
   const recentQueries  = auditQ.data || [];
   const recentAlerts   = (alertsQ.data || []).slice(0, 5);
@@ -58,6 +63,93 @@ export default function DashboardPage() {
           {tenant?.allowedDomains?.length || 5} domains licensed
         </p>
       </motion.div>
+
+      {/* Active Projects */}
+      {((projectsQ.data ?? []).length > 0) && (
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.05 }}
+          className="mb-8"
+        >
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-xs font-mono text-[#94a3b8] uppercase tracking-widest">
+              Active Projects
+            </h2>
+            <button
+              onClick={() => navigate("/projects")}
+              className="text-[10px] font-mono text-[#2563eb] hover:text-[#1d4ed8] flex items-center gap-1 transition-colors"
+            >
+              View all <ArrowRight size={10} />
+            </button>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {(projectsQ.data ?? []).slice(0, 3).map((proj: any) => {
+              const country = JURISDICTION_MAP[proj.country];
+              return (
+                <button
+                  key={proj.id}
+                  onClick={() => navigate(`/projects/${proj.id}`)}
+                  className="text-left p-4 rounded-xl bg-white border border-[#e2e8f0] hover:border-[#cbd5e1] hover:bg-[#f8fafc] transition-all shadow-sm group"
+                >
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <p className="text-xs font-bold text-[#0f172a] truncate leading-snug">
+                      {proj.product_name}
+                    </p>
+                    <ArrowRight
+                      size={12}
+                      className="text-[#cbd5e1] group-hover:text-[#2563eb] transition-colors flex-shrink-0 mt-0.5"
+                    />
+                  </div>
+                  {country && (
+                    <p className="text-[10px] text-[#94a3b8] mb-2">
+                      {country.flag} {country.label}
+                    </p>
+                  )}
+                  <div className="h-1.5 bg-[#e2e8f0] rounded-full overflow-hidden mb-1">
+                    <div
+                      className="h-full bg-[#2563eb] rounded-full transition-all"
+                      style={{ width: `${proj.progress}%` }}
+                    />
+                  </div>
+                  <p className="text-[10px] font-mono text-[#94a3b8]">
+                    {proj.progress}% complete
+                  </p>
+                </button>
+              );
+            })}
+          </div>
+        </motion.div>
+      )}
+
+      {/* New project CTA — only when no projects exist */}
+      {!projectsQ.isLoading && (projectsQ.data ?? []).length === 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.05 }}
+          className="mb-8"
+        >
+          <button
+            onClick={() => navigate("/projects")}
+            className="w-full flex items-center gap-4 p-4 rounded-xl bg-white border border-dashed border-[#cbd5e1] hover:border-[#2563eb] hover:bg-[#f8fafc] transition-all text-left group"
+          >
+            <div className="w-9 h-9 rounded-xl bg-[#eff6ff] flex items-center justify-center flex-shrink-0">
+              <FolderOpen size={18} className="text-[#2563eb]" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-bold text-[#0f172a]">Start your first filing project</p>
+              <p className="text-[10px] text-[#94a3b8] mt-0.5">
+                Track gap analysis, checklist, documents, and compliance review in one place
+              </p>
+            </div>
+            <div className="flex items-center gap-1 text-xs font-bold text-[#2563eb] flex-shrink-0 group-hover:gap-2 transition-all">
+              <Plus size={13} />
+              New project
+            </div>
+          </button>
+        </motion.div>
+      )}
 
       {/* Stats row */}
       <div className="grid grid-cols-4 gap-4 mb-8">

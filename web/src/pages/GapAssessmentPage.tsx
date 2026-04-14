@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { TrendingUp, Plus, Loader2, Copy, Check, RotateCcw } from "lucide-react";
 import toast from "react-hot-toast";
@@ -78,12 +79,16 @@ function formatReportAsText(result: GapResult): string {
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function GapAssessmentPage() {
-  const [productName, setProductName]           = useState("");
+  const [searchParams] = useSearchParams();
+  const [productName, setProductName]           = useState(searchParams.get("product") ?? "");
   const [productType, setProductType]           = useState("nutra");
   const [description, setDescription]           = useState("");
   const [claims, setClaims]                     = useState("");
   const [approvalsInput, setApprovalsInput]     = useState("");   // raw comma-sep string
-  const [jurisdictions, setJurisdictions]       = useState<string[]>([]);
+  const initJurisdiction = searchParams.get("jurisdiction");
+  const [jurisdictions, setJurisdictions]       = useState<string[]>(
+    initJurisdiction ? [initJurisdiction] : [],
+  );
   const [jobId, setJobId]                       = useState<string | null>(null);
   const [submitting, setSubmitting]             = useState(false);
   const [syncResult, setSyncResult]             = useState<GapResult | null>(null);
