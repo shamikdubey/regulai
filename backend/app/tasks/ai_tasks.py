@@ -163,41 +163,54 @@ async def _run_gap_assessment_async(
 
     domain_key = product_type if product_type in DOMAIN_SYSTEM_PROMPTS else "general"
 
-    system_prompt = f"""{DOMAIN_SYSTEM_PROMPTS[domain_key]}
+    system_prompt = """You are a senior regulatory affairs expert with 20+ years experience across \
+global markets including FDA, EMA, CDSCO, TGA, PMDA, NMPA, and ANVISA. \
+You provide specific, actionable, jurisdiction-accurate compliance guidance."""
 
-You are conducting a compliance gap analysis. Be comprehensive, specific, and actionable.
-For each jurisdiction, identify concrete regulatory gaps, required actions, realistic timelines,
-and risk ratings. Base your analysis on the provided regulatory context."""
+    user_message = f"""Analyze compliance gaps for:
+Product: {product_name}
+Type: {product_type}
+Description: {product_description}
+Target jurisdictions: {jur_list}{approvals_note}{claims_note}
 
-    user_message = f"""REGULATORY CONTEXT:
+REGULATORY CONTEXT FROM CORPUS:
 {context}
 
-PRODUCT INFORMATION:
-Product name: {product_name}
-Product type: {product_type}
-Description: {product_description}
-Target markets: {jur_list}{approvals_note}{claims_note}
+For EACH jurisdiction provide a detailed analysis:
+1. Regulatory framework overview for this product type in that jurisdiction
+2. Whether similar products are commonly registered there (common/rare/restricted)
+3. Specific gaps between current status and requirements — reference actual regulations \
+   (e.g. "EU MDR 2017/745", "US 21 CFR Part 820", "India MDR 2017", "FSSAI FSS Act 2006", \
+   "ICH Q8/Q9/Q10", "DSHEA 1994", "WHO TRS guidelines")
+4. Required documents and studies
+5. Realistic timeline in months and cost range in USD
+6. Risk level: HIGH/MEDIUM/LOW with a specific reason tied to the regulation
+7. The single most important question the applicant must answer first
 
-Provide a detailed gap analysis in this exact JSON format:
+Be specific — do NOT give generic advice. Reference actual regulation names and article numbers.
+
+Provide the response in this exact JSON format:
 {{
   "product_name": "{product_name}",
   "overall_risk": "HIGH|MEDIUM|LOW",
-  "summary": "2-3 sentence executive summary of the compliance situation",
+  "summary": "2-3 sentence executive summary referencing specific regulatory context",
   "gaps": [
     {{
-      "jurisdiction": "country code",
-      "gap": "specific gap identified",
-      "requirement": "specific regulatory requirement not met",
+      "jurisdiction": "country/region name",
+      "gap": "specific gap referencing actual regulation",
+      "requirement": "exact regulatory requirement (cite regulation name and section)",
       "risk_level": "HIGH|MEDIUM|LOW",
-      "estimated_timeline": "e.g. 6-12 months",
-      "action_required": "specific concrete action needed"
+      "risk_reason": "specific reason tied to the regulation or enforcement history",
+      "estimated_timeline": "e.g. 18-24 months",
+      "cost_range_usd": "e.g. $50,000-$150,000",
+      "required_documents": ["list", "of", "required", "documents"],
+      "action_required": "specific first step the applicant must take",
+      "key_question": "the single most important question to answer before proceeding"
     }}
   ],
-  "critical_path": ["ordered list of 3-5 critical actions to take first"],
+  "critical_path": ["ordered list of 3-5 critical actions referencing actual regulations"],
   "estimated_total_months": integer_months_to_full_compliance
-}}
-
-Generate one gap entry per significant compliance gap found. Be specific about regulation names."""
+}}"""
 
     # Step 3: LLM call
     progress(self, "analysis", 55, "Analysing compliance gaps with AI…")

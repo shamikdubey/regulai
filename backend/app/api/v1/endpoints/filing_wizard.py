@@ -36,8 +36,9 @@ class ProjectCreate(BaseModel):
     @field_validator("domain")
     @classmethod
     def domain_valid(cls, v):
-        if v not in ("FOOD", "MEDICAL_DEVICE"):
-            raise ValueError("domain must be FOOD or MEDICAL_DEVICE")
+        allowed = ("FOOD", "MEDICAL_DEVICE", "PHARMA", "NUTRACEUTICAL", "TRADITIONAL")
+        if v not in allowed:
+            raise ValueError(f"domain must be one of: {', '.join(allowed)}")
         return v
 
     @field_validator("country")
@@ -163,14 +164,75 @@ async def generate_checklist(
     row = result.mappings().first()
     if not row:
         raise HTTPException(status_code=404, detail="Project not found")
+    domain = row.get("domain", "FOOD")
+
+    DOMAIN_CHECKLISTS: dict[str, list[str]] = {
+        "FOOD": [
+            "Register with FSSAI/FDA/local food authority",
+            "Prepare product formulation and ingredient list per CODEX/FSSAI standards",
+            "Commission nutritional analysis from accredited lab",
+            "Prepare label complying with local labeling regulations",
+            "Obtain GMP certificate for manufacturing facility",
+            "Submit product approval application with fee",
+            "Arrange for product sample testing per local standards",
+            "Obtain import/export licenses if applicable",
+        ],
+        "MEDICAL_DEVICE": [
+            "Classify device under local MDR (e.g. India MDR 2017, EU MDR 2017/745, US 21 CFR 820)",
+            "Prepare technical documentation / Design Dossier",
+            "Commission biocompatibility testing per ISO 10993",
+            "Obtain CE marking / 510(k) clearance / CDSCO registration as applicable",
+            "Implement and document Quality Management System per ISO 13485",
+            "Prepare IFU (Instructions for Use) compliant with local regulations",
+            "Register manufacturing site with regulatory authority",
+            "Submit market authorization application with device master file",
+        ],
+        "PHARMA": [
+            "Confirm regulatory pathway (NDA/ANDA/NDA per ICH guidelines)",
+            "Prepare CTD (Common Technical Document) Modules 1-5",
+            "Commission stability studies per ICH Q1A/Q1B",
+            "Prepare Drug Master File (DMF) for API",
+            "Obtain GMP certification from competent authority",
+            "Submit clinical data package (if required) per ICH E6",
+            "Prepare SmPC / Package Insert per local requirements",
+            "Apply for market authorization with complete dossier and fee payment",
+        ],
+        "NUTRACEUTICAL": [
+            "Classify product under applicable category (DSHEA/EFSA Novel Food/FSSAI Health Supplement)",
+            "Commission safety assessment and toxicology review",
+            "Prepare product specification sheet with CoA from accredited lab",
+            "Verify all ingredients are on approved positive lists (FSSAI Schedule, EFSA list)",
+            "Prepare label with claims compliant with DSHEA/EFSA claim regulations",
+            "Submit pre-market notification or approval application as required",
+            "Obtain GMP certification for nutraceutical manufacturing",
+            "Arrange for shelf-life and stability data",
+        ],
+        "TRADITIONAL": [
+            "Classify product under applicable act (Drugs & Cosmetics Act / WHO Traditional Medicine guidelines)",
+            "Prepare classical reference from recognized pharmacopeia (API, Ayurvedic Pharmacopeia of India)",
+            "Commission standardization and quality control studies",
+            "Prepare manufacturing SOP compliant with GMP for ASU drugs",
+            "Obtain license from State Licensing Authority under Schedule T",
+            "Prepare patient information leaflet with traditional use evidence",
+            "Commission heavy metal and pesticide residue testing per pharmacopeia limits",
+            "Submit product registration with complete Ayurvedic/traditional medicine dossier",
+        ],
+    }
+
+    checklist_tasks = DOMAIN_CHECKLISTS.get(domain, DOMAIN_CHECKLISTS["FOOD"])
+
     return {
         "status": "complete",
         "message": "Checklist generated",
         "items": [
-            {"id": str(uuid.uuid4()), "task": "Register with regulatory authority", "completed": False, "status": "pending"},
-            {"id": str(uuid.uuid4()), "task": "Prepare technical documentation", "completed": False, "status": "pending"},
-            {"id": str(uuid.uuid4()), "task": "Submit application dossier", "completed": False, "status": "pending"},
-        ]
+            {
+                "id": str(uuid.uuid4()),
+                "task": task,
+                "completed": False,
+                "status": "pending",
+            }
+            for task in checklist_tasks
+        ],
     }
 
 @router.get("/filing-wizard/templates")
