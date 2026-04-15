@@ -454,4 +454,18 @@ export const api = {
     getApiClient().get("/licensing-pathways", { params }).then(r => r.data),
   seedLicensingPathways: () =>
     getApiClient().post("/licensing-pathways/seed").then(r => r.data),
+
+  // Template Library
+  templateLibrary: {
+    list: (params?: Record<string, string>) =>
+      getApiClient().get("/template-library/templates", { params }).then(r => r.data),
+    get: (id: string) =>
+      getApiClient().get(`/template-library/templates/${id}`).then(r => r.data),
+    generate: (body: { country: string; domain: string; document_type: string; product_name?: string }) =>
+      getApiClient().post("/template-library/templates/generate", body).then(r => r.data),
+    feedback: (id: string, body: { rating: number; is_accurate?: boolean | null; feedback_text?: string }) =>
+      getApiClient().post(`/template-library/templates/${id}/feedback`, body).then(r => r.data),
+    download: (id: string) =>
+      getApiClient().get(`/template-library/templates/${id}/download`, { responseType: "blob" }).then(r => r.data),
+  },
 };

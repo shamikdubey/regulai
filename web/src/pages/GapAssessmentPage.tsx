@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { TrendingUp, Loader2, Copy, Check, RotateCcw, ArrowRight } from "lucide-react";
+import TrustBadge, { confidenceToTrust } from "@/components/ui/TrustBadge";
 import toast from "react-hot-toast";
 import { getApiClient } from "@/lib/api";
 import { useJobPoller } from "@/hooks/useJobPoller";
@@ -18,6 +19,7 @@ type GapItem = {
   risk_level: string;
   estimated_timeline: string;
   action_required: string;
+  data_confidence?: string;
 };
 
 type GapResult = {
@@ -418,12 +420,17 @@ export default function GapAssessmentPage() {
                       <span className="text-xs font-mono font-bold text-[#111827]">
                         {g.jurisdiction.toUpperCase()}
                       </span>
-                      <span
-                        className="text-[10px] font-bold"
-                        style={{ color: RISK_COLORS[g.risk_level] }}
-                      >
-                        {g.risk_level}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        {g.data_confidence && (
+                          <TrustBadge {...confidenceToTrust(g.data_confidence)} />
+                        )}
+                        <span
+                          className="text-[10px] font-bold"
+                          style={{ color: RISK_COLORS[g.risk_level] }}
+                        >
+                          {g.risk_level}
+                        </span>
+                      </div>
                     </div>
                     <p className="text-xs font-semibold text-[#111827] mb-1">
                       {g.gap}

@@ -7,6 +7,7 @@ import {
   AlertTriangle, XCircle, RefreshCw, ChevronDown, ChevronUp,
   ShieldCheck,
 } from "lucide-react";
+import TrustBadge, { trustLevelFromScore } from "@/components/ui/TrustBadge";
 import toast from "react-hot-toast";
 import { getApiClient } from "@/lib/api";
 import { cn } from "@/lib/utils";
@@ -434,12 +435,18 @@ export default function ComplianceReviewPage() {
                   <span className="text-[10px] text-[#9ca3af]">
                     Compliance score
                   </span>
-                  <span
-                    className="text-sm font-bold font-mono"
-                    style={{ color: statusCfg.color }}
-                  >
-                    {reviewResult.score}%
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <TrustBadge
+                      score={reviewResult.score}
+                      level={trustLevelFromScore(reviewResult.score)}
+                    />
+                    <span
+                      className="text-sm font-bold font-mono"
+                      style={{ color: statusCfg.color }}
+                    >
+                      {reviewResult.score}%
+                    </span>
+                  </div>
                 </div>
                 <div className="h-2 bg-[#e2ede9] rounded-full overflow-hidden">
                   <motion.div

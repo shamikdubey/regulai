@@ -30,6 +30,7 @@ const AdminPanelPage        = lazy(() => import("@/pages/AdminPanelPage"));
 const RegulatoryDatabasePage = lazy(() => import("@/pages/RegulatoryDatabasePage"));
 const ProjectsPage          = lazy(() => import("@/pages/ProjectsPage"));
 const ProjectDetailPage     = lazy(() => import("@/pages/ProjectDetailPage"));
+const TemplateLibraryPage   = lazy(() => import("@/pages/TemplateLibraryPage"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -135,6 +136,7 @@ export default function App() {
               <Route path="regulatory-database" element={<RegulatoryDatabasePage />} />
               <Route path="projects"            element={<ProjectsPage />} />
               <Route path="projects/:id"        element={<ProjectDetailPage />} />
+              <Route path="template-library"    element={<TemplateLibraryPage />} />
             </Route>
 
             {/* 404 → home */}

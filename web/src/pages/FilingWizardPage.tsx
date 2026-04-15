@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 import { getApiClient } from "@/lib/api";
 import { cn } from "@/lib/utils";
 import SearchableMultiSelect from "@/components/ui/SearchableMultiSelect";
+import TrustBadge from "@/components/ui/TrustBadge";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -603,7 +604,7 @@ export default function FilingWizardPage() {
                           <Square size={15} />
                         )}
                       </div>
-                      <div className="min-w-0">
+                      <div className="min-w-0 flex-1">
                         <p
                           className={cn(
                             "text-xs font-medium",
@@ -619,6 +620,11 @@ export default function FilingWizardPage() {
                             Required: {item.required_document}
                           </p>
                         )}
+                        <TrustBadge
+                          score={65}
+                          level="MODERATE"
+                          className="mt-1"
+                        />
                       </div>
                     </button>
                   ))}

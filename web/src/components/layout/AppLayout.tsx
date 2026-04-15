@@ -6,7 +6,7 @@ import {
   LogOut, ChevronLeft, ChevronRight,
   Menu, X, CreditCard,
   Wand2, PenLine, ShieldCheck, Shield,
-  Database, FolderOpen, Search, Plus,
+  Database, FolderOpen, Search, Plus, BookOpen,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useState, useEffect, useRef } from "react";
@@ -100,6 +100,13 @@ const NAV: Array<{
     description: "Review documents for compliance gaps",
   },
   {
+    to: "/template-library",
+    icon: BookOpen,
+    label: "Template Library",
+    group: "My Library",
+    description: "Pre-built regulatory documents for 100+ countries",
+  },
+  {
     to: "/documents",
     icon: FileText,
     label: "My Documents",
@@ -167,6 +174,7 @@ const PAGE_TITLES: Record<string, string> = {
   "/admin":               "Admin Panel",
   "/regulatory-database": "Regulatory Database",
   "/projects":            "My Projects",
+  "/template-library":    "Template Library",
 };
 
 // ── Component ─────────────────────────────────────────────────────────────────
