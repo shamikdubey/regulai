@@ -27,6 +27,7 @@ from app.api.v1.endpoints import (
     compliance_review,
     document_editor,
     filing_wizard,
+    template_library,
     query, regulations, documents, audit, tenants, health, auth,
     gap_assessment, dossier, alerts,
     ingredient_specs, allowable_limits, labeling, licensing,
@@ -138,8 +139,9 @@ def create_app() -> FastAPI:
     app.include_router(billing.router,          prefix="/api/v1",               tags=["Billing"])
     app.include_router(filing_wizard.router,    prefix="/api/v1",               tags=["Filing Wizard"])
     app.include_router(document_editor.router,  prefix="/api/v1",               tags=["Document Editor"])
-    app.include_router(compliance_review.router, prefix="/api/v1",              tags=["Compliance Review"])
-    app.include_router(admin_panel.router,       prefix="/api/v1",               tags=["Admin"])
+    app.include_router(compliance_review.router,  prefix="/api/v1",              tags=["Compliance Review"])
+    app.include_router(template_library.router,  prefix="/api/v1",              tags=["Template Library"])
+    app.include_router(admin_panel.router,        prefix="/api/v1",              tags=["Admin"])
 
     return app
 
