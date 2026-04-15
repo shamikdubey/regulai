@@ -183,7 +183,7 @@ export default function DocumentEditorPage() {
           </div>
           <div className="min-w-0">
             <h1 className="text-xl font-bold text-[#111827]">Document Editor</h1>
-            <p className="text-xs text-[#9ca3af] mt-0.5">
+            <p className="text-xs text-[#374151] mt-0.5">
               Draft, edit and AI-review regulatory documents. Use this to write submission letters, technical files, and reports.
             </p>
           </div>
@@ -263,7 +263,7 @@ export default function DocumentEditorPage() {
             ) : (draftsQ.data ?? []).length === 0 ? (
               <div className="py-6 text-center">
                 <FileText size={24} className="text-[#e2ede9] mx-auto mb-2" />
-                <p className="text-xs text-[#9ca3af] mb-2">No documents yet</p>
+                <p className="text-xs text-[#374151] mb-2">No documents yet</p>
                 <button
                   onClick={handleNewDraft}
                   className="text-xs text-[#047857] hover:underline"
@@ -291,7 +291,7 @@ export default function DocumentEditorPage() {
                       <p className="text-xs font-medium text-[#111827] truncate">
                         {d.title}
                       </p>
-                      <p className="text-[10px] text-[#9ca3af] font-mono mt-0.5">
+                      <p className="text-[10px] text-[#374151] font-mono mt-0.5">
                         {d.doc_type} · {d.jurisdiction} ·{" "}
                         {new Date(d.updated_at).toLocaleDateString()}
                       </p>
@@ -378,7 +378,7 @@ export default function DocumentEditorPage() {
 
         {/* Status bar */}
         <div className="flex items-center justify-between px-5 py-2.5 border-t border-[#e2ede9] bg-[#f7faf9]">
-          <div className="flex items-center gap-4 text-[10px] font-mono text-[#9ca3af]">
+          <div className="flex items-center gap-4 text-[10px] font-mono text-[#374151]">
             <span>{wordCount} words</span>
             <span>{content.length} chars</span>
             {activeDraftId && (

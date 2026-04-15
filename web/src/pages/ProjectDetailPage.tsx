@@ -210,7 +210,7 @@ export default function ProjectDetailPage() {
           {/* Progress */}
           <div className="mt-4">
             <div className="flex items-center justify-between mb-1.5">
-              <span className="text-[10px] text-[#9ca3af] font-mono">
+              <span className="text-[10px] text-[#374151] font-mono">
                 {completedCount}/{project.checklist.length} checklist items complete
               </span>
               <span className="text-[10px] font-mono font-bold text-[#047857]">
@@ -347,7 +347,7 @@ export default function ProjectDetailPage() {
                 <p className="text-sm font-semibold text-[#111827] mb-1">
                   No checklist yet
                 </p>
-                <p className="text-xs text-[#9ca3af] mb-4">
+                <p className="text-xs text-[#374151] mb-4">
                   Generate a checklist tailored to your product domain and target market
                 </p>
                 <button
@@ -422,7 +422,7 @@ export default function ProjectDetailPage() {
                           {item.task}
                         </p>
                         {item.required_document && (
-                          <p className="text-[10px] text-[#9ca3af] mt-0.5 font-mono">
+                          <p className="text-[10px] text-[#374151] mt-0.5 font-mono">
                             Required: {item.required_document}
                           </p>
                         )}

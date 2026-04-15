@@ -190,7 +190,7 @@ export default function GapAssessmentPage() {
       <div className="mb-6 flex items-start justify-between gap-4">
         <div>
           <h1 className="text-xl font-bold text-[#111827]">Gap Assessment</h1>
-          <p className="text-xs text-[#9ca3af] mt-1">
+          <p className="text-xs text-[#374151] mt-1">
             Identify compliance gaps and required actions across target markets
           </p>
         </div>
@@ -427,7 +427,7 @@ export default function GapAssessmentPage() {
                 </div>
               )}
 
-              <div className="flex gap-4 mt-3 text-[11px] text-[#9ca3af] font-mono">
+              <div className="flex gap-4 mt-3 text-[11px] text-[#374151] font-mono">
                 <span>{result.gaps.length} gaps identified</span>
                 <span>~{result.estimated_total_months} months to full compliance</span>
                 {result.latency_ms && <span>{result.latency_ms}ms</span>}
@@ -507,7 +507,7 @@ export default function GapAssessmentPage() {
                     <p className="text-xs text-[#6b7280] mb-2">
                       {g.requirement}
                     </p>
-                    <div className="flex items-center justify-between text-[10px] text-[#9ca3af]">
+                    <div className="flex items-center justify-between text-[10px] text-[#374151]">
                       <span>→ {g.action_required}</span>
                       <span className="font-mono">{g.estimated_timeline}</span>
                     </div>

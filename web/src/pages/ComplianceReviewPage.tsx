@@ -188,7 +188,7 @@ export default function ComplianceReviewPage() {
           </div>
           <div className="min-w-0">
             <h1 className="text-xl font-bold text-[#111827]">Compliance Review</h1>
-            <p className="text-xs text-[#9ca3af] mt-0.5">
+            <p className="text-xs text-[#374151] mt-0.5">
               Upload or paste a document to get an AI compliance score (0–100) with specific issues flagged. Use before final submission.
             </p>
           </div>
@@ -236,7 +236,7 @@ export default function ComplianceReviewPage() {
             ) : (historyQ.data ?? []).length === 0 ? (
               <div className="py-6 text-center">
                 <Upload size={24} className="text-[#e2ede9] mx-auto mb-2" />
-                <p className="text-xs text-[#9ca3af] mb-1">No reviews yet</p>
+                <p className="text-xs text-[#374151] mb-1">No reviews yet</p>
                 <p className="text-[10px] text-[#cbd5e1]">
                   Upload a document above to check its compliance
                 </p>
@@ -254,7 +254,7 @@ export default function ComplianceReviewPage() {
                         <p className="text-xs font-medium text-[#111827] truncate">
                           {r.filename}
                         </p>
-                        <p className="text-[10px] text-[#9ca3af] font-mono mt-0.5">
+                        <p className="text-[10px] text-[#374151] font-mono mt-0.5">
                           {r.jurisdiction} · {r.domain.replace(/_/g, " ")} ·{" "}
                           {new Date(r.reviewed_at).toLocaleDateString()}
                         </p>
@@ -291,7 +291,7 @@ export default function ComplianceReviewPage() {
                 <p className="text-xs font-medium text-[#111827] truncate">
                   {selectedFile.name}
                 </p>
-                <p className="text-[10px] text-[#9ca3af] font-mono mt-0.5">
+                <p className="text-[10px] text-[#374151] font-mono mt-0.5">
                   {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
                 </p>
               </div>

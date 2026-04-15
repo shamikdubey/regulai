@@ -103,7 +103,7 @@ export default function ProjectsPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-xl font-bold text-[#111827]">My Projects</h1>
-          <p className="text-xs text-[#9ca3af] mt-1">
+          <p className="text-xs text-[#374151] mt-1">
             Manage your regulatory filing projects from gap analysis to submission
           </p>
         </div>
@@ -199,7 +199,7 @@ export default function ProjectsPage() {
             <FolderOpen size={32} className="text-[#cbd5e1]" />
           </div>
           <h2 className="text-sm font-bold text-[#111827] mb-1">No projects yet</h2>
-          <p className="text-xs text-[#9ca3af] mb-5 max-w-xs text-center">
+          <p className="text-xs text-[#374151] mb-5 max-w-xs text-center">
             Create your first project to start tracking your regulatory filing
             pipeline from gap analysis to submission.
           </p>
@@ -213,7 +213,7 @@ export default function ProjectsPage() {
         </div>
       ) : filtered.length === 0 ? (
         <div className="py-16 text-center">
-          <p className="text-sm text-[#9ca3af]">No projects match the selected filters</p>
+          <p className="text-sm text-[#374151]">No projects match the selected filters</p>
         </div>
       ) : (
         /* Project cards grid */
@@ -270,7 +270,7 @@ export default function ProjectsPage() {
                 {/* Progress bar */}
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-[10px] text-[#9ca3af] font-mono">
+                    <span className="text-[10px] text-[#374151] font-mono">
                       {completedCount}/{project.checklist.length} items
                     </span>
                     <span className="text-[10px] font-mono font-bold text-[#047857]">
@@ -322,7 +322,7 @@ export default function ProjectsPage() {
 
                 {/* Footer */}
                 <div className="flex items-center justify-between pt-1 border-t border-[#f0fdf4]">
-                  <span className="text-[10px] text-[#9ca3af] font-mono">
+                  <span className="text-[10px] text-[#374151] font-mono">
                     {new Date(project.created_at).toLocaleDateString()}
                   </span>
                   <button

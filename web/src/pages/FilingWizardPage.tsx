@@ -251,7 +251,7 @@ export default function FilingWizardPage() {
           </div>
           <div className="min-w-0">
             <h1 className="text-xl font-bold text-[#111827]">Filing Wizard</h1>
-            <p className="text-xs text-[#9ca3af] mt-0.5">
+            <p className="text-xs text-[#374151] mt-0.5">
               Step-by-step guidance for regulatory submissions. Start here when you're ready to file in a new country.
             </p>
           </div>
@@ -547,7 +547,7 @@ export default function FilingWizardPage() {
                     <h2 className="text-sm font-bold text-[#111827]">
                       {activeProject.product_name}
                     </h2>
-                    <p className="text-[10px] text-[#9ca3af]">
+                    <p className="text-[10px] text-[#374151]">
                       {activeProject.country} ·{" "}
                       {activeProject.domain.replace(/_/g, " ")}
                     </p>
@@ -572,7 +572,7 @@ export default function FilingWizardPage() {
                       transition={{ duration: 0.4, ease: "easeOut" }}
                     />
                   </div>
-                  <p className="text-[10px] text-[#9ca3af] font-mono mt-1.5">
+                  <p className="text-[10px] text-[#374151] font-mono mt-1.5">
                     {activeProject.checklist.filter((i) => i.completed).length}/
                     {activeProject.checklist.length} items complete
                   </p>
@@ -616,7 +616,7 @@ export default function FilingWizardPage() {
                           {item.task}
                         </p>
                         {item.required_document && (
-                          <p className="text-[10px] text-[#9ca3af] mt-0.5 font-mono">
+                          <p className="text-[10px] text-[#374151] mt-0.5 font-mono">
                             Required: {item.required_document}
                           </p>
                         )}
@@ -712,7 +712,7 @@ export default function FilingWizardPage() {
                   <ClipboardList size={28} className="text-[#cbd5e1]" />
                 </div>
                 <h3 className="text-sm font-bold text-[#111827] mb-1">No filing projects yet</h3>
-                <p className="text-xs text-[#9ca3af] mb-4 max-w-xs text-center">
+                <p className="text-xs text-[#374151] mb-4 max-w-xs text-center">
                   Create your first project to get started with your regulatory submission.
                 </p>
                 <button
@@ -737,7 +737,7 @@ export default function FilingWizardPage() {
                         <h3 className="text-sm font-bold text-[#111827]">
                           {proj.product_name}
                         </h3>
-                        <p className="text-[10px] text-[#9ca3af] mt-0.5 font-mono">
+                        <p className="text-[10px] text-[#374151] mt-0.5 font-mono">
                           {proj.country} · {proj.domain.replace(/_/g, " ")}
                         </p>
                       </div>
@@ -759,7 +759,7 @@ export default function FilingWizardPage() {
                       />
                     </div>
 
-                    <div className="flex items-center justify-between text-[10px] text-[#9ca3af] font-mono">
+                    <div className="flex items-center justify-between text-[10px] text-[#374151] font-mono">
                       <span>
                         {proj.checklist.filter((i) => i.completed).length}/
                         {proj.checklist.length} items complete

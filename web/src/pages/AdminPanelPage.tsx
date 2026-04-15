@@ -277,7 +277,7 @@ export default function AdminPanelPage() {
           </div>
           <div className="min-w-0">
             <h1 className="text-xl font-bold text-[#111827]">Admin Panel</h1>
-            <p className="text-xs text-[#9ca3af] mt-0.5">
+            <p className="text-xs text-[#374151] mt-0.5">
               Manage users, tenants and monitor platform usage. Only visible to administrators.
             </p>
           </div>
@@ -387,7 +387,7 @@ export default function AdminPanelPage() {
                     >
                       {stat.value}
                     </p>
-                    <p className="text-[10px] text-[#9ca3af] mt-1">{stat.sub}</p>
+                    <p className="text-[10px] text-[#374151] mt-1">{stat.sub}</p>
                   </div>
                 ))}
               </div>

@@ -149,7 +149,7 @@ export default function DashboardPage() {
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-xs font-bold text-[#111827]">No active projects</p>
-              <p className="text-[10px] text-[#9ca3af] mt-0.5">
+              <p className="text-[10px] text-[#374151] mt-0.5">
                 Track gap analysis, checklist, documents, and compliance review in one place
               </p>
             </div>
@@ -201,7 +201,7 @@ export default function DashboardPage() {
                         style={{ width: `${proj.progress}%` }}
                       />
                     </div>
-                    <p className="text-[10px] font-mono text-[#9ca3af]">
+                    <p className="text-[10px] font-mono text-[#374151]">
                       {proj.progress}% complete
                     </p>
                   </div>
@@ -226,7 +226,7 @@ export default function DashboardPage() {
 
                   {/* Continue */}
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] text-[#9ca3af]">
+                    <span className="text-[10px] text-[#374151]">
                       {PIPELINE_STEPS[activeStep]}
                     </span>
                     <span className="text-[10px] font-bold text-[#047857] flex items-center gap-1 group-hover:gap-1.5 transition-all">
@@ -274,7 +274,7 @@ export default function DashboardPage() {
             </div>
             <div className="text-left min-w-0">
               <p className="text-sm font-bold text-[#111827] leading-snug">Ask RegulAI</p>
-              <p className="text-[11px] text-[#9ca3af] mt-0.5">Query any regulation</p>
+              <p className="text-[11px] text-[#374151] mt-0.5">Query any regulation</p>
             </div>
             <ArrowRight
               size={16}
@@ -297,7 +297,7 @@ export default function DashboardPage() {
             </div>
             <div className="text-left min-w-0">
               <p className="text-sm font-bold text-[#111827] leading-snug">Check Alerts</p>
-              <p className="text-[11px] text-[#9ca3af] mt-0.5">
+              <p className="text-[11px] text-[#374151] mt-0.5">
                 {highAlertCount > 0
                   ? `${highAlertCount} high-severity alert${highAlertCount !== 1 ? "s" : ""}`
                   : "No critical alerts"}
@@ -364,14 +364,14 @@ export default function DashboardPage() {
                   </span>
                   <div className="min-w-0 flex-1">
                     <p className="text-xs font-semibold text-[#111827] truncate">{a.title}</p>
-                    <div className="flex items-center gap-2 mt-0.5 text-[10px] font-mono text-[#9ca3af]">
+                    <div className="flex items-center gap-2 mt-0.5 text-[10px] font-mono text-[#374151]">
                       {j && <span>{j.flag} {j.label}</span>}
                       {a.change_type && (
                         <span className="capitalize">{a.change_type.toLowerCase()}</span>
                       )}
                     </div>
                   </div>
-                  <span className="text-[10px] font-mono text-[#9ca3af] flex-shrink-0 mt-0.5">
+                  <span className="text-[10px] font-mono text-[#374151] flex-shrink-0 mt-0.5">
                     {a.published_at
                       ? new Date(a.published_at).toLocaleDateString()
                       : a.effective_date ?? ""}
@@ -430,7 +430,7 @@ export default function DashboardPage() {
               <p className="text-xs font-semibold text-[#111827] leading-snug mb-1">
                 {a.label}
               </p>
-              <p className="text-[10px] text-[#9ca3af] leading-relaxed">{a.desc}</p>
+              <p className="text-[10px] text-[#374151] leading-relaxed">{a.desc}</p>
             </motion.button>
           ))}
         </div>
@@ -480,7 +480,7 @@ export default function DashboardPage() {
                     className="px-5 py-3 hover:bg-[#f7faf9] transition-colors"
                   >
                     <p className="text-xs text-[#111827] truncate mb-1">{q.query}</p>
-                    <div className="flex items-center gap-3 text-[10px] font-mono text-[#9ca3af]">
+                    <div className="flex items-center gap-3 text-[10px] font-mono text-[#374151]">
                       {j && <span>{j.flag} {j.label}</span>}
                       {d && <span style={{ color: d.color }}>{q.domain?.toUpperCase()}</span>}
                       <span
@@ -566,7 +566,7 @@ export default function DashboardPage() {
                         <p className="text-xs text-[#111827] leading-snug truncate">
                           {a.title}
                         </p>
-                        <div className="flex items-center gap-2 mt-0.5 text-[10px] font-mono text-[#9ca3af]">
+                        <div className="flex items-center gap-2 mt-0.5 text-[10px] font-mono text-[#374151]">
                           {j && <span>{j.flag} {j.label}</span>}
                           <span className="capitalize">
                             {a.change_type.toLowerCase()}
