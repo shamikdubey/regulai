@@ -124,6 +124,7 @@ export const REGIONS = [
       { value: "hungary",        label: "Hungary",        flag: "🇭🇺", tier: 2 },
       { value: "romania",        label: "Romania",        flag: "🇷🇴", tier: 2 },
       { value: "kazakhstan",     label: "Kazakhstan",     flag: "🇰🇿", tier: 2 },
+      { value: "uzbekistan",     label: "Uzbekistan",     flag: "🇺🇿", tier: 3 },
       { value: "serbia",         label: "Serbia",         flag: "🇷🇸", tier: 3 },
       { value: "bulgaria",       label: "Bulgaria",       flag: "🇧🇬", tier: 3 },
       { value: "croatia",        label: "Croatia",        flag: "🇭🇷", tier: 3 },

@@ -20,6 +20,13 @@ type GapItem = {
   estimated_timeline: string;
   action_required: string;
   data_confidence?: string;
+  registration_status?: string;
+  source_url?: string | null;
+  verification_url?: string;
+  key_question?: string;
+  risk_reason?: string;
+  cost_range_usd?: string;
+  required_documents?: string[];
 };
 
 type GapResult = {
@@ -30,6 +37,7 @@ type GapResult = {
   critical_path: string[];
   estimated_total_months: number;
   latency_ms?: number;
+  already_marketed_in?: string[];
 };
 
 // ── Constants ─────────────────────────────────────────────────────────────────
@@ -87,7 +95,7 @@ export default function GapAssessmentPage() {
   const [productType, setProductType]           = useState("nutra");
   const [description, setDescription]           = useState("");
   const [claims, setClaims]                     = useState("");
-  const [approvalsInput, setApprovalsInput]     = useState("");   // raw comma-sep string
+  const [currentApprovals, setCurrentApprovals] = useState<string[]>([]);
   const initJurisdiction = searchParams.get("jurisdiction");
   // Store labels (e.g. "India") — convert to values on submit
   const initLabel = initJurisdiction
@@ -121,14 +129,10 @@ export default function GapAssessmentPage() {
     setJobId(null);
     setCopied(false);
 
-    // Parse comma-separated approvals
-    const currentApprovals = approvalsInput
-      .split(",")
-      .map((s) => s.trim())
-      .filter(Boolean);
-
     // Convert labels to API values
     const jurisdictionValues = jurisdictions.map(labelToValue);
+    // currentApprovals already stored as labels — convert to values for API
+    const approvalValues = currentApprovals.map(labelToValue);
 
     try {
       const resp = await getApiClient().post("/gap-assessment", {
@@ -136,7 +140,7 @@ export default function GapAssessmentPage() {
         product_description:   description,
         product_type:          productType,
         target_jurisdictions:  jurisdictionValues,
-        current_approvals:     currentApprovals,
+        current_approvals:     approvalValues,
         intended_claims:       claims,
       });
       if (resp.data.job_id) {
@@ -160,7 +164,7 @@ export default function GapAssessmentPage() {
     setProductName("");
     setDescription("");
     setClaims("");
-    setApprovalsInput("");
+    setCurrentApprovals([]);
     setJurisdictions([]);
   };
 
@@ -274,34 +278,48 @@ export default function GapAssessmentPage() {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows={3}
-            placeholder="Describe composition, intended use, dosage form..."
+            placeholder="Describe your product in detail — include intended use, how it works, materials, whether implantable, duration of use. More detail = more accurate gap analysis."
             className="w-full px-3 py-2 bg-white border border-[#e2ede9] rounded-xl text-sm text-[#111827] outline-none focus:border-[#047857] transition-colors resize-none"
+          />
+          <p className="text-[10px] text-[#9ca3af] mt-1">
+            The AI uses this to classify your product and search regulatory databases accurately
+          </p>
+        </div>
+
+        <div>
+          <label className="block text-[10px] font-mono text-[#9ca3af] mb-1 uppercase tracking-wider">
+            Intended claims (optional)
+          </label>
+          <input
+            value={claims}
+            onChange={(e) => setClaims(e.target.value)}
+            placeholder="e.g. supports heart health, omega-3 supplement"
+            className="w-full px-3 py-2 bg-white border border-[#e2ede9] rounded-xl text-sm text-[#111827] outline-none focus:border-[#047857] transition-colors"
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-[10px] font-mono text-[#9ca3af] mb-1 uppercase tracking-wider">
-              Intended claims (optional)
-            </label>
-            <input
-              value={claims}
-              onChange={(e) => setClaims(e.target.value)}
-              placeholder="e.g. supports heart health, omega-3 supplement"
-              className="w-full px-3 py-2 bg-white border border-[#e2ede9] rounded-xl text-sm text-[#111827] outline-none focus:border-[#047857] transition-colors"
-            />
-          </div>
-          <div>
-            <label className="block text-[10px] font-mono text-[#9ca3af] mb-1 uppercase tracking-wider">
-              Current approvals (optional)
-            </label>
-            <input
-              value={approvalsInput}
-              onChange={(e) => setApprovalsInput(e.target.value)}
-              placeholder="e.g. US, EU, India (comma-separated)"
-              className="w-full px-3 py-2 bg-white border border-[#e2ede9] rounded-xl text-sm text-[#111827] outline-none focus:border-[#047857] transition-colors"
-            />
-          </div>
+        <div className="bg-[#f0fdf4] border border-[#bbf7d0] rounded-xl p-4">
+          <label className="block text-[10px] font-mono text-[#047857] mb-1 uppercase tracking-wider font-bold">
+            Countries where this product is ALREADY APPROVED ✓
+          </label>
+          <p className="text-[11px] text-[#6b7280] mb-2">
+            Select countries where you have confirmed regulatory approval. This focuses gap analysis on new markets only.
+          </p>
+          <SearchableMultiSelect
+            options={JURISDICTIONS.map((j) => j.label)}
+            selected={currentApprovals}
+            onChange={setCurrentApprovals}
+            placeholder="Search approved countries…"
+          />
+          {currentApprovals.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 mt-2">
+              {currentApprovals.map((c) => (
+                <span key={c} className="inline-flex items-center gap-1 px-2 py-0.5 bg-[#dcfce7] text-[#047857] text-[11px] font-semibold rounded-full border border-[#bbf7d0]">
+                  ✓ {c}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
 
         <div>
@@ -353,6 +371,14 @@ export default function GapAssessmentPage() {
             animate={{ opacity: 1, y: 0 }}
             className="space-y-4 mt-4"
           >
+            {/* Disclaimer banner */}
+            <div className="flex items-start gap-2.5 p-3.5 bg-[#fffbeb] border border-[#fde68a] rounded-xl">
+              <span className="text-sm flex-shrink-0">⚠️</span>
+              <p className="text-[11px] text-[#92400e] leading-relaxed">
+                Gap analysis is AI-generated and web-searched. Registration status shown is based on publicly available data as of the search date. Always verify with the relevant regulatory authority before making filing decisions.
+              </p>
+            </div>
+
             {/* Summary */}
             <div className="bg-white border border-[#e2ede9] rounded-2xl p-5 shadow-sm">
               <div className="flex items-start justify-between mb-3 gap-3">
@@ -394,6 +420,13 @@ export default function GapAssessmentPage() {
                 {result.summary}
               </p>
 
+              {result.already_marketed_in && result.already_marketed_in.length > 0 && (
+                <div className="mt-3 p-2.5 bg-[#f0fdf4] border border-[#bbf7d0] rounded-lg">
+                  <p className="text-[10px] font-mono text-[#047857] font-bold mb-1">LIKELY ALREADY MARKETED IN</p>
+                  <p className="text-xs text-[#047857]">{result.already_marketed_in.join(", ")}</p>
+                </div>
+              )}
+
               <div className="flex gap-4 mt-3 text-[11px] text-[#9ca3af] font-mono">
                 <span>{result.gaps.length} gaps identified</span>
                 <span>~{result.estimated_total_months} months to full compliance</span>
@@ -416,6 +449,42 @@ export default function GapAssessmentPage() {
                       borderLeftColor: RISK_COLORS[g.risk_level],
                     }}
                   >
+                    {/* Registration status badge */}
+                    {g.registration_status && (
+                      <div className="flex items-center gap-2 mb-2.5 flex-wrap">
+                        {g.registration_status === "USER_CONFIRMED_APPROVED" && (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-[#dcfce7] text-[#047857] text-[10px] font-bold rounded-full border border-[#bbf7d0]">
+                            🟢 You confirmed: Approved
+                          </span>
+                        )}
+                        {g.registration_status === "FOUND_IN_DATABASE" && (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-blue-50 text-blue-700 text-[10px] font-bold rounded-full border border-blue-200">
+                            🔵 Found in regulatory database
+                          </span>
+                        )}
+                        {g.registration_status === "NOT_FOUND" && (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-red-50 text-red-700 text-[10px] font-bold rounded-full border border-red-200">
+                            🔴 Not found in database
+                          </span>
+                        )}
+                        {g.registration_status === "UNKNOWN" && (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-gray-50 text-gray-500 text-[10px] font-bold rounded-full border border-gray-200">
+                            ⚪ Status unknown
+                          </span>
+                        )}
+                        {g.source_url && (
+                          <a
+                            href={g.source_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[10px] text-blue-600 hover:underline"
+                          >
+                            View registration →
+                          </a>
+                        )}
+                      </div>
+                    )}
+
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-xs font-mono font-bold text-[#111827]">
                         {g.jurisdiction.toUpperCase()}
@@ -442,6 +511,20 @@ export default function GapAssessmentPage() {
                       <span>→ {g.action_required}</span>
                       <span className="font-mono">{g.estimated_timeline}</span>
                     </div>
+
+                    {/* Verify at official source */}
+                    {g.verification_url && (
+                      <div className="mt-2.5 pt-2.5 border-t border-[#f0f4f2]">
+                        <a
+                          href={g.verification_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[10px] text-[#047857] hover:underline font-medium"
+                        >
+                          🔗 Verify at {g.jurisdiction} regulatory database →
+                        </a>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
