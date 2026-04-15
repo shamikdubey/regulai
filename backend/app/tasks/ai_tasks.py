@@ -49,8 +49,8 @@ def progress(task: Task, step: str, percent: int, message: str) -> None:
     bind=True,
     name="app.tasks.ai_tasks.run_gap_assessment",
     max_retries=1,
-    soft_time_limit=180,
-    time_limit=240,
+    soft_time_limit=300,
+    time_limit=360,
 )
 def run_gap_assessment(
     self: Task,
@@ -163,13 +163,22 @@ async def _run_gap_assessment_async(
 
     domain_key = product_type if product_type in DOMAIN_SYSTEM_PROMPTS else "general"
 
-    system_prompt = """You are a regulatory affairs expert. Base your analysis ONLY on \
-established, verifiable regulatory requirements. Do not invent or guess requirements. \
-Be consistent — the same product in the same jurisdiction must always produce the same core gaps.
+    system_prompt = """You are a senior regulatory affairs expert with access to web search.
 
 You have 20+ years experience across global markets including FDA, EMA, CDSCO, TGA, PMDA, \
 NMPA, and ANVISA. You provide specific, actionable, jurisdiction-accurate compliance guidance \
-grounded in published regulations and official guidance documents."""
+grounded in published regulations and official guidance documents.
+
+Use web search to:
+1. Check official regulatory databases for product registration status
+2. Verify the latest regulatory requirements and guidance documents
+3. Find official regulatory body URLs for each jurisdiction
+
+Base your analysis ONLY on established, verifiable regulatory requirements. \
+Do not invent or guess requirements. Be consistent — the same product in the same \
+jurisdiction must always produce the same core gaps."""
+
+    user_confirmed = ", ".join(current_approvals) if current_approvals else "none"
 
     user_message = f"""Analyze compliance gaps for:
 Product: {product_name}
@@ -180,26 +189,65 @@ Target jurisdictions: {jur_list}{approvals_note}{claims_note}
 REGULATORY CONTEXT FROM CORPUS:
 {context}
 
-STEP 1 — PRODUCT RECOGNITION:
-First, identify if this product is likely already marketed or registered globally \
+STEP 1 — REGISTRATION STATUS CHECK:
+For each target jurisdiction, determine registration status:
+
+A) Jurisdictions confirmed approved by user: [{user_confirmed}]
+   For these jurisdictions:
+   - Set registration_status = "USER_CONFIRMED_APPROVED"
+   - Focus gap analysis ONLY on post-market obligations and renewal requirements
+
+B) For all OTHER jurisdictions, use web search to check official databases:
+   - US FDA: search "site:accessdata.fda.gov {product_name}"
+   - EU EUDAMED: search "site:ec.europa.eu eudamed {product_name}"
+   - India CDSCO: search "site:cdsco.gov.in {product_name}"
+   - UK MHRA: search "site:gov.uk mhra {product_name}"
+   - Australia TGA: search "site:tga.gov.au {product_name}"
+   - Canada: search "site:canada.ca {product_name} medical device"
+   - Japan PMDA: search "site:pmda.go.jp {product_name}"
+   - Singapore HSA: search "site:hsa.gov.sg {product_name}"
+   - Malaysia MDA: search "site:portal.mdb.gov.my {product_name}"
+   - South Korea MFDS: search "site:mfds.go.kr {product_name}"
+   - Brazil ANVISA: search "site:anvisa.gov.br {product_name}"
+   - China NMPA: search "site:nmpa.gov.cn {product_name}"
+   - UAE MOHAP: search "site:mohap.gov.ae {product_name}"
+   - Saudi SFDA: search "site:sfda.gov.sa {product_name}"
+   - Thailand FDA: search "site:fda.moph.go.th {product_name}"
+   - Indonesia BPOM: search "site:pom.go.id {product_name}"
+   - Philippines FDA: search "site:fda.gov.ph {product_name}"
+   - New Zealand Medsafe: search "site:medsafe.govt.nz {product_name}"
+   - Israel MOH: search "site:health.gov.il {product_name}"
+   - Turkey TITCK: search "site:titck.gov.tr {product_name}"
+   - South Africa SAHPRA: search "site:sahpra.org.za {product_name}"
+   - Switzerland Swissmedic: search "site:swissmedic.ch {product_name}"
+
+   Results:
+   - Found in database: registration_status = "FOUND_IN_DATABASE", record source_url
+   - Not found: registration_status = "NOT_FOUND"
+   - Unable to determine: registration_status = "UNKNOWN"
+
+STEP 2 — PRODUCT RECOGNITION:
+Identify if this product is likely already marketed or registered globally \
 (e.g. well-known branded medical devices, established drugs, widely sold food supplements).
 If it appears to be an already-marketed product:
 - State which markets it is likely already approved in
 - Focus gaps ONLY on markets where it is NOT yet approved
-- Include a note in the summary: "This product appears to be already marketed in [X markets]"
+- Include a note in the summary
 
-STEP 2 — PER-JURISDICTION GAP ANALYSIS:
-For EACH jurisdiction, provide a structured analysis in this fixed order:
-1. Regulatory framework: name the exact law/regulation governing this product type
-2. Market status: whether similar products are commonly/rarely/restricted in that market
-3. Specific compliance gaps: reference the exact regulation name AND article/rule number \
+STEP 3 — PER-JURISDICTION GAP ANALYSIS:
+For EACH jurisdiction, provide a structured analysis:
+1. Registration status (from Step 1) and source URL if found
+2. Regulatory framework: name the exact law/regulation governing this product type
+3. Market status: whether similar products are commonly/rarely/restricted in that market
+4. Specific compliance gaps: reference the exact regulation name AND article/rule number \
    (e.g. "EU MDR 2017/745 Article 52", "21 CFR Part 820.30", "India MDR 2017 Schedule 4", \
    "FSSAI FSS Act 2006 Section 22", "ICH Q8(R2)", "DSHEA 1994 Section 5", \
    "WHO TRS No. 961 Annex 4")
-4. Minimum required documents: enumerate the mandatory submission documents
-5. Realistic timeline in months and cost range in USD based on regulatory authority data
-6. Risk level HIGH/MEDIUM/LOW with reason tied to a specific regulation or enforcement record
-7. The single most important question the applicant must answer before proceeding
+5. Minimum required documents: enumerate the mandatory submission documents
+6. Realistic timeline in months and cost range in USD based on regulatory authority data
+7. Risk level HIGH/MEDIUM/LOW with reason tied to a specific regulation or enforcement record
+8. The single most important question the applicant must answer before proceeding
+9. Verification URL: the official database URL to verify registration manually
 
 ORDERING RULE: Within each jurisdiction, always list gaps in severity order: HIGH → MEDIUM → LOW.
 
@@ -216,10 +264,13 @@ Provide the response in this exact JSON format:
   "product_name": "{product_name}",
   "overall_risk": "HIGH|MEDIUM|LOW",
   "already_marketed_in": ["list of markets where product appears already approved, or empty list"],
-  "summary": "2-3 sentence executive summary. If product is already marketed globally, note which markets.",
+  "summary": "2-3 sentence executive summary including registration status findings and markets searched.",
   "gaps": [
     {{
       "jurisdiction": "country/region name",
+      "registration_status": "USER_CONFIRMED_APPROVED|FOUND_IN_DATABASE|NOT_FOUND|UNKNOWN",
+      "source_url": "URL where registration was found, or null if not found",
+      "verification_url": "official regulatory database URL for manual verification",
       "gap": "specific gap referencing the exact regulation name and article/rule number",
       "requirement": "exact regulatory requirement (cite regulation name, article/rule number, and issuing authority)",
       "risk_level": "HIGH|MEDIUM|LOW",
@@ -246,11 +297,19 @@ Provide the response in this exact JSON format:
             client = anthropic.Anthropic(api_key=settings.ANTHROPIC_API_KEY)
             msg = client.messages.create(
                 model=settings.CLAUDE_MODEL,
-                max_tokens=3000,
+                max_tokens=4000,
                 system=system_prompt,
                 messages=[{"role": "user", "content": user_message}],
+                tools=[{
+                    "type": "web_search_20250305",
+                    "name": "web_search",
+                }],
             )
-            raw_response = msg.content[0].text
+            # Collect all text blocks — web search produces multiple content blocks
+            raw_response = ""
+            for block in msg.content:
+                if block.type == "text":
+                    raw_response += block.text
         else:
             from openai import OpenAI
             client = OpenAI(api_key=settings.OPENAI_API_KEY)
